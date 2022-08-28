@@ -37,6 +37,73 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F225758428BBE86B009E23C2 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				F225758828BBE89A009E23C2 /* BusinessLogic */,
+				F225758728BBE88E009E23C2 /* Entity */,
+				F225758628BBE885009E23C2 /* Assembly */,
+				F225758528BBE87C009E23C2 /* Flows */,
+				F2982CA728BB932900D2C53E /* AppDelegate.swift */,
+				F2982CA928BB932900D2C53E /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		F225758528BBE87C009E23C2 /* Flows */ = {
+			isa = PBXGroup;
+			children = (
+				F2982CAB28BB932900D2C53E /* ViewController.swift */,
+			);
+			path = Flows;
+			sourceTree = "<group>";
+		};
+		F225758628BBE885009E23C2 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		F225758728BBE88E009E23C2 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		F225758828BBE89A009E23C2 /* BusinessLogic */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = BusinessLogic;
+			sourceTree = "<group>";
+		};
+		F225758928BBE8A5009E23C2 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		F225758A28BBE8AE009E23C2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F2982CB528BB932A00D2C53E /* LaunchScreen.storyboard */,
+				F2982CB328BB932A00D2C53E /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		F225758B28BBE8B8009E23C2 /* Environments */ = {
+			isa = PBXGroup;
+			children = (
+				F2982CB028BB932900D2C53E /* shop.xcdatamodeld */,
+				F2982CB828BB932A00D2C53E /* Info.plist */,
+			);
+			path = Environments;
+			sourceTree = "<group>";
+		};
 		F2982C9B28BB932900D2C53E = {
 			isa = PBXGroup;
 			children = (
@@ -56,13 +123,10 @@
 		F2982CA628BB932900D2C53E /* shop */ = {
 			isa = PBXGroup;
 			children = (
-				F2982CA728BB932900D2C53E /* AppDelegate.swift */,
-				F2982CA928BB932900D2C53E /* SceneDelegate.swift */,
-				F2982CAB28BB932900D2C53E /* ViewController.swift */,
-				F2982CB328BB932A00D2C53E /* Assets.xcassets */,
-				F2982CB528BB932A00D2C53E /* LaunchScreen.storyboard */,
-				F2982CB828BB932A00D2C53E /* Info.plist */,
-				F2982CB028BB932900D2C53E /* shop.xcdatamodeld */,
+				F225758428BBE86B009E23C2 /* App */,
+				F225758928BBE8A5009E23C2 /* Core */,
+				F225758A28BBE8AE009E23C2 /* Resources */,
+				F225758B28BBE8B8009E23C2 /* Environments */,
 			);
 			path = shop;
 			sourceTree = "<group>";
@@ -302,7 +366,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 97UL48L835;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = shop/Info.plist;
+				INFOPLIST_FILE = shop/Environments/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -329,7 +393,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 97UL48L835;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = shop/Info.plist;
+				INFOPLIST_FILE = shop/Environments/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
