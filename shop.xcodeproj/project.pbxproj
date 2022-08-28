@@ -10,7 +10,6 @@
 		F2982CA828BB932900D2C53E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2982CA728BB932900D2C53E /* AppDelegate.swift */; };
 		F2982CAA28BB932900D2C53E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2982CA928BB932900D2C53E /* SceneDelegate.swift */; };
 		F2982CAC28BB932900D2C53E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2982CAB28BB932900D2C53E /* ViewController.swift */; };
-		F2982CAF28BB932900D2C53E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F2982CAD28BB932900D2C53E /* Main.storyboard */; };
 		F2982CB228BB932900D2C53E /* shop.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F2982CB028BB932900D2C53E /* shop.xcdatamodeld */; };
 		F2982CB428BB932A00D2C53E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2982CB328BB932A00D2C53E /* Assets.xcassets */; };
 		F2982CB728BB932A00D2C53E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F2982CB528BB932A00D2C53E /* LaunchScreen.storyboard */; };
@@ -21,7 +20,6 @@
 		F2982CA728BB932900D2C53E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F2982CA928BB932900D2C53E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		F2982CAB28BB932900D2C53E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		F2982CAE28BB932900D2C53E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F2982CB128BB932900D2C53E /* shop.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = shop.xcdatamodel; sourceTree = "<group>"; };
 		F2982CB328BB932A00D2C53E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F2982CB628BB932A00D2C53E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -61,7 +59,6 @@
 				F2982CA728BB932900D2C53E /* AppDelegate.swift */,
 				F2982CA928BB932900D2C53E /* SceneDelegate.swift */,
 				F2982CAB28BB932900D2C53E /* ViewController.swift */,
-				F2982CAD28BB932900D2C53E /* Main.storyboard */,
 				F2982CB328BB932A00D2C53E /* Assets.xcassets */,
 				F2982CB528BB932A00D2C53E /* LaunchScreen.storyboard */,
 				F2982CB828BB932A00D2C53E /* Info.plist */,
@@ -80,6 +77,7 @@
 				F2982CA028BB932900D2C53E /* Sources */,
 				F2982CA128BB932900D2C53E /* Frameworks */,
 				F2982CA228BB932900D2C53E /* Resources */,
+				F2982CBE28BB952100D2C53E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -130,11 +128,30 @@
 			files = (
 				F2982CB728BB932A00D2C53E /* LaunchScreen.storyboard in Resources */,
 				F2982CB428BB932A00D2C53E /* Assets.xcassets in Resources */,
-				F2982CAF28BB932900D2C53E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F2982CBE28BB952100D2C53E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nexport PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F2982CA028BB932900D2C53E /* Sources */ = {
@@ -151,14 +168,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		F2982CAD28BB932900D2C53E /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F2982CAE28BB932900D2C53E /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		F2982CB528BB932A00D2C53E /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -296,7 +305,6 @@
 				INFOPLIST_FILE = shop/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -324,7 +332,6 @@
 				INFOPLIST_FILE = shop/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
