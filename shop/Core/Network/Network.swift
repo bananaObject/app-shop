@@ -7,17 +7,34 @@
 
 import Foundation
 
+/// Network protocol.
+/// One methods  with support async/await iOS 13.
 protocol NetworkProtocol {
+    /// Server request.
+    /// - Parameters:
+    ///   - endpoint: Request address.
+    ///   - completion: Сlosure with type Result.
     func fetch(_ endpoint: NetworkEndpoint, _ completion: @escaping (Result<Data, RequestError>) -> Void)
 
     @available(iOS 13.0.0, *)
+    /// Server request iOS 13.
+    /// Will throw error from on failure.
+    /// - Parameter endpoint: Request address.
+    /// - Returns: Response data.
     func fetch(_ endpoint: NetworkEndpoint) async throws -> Data
 }
 
+/// Network layer.
+/// Implemented two methods, one with support async/await iOS 13.
 class Network: NetworkProtocol {
+    // MARK: - Private Properties
+
     private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default)
 
+    // MARK: - Public Methods
+    
     func fetch(_ endpoint: NetworkEndpoint, _ completion: @escaping (Result<Data, RequestError>) -> Void) {
+        // Getting data from Enum.
         var urlComponents: URLComponents = endpoint.baseURL
         urlComponents.path = endpoint.path
         urlComponents.queryItems = endpoint.params

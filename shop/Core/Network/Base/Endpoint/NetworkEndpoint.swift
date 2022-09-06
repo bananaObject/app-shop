@@ -7,7 +7,16 @@
 
 import Foundation
 
+enum RequestMethod: String {
+    case GET
+    case POST
+}
+
+/// Request addresses.
+/// Contains computed properties with data for the query.
 enum NetworkEndpoint {
+    // MARK: - Case
+
     case registration(RequestUserData)
     case login(RequestLoginData)
     case logout(String)
@@ -15,6 +24,8 @@ enum NetworkEndpoint {
 }
 
 extension NetworkEndpoint: Endpoint {
+    // MARK: - Computed Properties
+
     var baseURL: URLComponents {
         var components = URLComponents()
         components.scheme = "https"

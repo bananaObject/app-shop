@@ -7,18 +7,30 @@
 
 import Foundation
 
+/// Decoder for response data from the network.
 protocol ResponseParserProtocol: AnyObject {
     associatedtype Model: Decodable
 
+    /// Decodes the server response date.
+    /// - Parameter data: Response data.
+    /// - Returns: Associated type model.
     func decode(data: Data) throws -> Model
 
     @available(iOS 13.0.0, *)
+    /// Decodes the server response date.
+    /// Support async / iOS 13.
+    /// - Parameter data: Response data.
+    /// - Returns: Associated type model.
     func decode(data: Data) async throws -> Model
 }
 
 class ResponseParser<T: Decodable>: ResponseParserProtocol {
+    // MARK: - Private Properties
+
     private let decoder = JSONDecoder()
 
+    // MARK: - Public Methods
+    
     func decode(data: Data) throws -> T {
         let json: [String: Any]? = try JSONSerialization.jsonObject(
             with: data,

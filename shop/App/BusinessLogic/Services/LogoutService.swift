@@ -7,12 +7,19 @@
 
 import Foundation
 
+/// Logout service.
 class LogoutService<Parser: ResponseParserProtocol> {
+    // MARK: - Public Properties
+
     var requestData: String?
     var data: Parser.Model?
 
+    // MARK: - Private Properties
+
     private let network: NetworkProtocol
     private let decoder: Parser
+
+    // MARK: - Initialization
 
     init(_ network: NetworkProtocol, _ decoder: Parser) {
         self.network = network
@@ -21,6 +28,10 @@ class LogoutService<Parser: ResponseParserProtocol> {
         requestData = "1234"
     }
 
+    // MARK: - Public Methods
+    
+    /// Fetch async data.
+    /// The decoded models are written to the date property.
     func fetchAsync() {
         guard let requestData = requestData else { return }
 

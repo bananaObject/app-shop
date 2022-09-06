@@ -7,13 +7,19 @@
 
 import Foundation
 
+/// Change user data service.
 class ChangeUserDataService<Parser: ResponseParserProtocol> {
-    var requestData: RequestUserData?
+    // MARK: - Public Properties
 
+    var requestData: RequestUserData?
     var data: Parser.Model?
+
+    // MARK: - Private Properties
 
     private let network: NetworkProtocol
     private let decoder: Parser
+
+    // MARK: - Initialization
 
     init(_ network: NetworkProtocol, _ decoder: Parser) {
         self.network = network
@@ -28,6 +34,10 @@ class ChangeUserDataService<Parser: ResponseParserProtocol> {
                                       bio: "This is good! I think I will switch to another language")
     }
 
+    // MARK: - Public Methods
+
+    /// Fetch async data.
+    /// The decoded models are written to the date property.
     func fetchAsync() {
         guard let requestData = requestData else { return }
 

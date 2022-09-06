@@ -2,15 +2,10 @@
 //  Endpoint.swift
 //  shop
 //
-//  Created by Ke4a on 31.08.2022.
+//  Created by Ke4a on 06.09.2022.
 //
 
 import Foundation
-
-enum RequestMethod: String {
-    case GET
-    case POST
-}
 
 protocol Endpoint {
     var baseURL: URLComponents { get }

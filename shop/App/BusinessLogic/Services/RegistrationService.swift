@@ -7,13 +7,20 @@
 
 import Foundation
 
+/// Registration service.
 class RegistrationService<Parser: ResponseParserProtocol> {
+    // MARK: - Public Properties
+
     var requestData: RequestUserData?
     var data: Parser.Model?
-    
+
+    // MARK: - Private Properties
+
     private let network: NetworkProtocol
     private let decoder: Parser
-    
+
+    // MARK: - Initialization
+
     init(_ network: NetworkProtocol, _ decoder: Parser) {
         self.network = network
         self.decoder = decoder
@@ -26,7 +33,11 @@ class RegistrationService<Parser: ResponseParserProtocol> {
                                       creditCard: "9872389-2424-234224-234",
                                       bio: "This is good! I think I will switch to another language")
     }
+
+    // MARK: - Public Methods
     
+    /// Fetch async data.
+    /// The decoded models are written to the date property.
     func fetchAsync() {
         guard let requestData = requestData else { return }
 
