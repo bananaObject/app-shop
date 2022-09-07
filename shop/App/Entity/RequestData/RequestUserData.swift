@@ -8,7 +8,7 @@
 import Foundation
 
 struct RequestUserData {
-    var id: String = ""
+    var id: Int = 0
     var username: String = ""
     var password: String = ""
     var email: String = ""

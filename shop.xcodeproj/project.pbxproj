@@ -21,6 +21,10 @@
 		F289160628BFADC100288308 /* RequestUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F289160528BFADC100288308 /* RequestUserData.swift */; };
 		F289160D28BFB78500288308 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F289160C28BFB78500288308 /* LoginService.swift */; };
 		F289160F28BFB82300288308 /* ResponseLoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F289160E28BFB82300288308 /* ResponseLoginModel.swift */; };
+		F297190A28C87F4400F05021 /* ResponseCatalogModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297190928C87F4400F05021 /* ResponseCatalogModel.swift */; };
+		F297190C28C8813F00F05021 /* CatalogService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297190B28C8813F00F05021 /* CatalogService.swift */; };
+		F297190E28C89AA500F05021 /* ResponseProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297190D28C89AA500F05021 /* ResponseProductModel.swift */; };
+		F297191028C89D6B00F05021 /* ProductService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297190F28C89D6B00F05021 /* ProductService.swift */; };
 		F2982CA828BB932900D2C53E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2982CA728BB932900D2C53E /* AppDelegate.swift */; };
 		F2982CB228BB932900D2C53E /* shop.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F2982CB028BB932900D2C53E /* shop.xcdatamodeld */; };
 		F2982CB428BB932A00D2C53E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2982CB328BB932A00D2C53E /* Assets.xcassets */; };
@@ -43,6 +47,10 @@
 		F289160528BFADC100288308 /* RequestUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestUserData.swift; sourceTree = "<group>"; };
 		F289160C28BFB78500288308 /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		F289160E28BFB82300288308 /* ResponseLoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseLoginModel.swift; sourceTree = "<group>"; };
+		F297190928C87F4400F05021 /* ResponseCatalogModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseCatalogModel.swift; sourceTree = "<group>"; };
+		F297190B28C8813F00F05021 /* CatalogService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogService.swift; sourceTree = "<group>"; };
+		F297190D28C89AA500F05021 /* ResponseProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseProductModel.swift; sourceTree = "<group>"; };
+		F297190F28C89D6B00F05021 /* ProductService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductService.swift; sourceTree = "<group>"; };
 		F2982CA428BB932900D2C53E /* shop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = shop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2982CA728BB932900D2C53E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F2982CB128BB932900D2C53E /* shop.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = shop.xcdatamodel; sourceTree = "<group>"; };
@@ -183,6 +191,8 @@
 				F28915FA28BF887200288308 /* ResponseRegistrationModel.swift */,
 				F289160E28BFB82300288308 /* ResponseLoginModel.swift */,
 				F259296928C5DFC60075E881 /* ResponseResultModel.swift */,
+				F297190928C87F4400F05021 /* ResponseCatalogModel.swift */,
+				F297190D28C89AA500F05021 /* ResponseProductModel.swift */,
 			);
 			path = NetworkResponse;
 			sourceTree = "<group>";
@@ -198,11 +208,12 @@
 		F28915FF28BFA07200288308 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				F2FC18A728C753F100E4C20B /* Protocol */,
 				F289160028BFA08B00288308 /* RegistrationService.swift */,
 				F289160C28BFB78500288308 /* LoginService.swift */,
 				F259296B28C5E0040075E881 /* LogoutService.swift */,
 				F259297128C5EC720075E881 /* ChangeUserDataService.swift */,
+				F297190B28C8813F00F05021 /* CatalogService.swift */,
+				F297190F28C89D6B00F05021 /* ProductService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -247,13 +258,6 @@
 			isa = PBXGroup;
 			children = (
 				F2FC18A528C7500D00E4C20B /* Endpoint.swift */,
-			);
-			path = Protocol;
-			sourceTree = "<group>";
-		};
-		F2FC18A728C753F100E4C20B /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -354,8 +358,10 @@
 				F289160D28BFB78500288308 /* LoginService.swift in Sources */,
 				F204BB5D28BF61CC00936A62 /* RequestError.swift in Sources */,
 				F259297228C5EC720075E881 /* ChangeUserDataService.swift in Sources */,
+				F297191028C89D6B00F05021 /* ProductService.swift in Sources */,
 				F2982CB228BB932900D2C53E /* shop.xcdatamodeld in Sources */,
 				F259296C28C5E0040075E881 /* LogoutService.swift in Sources */,
+				F297190E28C89AA500F05021 /* ResponseProductModel.swift in Sources */,
 				F259296A28C5DFC60075E881 /* ResponseResultModel.swift in Sources */,
 				F289160328BFA40200288308 /* ServiceFactory.swift in Sources */,
 				F204BB5B28BF4E7400936A62 /* NetworkEndpoint.swift in Sources */,
@@ -363,6 +369,8 @@
 				F28915FB28BF887200288308 /* ResponseRegistrationModel.swift in Sources */,
 				F289160628BFADC100288308 /* RequestUserData.swift in Sources */,
 				F259297028C5EA180075E881 /* RequestLoginData.swift in Sources */,
+				F297190A28C87F4400F05021 /* ResponseCatalogModel.swift in Sources */,
+				F297190C28C8813F00F05021 /* CatalogService.swift in Sources */,
 				F204BB5128BF432400936A62 /* Network.swift in Sources */,
 				F2FC18A628C7500D00E4C20B /* Endpoint.swift in Sources */,
 				F28915F628BF860600288308 /* ResponseParser.swift in Sources */,

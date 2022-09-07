@@ -35,4 +35,16 @@ class ServiceFactory {
         let network: NetworkProtocol = Network()
         return ChangeUserDataService(network, decoder)
     }
+
+    func makeCatalogService() -> CatalogService<ResponseParser<[ResponseCatalogModel]>> {
+        let decoder = ResponseParser<[ResponseCatalogModel]>()
+        let network: NetworkProtocol = Network()
+        return CatalogService(network, decoder)
+    }
+
+    func makeProductService() -> ProductService<ResponseParser<ResponseProductModel>> {
+        let decoder = ResponseParser<ResponseProductModel>()
+        let network: NetworkProtocol = Network()
+        return ProductService(network, decoder)
+    }
 }

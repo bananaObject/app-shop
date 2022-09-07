@@ -11,7 +11,7 @@ import Foundation
 class LogoutService<Parser: ResponseParserProtocol> {
     // MARK: - Public Properties
 
-    var requestData: String?
+    var requestData: Int?
     var data: Parser.Model?
 
     // MARK: - Private Properties
@@ -25,7 +25,7 @@ class LogoutService<Parser: ResponseParserProtocol> {
         self.network = network
         self.decoder = decoder
 
-        requestData = "1234"
+        requestData = 1234
     }
 
     // MARK: - Public Methods

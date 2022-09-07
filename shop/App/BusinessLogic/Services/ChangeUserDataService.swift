@@ -25,7 +25,7 @@ class ChangeUserDataService<Parser: ResponseParserProtocol> {
         self.network = network
         self.decoder = decoder
 
-        requestData = RequestUserData(id: "123",
+        requestData = RequestUserData(id: 123,
                                       username: "Somebody",
                                       password: "mypassword",
                                       email: "some@some.ru",

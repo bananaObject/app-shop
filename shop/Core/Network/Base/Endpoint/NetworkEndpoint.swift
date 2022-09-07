@@ -7,11 +7,6 @@
 
 import Foundation
 
-enum RequestMethod: String {
-    case GET
-    case POST
-}
-
 /// Request addresses.
 /// Contains computed properties with data for the query.
 enum NetworkEndpoint {
@@ -19,8 +14,10 @@ enum NetworkEndpoint {
 
     case registration(RequestUserData)
     case login(RequestLoginData)
-    case logout(String)
-    case changeUserData(RequestUserData)
+    case logout(_ id: Int)
+    case changeUserData(_ userData: RequestUserData)
+    case catalog(_ page: Int, _ category: Int)
+    case product(_ id: Int)
 }
 
 extension NetworkEndpoint: Endpoint {
@@ -45,6 +42,10 @@ extension NetworkEndpoint: Endpoint {
             base += "/logout.json"
         case .changeUserData:
             base += "/changeUserData.json"
+        case .catalog:
+            base += "/catalogData.json"
+        case.product:
+            base += "/getGoodById.json"
         }
 
         return base
@@ -52,7 +53,12 @@ extension NetworkEndpoint: Endpoint {
 
     var method: RequestMethod {
         switch self {
-        case .registration, .login, .logout, .changeUserData:
+        case .registration,
+                .login,
+                .logout,
+                .changeUserData,
+                .catalog,
+                .product:
             return .GET
         }
     }
@@ -63,7 +69,7 @@ extension NetworkEndpoint: Endpoint {
         switch self {
         case .registration(let data),
                 .changeUserData(let data):
-            base.append(.init(name: "id_user", value: data.id))
+            base.append(.init(name: "id_user", value: String(data.id)))
             base.append(.init(name: "username", value: data.username))
             base.append(.init(name: "password", value: data.password))
             base.append(.init(name: "email", value: data.email))
@@ -74,7 +80,12 @@ extension NetworkEndpoint: Endpoint {
             base.append(.init(name: "username", value: data.username))
             base.append(.init(name: "password", value: data.password))
         case  .logout(let data):
-            base.append(.init(name: "id_user", value: data))
+            base.append(.init(name: "id_user", value: String(data)))
+        case .catalog(let page, let category):
+            base.append(.init(name: "page_number", value: String(page)))
+            base.append(.init(name: "id_category", value: String(category)))
+        case .product(let data):
+            base.append(.init(name: "id_product", value: String(data)))
         }
         
         return base

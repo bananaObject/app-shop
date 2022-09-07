@@ -13,3 +13,8 @@ protocol Endpoint {
     var method: RequestMethod { get }
     var params: [URLQueryItem]? { get }
 }
+
+enum RequestMethod: String {
+    case GET
+    case POST
+}
