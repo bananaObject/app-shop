@@ -8,13 +8,12 @@
 import Foundation
 
 /// Catalog service.
-class CatalogService<Parser: ResponseParserProtocol> {
-    // MARK: - Public Properties
-
-    let category: Int
-    var data: Parser.Model?
-
+final class CatalogService<Parser: ResponseParserProtocol> {
     // MARK: - Private Properties
+
+    private(set) var page: Int
+    private(set) var category: Int
+    private(set) var data: Parser.Model?
 
     private let network: NetworkProtocol
     private let decoder: Parser
@@ -25,6 +24,7 @@ class CatalogService<Parser: ResponseParserProtocol> {
         self.network = network
         self.decoder = decoder
 
+        page = 1
         category = 1
     }
     
@@ -32,9 +32,9 @@ class CatalogService<Parser: ResponseParserProtocol> {
 
     /// Fetch async data.
     /// The decoded models are written to the date property.
-    func fetchAsync(_ page: Int) {
+    func fetchAsync() {
         DispatchQueue.global(qos: .background).async {
-            self.network.fetch(.catalog(page, self.category)) {
+            self.network.fetch(.catalog(self.page, self.category)) {
                 // Отключил пока вызывается в appDelegate, так как там не сохраняется
                 // [weak self]
                 result in
@@ -45,7 +45,6 @@ class CatalogService<Parser: ResponseParserProtocol> {
                 case .success(let data):
                     guard let response = try? self.decoder.decode(data: data) else { return }
                     self.data = response
-                    print(self.data)
                 case .failure:
                     break
                 }

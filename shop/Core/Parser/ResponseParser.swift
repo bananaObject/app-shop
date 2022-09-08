@@ -24,7 +24,7 @@ protocol ResponseParserProtocol: AnyObject {
     func decode(data: Data) async throws -> Model
 }
 
-class ResponseParser<T: Decodable>: ResponseParserProtocol {
+final class ResponseParser<T: Decodable>: ResponseParserProtocol {
     // MARK: - Private Properties
 
     private let decoder = JSONDecoder()

@@ -8,13 +8,11 @@
 import Foundation
 
 /// Login service.
-class LoginService<Parser: ResponseParserProtocol> {
-    // MARK: - Public Properties
-
-    var requestData: RequestLoginData?
-    var data: Parser.Model?
-
+final class LoginService<Parser: ResponseParserProtocol> {
     // MARK: - Private Properties
+
+    private(set) var requestData: RequestLoginData?
+    private(set) var data: Parser.Model?
 
     private let network: NetworkProtocol
     private let decoder: Parser
@@ -47,7 +45,6 @@ class LoginService<Parser: ResponseParserProtocol> {
                     do {
                         let response = try self.decoder.decode(data: data)
                         self.data = response
-                        print(self.data)
                     } catch {
                         print(error)
                     }

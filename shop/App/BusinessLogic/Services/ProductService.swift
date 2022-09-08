@@ -8,13 +8,11 @@
 import Foundation
 
 /// Product Service.
-class ProductService<Parser: ResponseParserProtocol> {
-    // MARK: - Public Properties
-
-    let productId: Int
-    var data: Parser.Model?
-
+final class ProductService<Parser: ResponseParserProtocol> {
     // MARK: - Private Properties
+
+    private(set) var productId: Int
+    private(set) var data: Parser.Model?
 
     private let network: NetworkProtocol
     private let decoder: Parser
@@ -45,7 +43,6 @@ class ProductService<Parser: ResponseParserProtocol> {
                 case .success(let data):
                     guard let response = try? self.decoder.decode(data: data) else { return }
                     self.data = response
-                    print(self.data)
                 case .failure:
                     break
                 }

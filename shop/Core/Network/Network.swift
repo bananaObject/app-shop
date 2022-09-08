@@ -26,7 +26,7 @@ protocol NetworkProtocol {
 
 /// Network layer.
 /// Implemented two methods, one with support async/await iOS 13.
-class Network: NetworkProtocol {
+final class Network: NetworkProtocol {
     // MARK: - Private Properties
 
     private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default)

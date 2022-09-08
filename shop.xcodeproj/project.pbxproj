@@ -25,12 +25,31 @@
 		F297190C28C8813F00F05021 /* CatalogService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297190B28C8813F00F05021 /* CatalogService.swift */; };
 		F297190E28C89AA500F05021 /* ResponseProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297190D28C89AA500F05021 /* ResponseProductModel.swift */; };
 		F297191028C89D6B00F05021 /* ProductService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297190F28C89D6B00F05021 /* ProductService.swift */; };
+		F297192528C8AD4B00F05021 /* ResponseParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297192428C8AD4B00F05021 /* ResponseParserTests.swift */; };
+		F297192C28C8AE2400F05021 /* NetworkMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297192B28C8AE2400F05021 /* NetworkMock.swift */; };
+		F297193028C8E99000F05021 /* NetworkEndpoitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297192F28C8E99000F05021 /* NetworkEndpoitTest.swift */; };
+		F297193228C904CF00F05021 /* RegistrationServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297193128C904CF00F05021 /* RegistrationServiceTest.swift */; };
+		F297193528C9254F00F05021 /* LoginServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297193428C9254F00F05021 /* LoginServiceTest.swift */; };
+		F297193728C925D100F05021 /* LogoutServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297193628C925D100F05021 /* LogoutServiceTest.swift */; };
+		F297193928C9279400F05021 /* ChangeUserDataServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297193828C9279400F05021 /* ChangeUserDataServiceTest.swift */; };
+		F297193B28C927F900F05021 /* CatalogServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297193A28C927F900F05021 /* CatalogServiceTest.swift */; };
+		F297193D28C928DE00F05021 /* ProductServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297193C28C928DE00F05021 /* ProductServiceTest.swift */; };
 		F2982CA828BB932900D2C53E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2982CA728BB932900D2C53E /* AppDelegate.swift */; };
 		F2982CB228BB932900D2C53E /* shop.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F2982CB028BB932900D2C53E /* shop.xcdatamodeld */; };
 		F2982CB428BB932A00D2C53E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2982CB328BB932A00D2C53E /* Assets.xcassets */; };
 		F2982CB728BB932A00D2C53E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F2982CB528BB932A00D2C53E /* LaunchScreen.storyboard */; };
 		F2FC18A628C7500D00E4C20B /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2FC18A528C7500D00E4C20B /* Endpoint.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F297192628C8AD4B00F05021 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F2982C9C28BB932900D2C53E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F2982CA328BB932900D2C53E;
+			remoteInfo = shop;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		F204BB5028BF432400936A62 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
@@ -51,6 +70,16 @@
 		F297190B28C8813F00F05021 /* CatalogService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogService.swift; sourceTree = "<group>"; };
 		F297190D28C89AA500F05021 /* ResponseProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseProductModel.swift; sourceTree = "<group>"; };
 		F297190F28C89D6B00F05021 /* ProductService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductService.swift; sourceTree = "<group>"; };
+		F297192228C8AD4B00F05021 /* shopTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = shopTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F297192428C8AD4B00F05021 /* ResponseParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseParserTests.swift; sourceTree = "<group>"; };
+		F297192B28C8AE2400F05021 /* NetworkMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMock.swift; sourceTree = "<group>"; };
+		F297192F28C8E99000F05021 /* NetworkEndpoitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkEndpoitTest.swift; sourceTree = "<group>"; };
+		F297193128C904CF00F05021 /* RegistrationServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationServiceTest.swift; sourceTree = "<group>"; };
+		F297193428C9254F00F05021 /* LoginServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginServiceTest.swift; sourceTree = "<group>"; };
+		F297193628C925D100F05021 /* LogoutServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutServiceTest.swift; sourceTree = "<group>"; };
+		F297193828C9279400F05021 /* ChangeUserDataServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUserDataServiceTest.swift; sourceTree = "<group>"; };
+		F297193A28C927F900F05021 /* CatalogServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogServiceTest.swift; sourceTree = "<group>"; };
+		F297193C28C928DE00F05021 /* ProductServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductServiceTest.swift; sourceTree = "<group>"; };
 		F2982CA428BB932900D2C53E /* shop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = shop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2982CA728BB932900D2C53E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F2982CB128BB932900D2C53E /* shop.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = shop.xcdatamodel; sourceTree = "<group>"; };
@@ -61,6 +90,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		F297191F28C8AD4B00F05021 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F2982CA128BB932900D2C53E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -227,10 +263,35 @@
 			path = RequestData;
 			sourceTree = "<group>";
 		};
+		F297192328C8AD4B00F05021 /* shopTests */ = {
+			isa = PBXGroup;
+			children = (
+				F297193328C906AA00F05021 /* Services */,
+				F297192428C8AD4B00F05021 /* ResponseParserTests.swift */,
+				F297192B28C8AE2400F05021 /* NetworkMock.swift */,
+				F297192F28C8E99000F05021 /* NetworkEndpoitTest.swift */,
+			);
+			path = shopTests;
+			sourceTree = "<group>";
+		};
+		F297193328C906AA00F05021 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				F297193128C904CF00F05021 /* RegistrationServiceTest.swift */,
+				F297193428C9254F00F05021 /* LoginServiceTest.swift */,
+				F297193628C925D100F05021 /* LogoutServiceTest.swift */,
+				F297193828C9279400F05021 /* ChangeUserDataServiceTest.swift */,
+				F297193A28C927F900F05021 /* CatalogServiceTest.swift */,
+				F297193C28C928DE00F05021 /* ProductServiceTest.swift */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
 		F2982C9B28BB932900D2C53E = {
 			isa = PBXGroup;
 			children = (
 				F2982CA628BB932900D2C53E /* shop */,
+				F297192328C8AD4B00F05021 /* shopTests */,
 				F2982CA528BB932900D2C53E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -239,6 +300,7 @@
 			isa = PBXGroup;
 			children = (
 				F2982CA428BB932900D2C53E /* shop.app */,
+				F297192228C8AD4B00F05021 /* shopTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -265,6 +327,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		F297192128C8AD4B00F05021 /* shopTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F297192828C8AD4B00F05021 /* Build configuration list for PBXNativeTarget "shopTests" */;
+			buildPhases = (
+				F297191E28C8AD4B00F05021 /* Sources */,
+				F297191F28C8AD4B00F05021 /* Frameworks */,
+				F297192028C8AD4B00F05021 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F297192728C8AD4B00F05021 /* PBXTargetDependency */,
+			);
+			name = shopTests;
+			productName = shopTests;
+			productReference = F297192228C8AD4B00F05021 /* shopTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		F2982CA328BB932900D2C53E /* shop */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F2982CBB28BB932A00D2C53E /* Build configuration list for PBXNativeTarget "shop" */;
@@ -293,6 +373,10 @@
 				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 1340;
 				TargetAttributes = {
+					F297192128C8AD4B00F05021 = {
+						CreatedOnToolsVersion = 13.4.1;
+						TestTargetID = F2982CA328BB932900D2C53E;
+					};
 					F2982CA328BB932900D2C53E = {
 						CreatedOnToolsVersion = 13.4.1;
 					};
@@ -312,11 +396,19 @@
 			projectRoot = "";
 			targets = (
 				F2982CA328BB932900D2C53E /* shop */,
+				F297192128C8AD4B00F05021 /* shopTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F297192028C8AD4B00F05021 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F2982CA228BB932900D2C53E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -349,6 +441,22 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		F297191E28C8AD4B00F05021 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F297192528C8AD4B00F05021 /* ResponseParserTests.swift in Sources */,
+				F297193D28C928DE00F05021 /* ProductServiceTest.swift in Sources */,
+				F297193228C904CF00F05021 /* RegistrationServiceTest.swift in Sources */,
+				F297193528C9254F00F05021 /* LoginServiceTest.swift in Sources */,
+				F297193728C925D100F05021 /* LogoutServiceTest.swift in Sources */,
+				F297192C28C8AE2400F05021 /* NetworkMock.swift in Sources */,
+				F297193928C9279400F05021 /* ChangeUserDataServiceTest.swift in Sources */,
+				F297193028C8E99000F05021 /* NetworkEndpoitTest.swift in Sources */,
+				F297193B28C927F900F05021 /* CatalogServiceTest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F2982CA028BB932900D2C53E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -379,6 +487,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		F297192728C8AD4B00F05021 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F2982CA328BB932900D2C53E /* shop */;
+			targetProxy = F297192628C8AD4B00F05021 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		F2982CB528BB932A00D2C53E /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -391,6 +507,44 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		F297192928C8AD4B00F05021 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 97UL48L835;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kermit.the.frog.shopTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/shop.app/shop";
+			};
+			name = Debug;
+		};
+		F297192A28C8AD4B00F05021 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 97UL48L835;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kermit.the.frog.shopTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/shop.app/shop";
+			};
+			name = Release;
+		};
 		F2982CB928BB932A00D2C53E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -562,6 +716,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F297192828C8AD4B00F05021 /* Build configuration list for PBXNativeTarget "shopTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F297192928C8AD4B00F05021 /* Debug */,
+				F297192A28C8AD4B00F05021 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F2982C9F28BB932900D2C53E /* Build configuration list for PBXProject "shop" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

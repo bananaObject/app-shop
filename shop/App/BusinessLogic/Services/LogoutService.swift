@@ -8,13 +8,11 @@
 import Foundation
 
 /// Logout service.
-class LogoutService<Parser: ResponseParserProtocol> {
-    // MARK: - Public Properties
-
-    var requestData: Int?
-    var data: Parser.Model?
-
+final class LogoutService<Parser: ResponseParserProtocol> {
     // MARK: - Private Properties
+
+    private(set) var requestData: Int?
+    private(set) var data: Parser.Model?
 
     private let network: NetworkProtocol
     private let decoder: Parser
@@ -48,7 +46,6 @@ class LogoutService<Parser: ResponseParserProtocol> {
                     do {
                         let response = try self.decoder.decode(data: data)
                         self.data = response
-                        print(self.data)
                     } catch {
                         print(error)
                     }

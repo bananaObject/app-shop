@@ -8,13 +8,11 @@
 import Foundation
 
 /// Registration service.
-class RegistrationService<Parser: ResponseParserProtocol> {
-    // MARK: - Public Properties
-
-    var requestData: RequestUserData?
-    var data: Parser.Model?
-
+final class RegistrationService<Parser: ResponseParserProtocol> {
     // MARK: - Private Properties
+    
+    private(set) var requestData: RequestUserData?
+    private(set) var data: Parser.Model?
 
     private let network: NetworkProtocol
     private let decoder: Parser
@@ -53,7 +51,6 @@ class RegistrationService<Parser: ResponseParserProtocol> {
                 case .success(let data):
                     guard let response = try? self.decoder.decode(data: data) else { return }
                     self.data = response
-                    print(self.data)
                 case .failure:
                     break
                 }
