@@ -7,12 +7,17 @@
 
 import Foundation
 
-class LoginService<Parser: ResponseParserProtocol> {
-    var requestData: RequestLoginData?
-    var data: Parser.Model?
+/// Login service.
+final class LoginService<Parser: ResponseParserProtocol> {
+    // MARK: - Private Properties
+
+    private(set) var requestData: RequestLoginData?
+    private(set) var data: Parser.Model?
 
     private let network: NetworkProtocol
     private let decoder: Parser
+
+    // MARK: - Initialization
 
     init(_ network: NetworkProtocol, _ decoder: Parser) {
         self.network = network
@@ -21,6 +26,10 @@ class LoginService<Parser: ResponseParserProtocol> {
         requestData = RequestLoginData(username: "Somebody", password: "mypassword")
     }
 
+    // MARK: - Public Methods
+    
+    /// Fetch async data.
+    /// The decoded models are written to the date property.
     func fetchAsync() {
         guard let requestData = requestData else { return }
         DispatchQueue.global(qos: .background).async {
@@ -36,7 +45,6 @@ class LoginService<Parser: ResponseParserProtocol> {
                     do {
                         let response = try self.decoder.decode(data: data)
                         self.data = response
-                        print(self.data)
                     } catch {
                         print(error)
                     }

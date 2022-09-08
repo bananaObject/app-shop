@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         // Override point for customization after application launch.
         let factory = ServiceFactory()
-        let registration = factory.makeChangUserDataService()
+        let registration = factory.makeProductService()
         registration.fetchAsync()
         
         return true

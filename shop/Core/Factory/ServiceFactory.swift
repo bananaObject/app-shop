@@ -7,7 +7,10 @@
 
 import Foundation
 
-class ServiceFactory {
+/// Services factory.
+final class ServiceFactory {
+    // MARK: - Public Methods
+    
     func makeRegistrationService() -> RegistrationService<ResponseParser<ResponseRegistrationModel>> {
         let decoder = ResponseParser<ResponseRegistrationModel>()
         let network: NetworkProtocol = Network()
@@ -31,5 +34,17 @@ class ServiceFactory {
         let decoder = ResponseParser<ResponseResultModel>()
         let network: NetworkProtocol = Network()
         return ChangeUserDataService(network, decoder)
+    }
+
+    func makeCatalogService() -> CatalogService<ResponseParser<[ResponseCatalogModel]>> {
+        let decoder = ResponseParser<[ResponseCatalogModel]>()
+        let network: NetworkProtocol = Network()
+        return CatalogService(network, decoder)
+    }
+
+    func makeProductService() -> ProductService<ResponseParser<ResponseProductModel>> {
+        let decoder = ResponseParser<ResponseProductModel>()
+        let network: NetworkProtocol = Network()
+        return ProductService(network, decoder)
     }
 }

@@ -1,40 +1,38 @@
 //
-//  LogoutService.swift
+//  ProductService.swift
 //  shop
 //
-//  Created by Ke4a on 05.09.2022.
+//  Created by Ke4a on 07.09.2022.
 //
 
 import Foundation
 
-/// Logout service.
-final class LogoutService<Parser: ResponseParserProtocol> {
+/// Product Service.
+final class ProductService<Parser: ResponseParserProtocol> {
     // MARK: - Private Properties
 
-    private(set) var requestData: Int?
+    private(set) var productId: Int
     private(set) var data: Parser.Model?
 
     private let network: NetworkProtocol
     private let decoder: Parser
 
     // MARK: - Initialization
-
+    
     init(_ network: NetworkProtocol, _ decoder: Parser) {
         self.network = network
         self.decoder = decoder
 
-        requestData = 1234
+        self.productId = 123
     }
 
     // MARK: - Public Methods
-    
+
     /// Fetch async data.
     /// The decoded models are written to the date property.
     func fetchAsync() {
-        guard let requestData = requestData else { return }
-
         DispatchQueue.global(qos: .background).async {
-            self.network.fetch(.logout(requestData)) {
+            self.network.fetch(.product(123)) {
                 // Отключил пока вызывается в appDelegate, так как там не сохраняется
                 // [weak self]
                 result in
@@ -43,13 +41,8 @@ final class LogoutService<Parser: ResponseParserProtocol> {
 
                 switch result {
                 case .success(let data):
-                    do {
-                        let response = try self.decoder.decode(data: data)
-                        self.data = response
-                    } catch {
-                        print(error)
-                    }
-
+                    guard let response = try? self.decoder.decode(data: data) else { return }
+                    self.data = response
                 case .failure:
                     break
                 }

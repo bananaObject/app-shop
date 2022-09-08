@@ -7,7 +7,10 @@
 
 import Foundation
 
+/// Network Error.
 enum RequestError: Error {
+    // MARK: - Cases
+    
     case decode
     case invalidURL
     case noResponse
@@ -15,6 +18,9 @@ enum RequestError: Error {
     case unexpectedStatusCode
     case unknown
 
+    // MARK: - Computed Properties
+
+    /// Custom messages.
     var customMessage: String {
         switch self {
         case .decode:

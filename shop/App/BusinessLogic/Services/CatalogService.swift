@@ -1,40 +1,40 @@
 //
-//  LogoutService.swift
+//  CatalogService.swift
 //  shop
 //
-//  Created by Ke4a on 05.09.2022.
+//  Created by Ke4a on 07.09.2022.
 //
 
 import Foundation
 
-/// Logout service.
-final class LogoutService<Parser: ResponseParserProtocol> {
+/// Catalog service.
+final class CatalogService<Parser: ResponseParserProtocol> {
     // MARK: - Private Properties
 
-    private(set) var requestData: Int?
+    private(set) var page: Int
+    private(set) var category: Int
     private(set) var data: Parser.Model?
 
     private let network: NetworkProtocol
     private let decoder: Parser
 
     // MARK: - Initialization
-
+    
     init(_ network: NetworkProtocol, _ decoder: Parser) {
         self.network = network
         self.decoder = decoder
 
-        requestData = 1234
+        page = 1
+        category = 1
     }
-
-    // MARK: - Public Methods
     
+    // MARK: - Public Methods
+
     /// Fetch async data.
     /// The decoded models are written to the date property.
     func fetchAsync() {
-        guard let requestData = requestData else { return }
-
         DispatchQueue.global(qos: .background).async {
-            self.network.fetch(.logout(requestData)) {
+            self.network.fetch(.catalog(self.page, self.category)) {
                 // Отключил пока вызывается в appDelegate, так как там не сохраняется
                 // [weak self]
                 result in
@@ -43,13 +43,8 @@ final class LogoutService<Parser: ResponseParserProtocol> {
 
                 switch result {
                 case .success(let data):
-                    do {
-                        let response = try self.decoder.decode(data: data)
-                        self.data = response
-                    } catch {
-                        print(error)
-                    }
-
+                    guard let response = try? self.decoder.decode(data: data) else { return }
+                    self.data = response
                 case .failure:
                     break
                 }
