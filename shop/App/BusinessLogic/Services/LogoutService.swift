@@ -8,10 +8,10 @@
 import Foundation
 
 /// Logout service.
-final class LogoutService<Parser: ResponseParserProtocol> {
+final class LogoutService<Parser: DecoderResponseProtocol> {
     // MARK: - Private Properties
 
-    private(set) var requestData: Int?
+    private(set) var token: String?
     private(set) var data: Parser.Model?
 
     private let network: NetworkProtocol
@@ -23,7 +23,7 @@ final class LogoutService<Parser: ResponseParserProtocol> {
         self.network = network
         self.decoder = decoder
 
-        requestData = 1234
+        token = "905ef89d-25a4-4255-902f-fafd4f6a9774"
     }
 
     // MARK: - Public Methods
@@ -31,27 +31,31 @@ final class LogoutService<Parser: ResponseParserProtocol> {
     /// Fetch async data.
     /// The decoded models are written to the date property.
     func fetchAsync() {
-        guard let requestData = requestData else { return }
+        guard let token = token else { return }
 
         DispatchQueue.global(qos: .background).async {
-            self.network.fetch(.logout(requestData)) {
+            self.network.fetch(.logout(token)) {
                 // Отключил пока вызывается в appDelegate, так как там не сохраняется
                 // [weak self]
                 result in
 
                 // guard let self = self else { return }
-
-                switch result {
-                case .success(let data):
-                    do {
+                do {
+                    switch result {
+                    case .success(let data):
                         let response = try self.decoder.decode(data: data)
                         self.data = response
-                    } catch {
-                        print(error)
+                    case .failure(let error):
+                        switch error {
+                        case .clientError(let status, let data):
+                            let decodeError = try self.decoder.decodeError(data: data)
+                            print("status: \(status) \n\(decodeError)")
+                        default:
+                            throw error
+                        }
                     }
-
-                case .failure:
-                    break
+                } catch {
+                    print(error)
                 }
             }
         }

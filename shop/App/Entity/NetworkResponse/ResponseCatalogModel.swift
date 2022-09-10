@@ -8,13 +8,13 @@
 import Foundation
 
 struct ResponseCatalogModel: Decodable {
-    let idProduct: Int
-    let productName: String
-    let price: Int
+    let pageNumber: Int
+    let maxPage: Int
+    let products: [ResponseProductModel]
 
     enum CodingKeys: String, CodingKey {
-        case idProduct = "id_product"
-        case productName = "product_name"
-        case price
+        case pageNumber = "page_number"
+        case maxPage = "max_page"
+        case products
     }
 }

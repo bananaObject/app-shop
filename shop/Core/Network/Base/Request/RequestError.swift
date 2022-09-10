@@ -16,6 +16,7 @@ enum RequestError: Error {
     case noResponse
     case parseError
     case unexpectedStatusCode
+    case clientError(_ status: Int, _ data: Data)
     case unknown
 
     // MARK: - Computed Properties

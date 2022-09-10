@@ -12,6 +12,7 @@ protocol Endpoint {
     var path: String { get }
     var method: RequestMethod { get }
     var params: [URLQueryItem]? { get }
+    var body: Data? { get }
 }
 
 enum RequestMethod: String {

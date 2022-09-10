@@ -11,55 +11,51 @@ import Foundation
 /// Contains computed properties with data for the query.
 enum NetworkEndpoint {
     // MARK: - Case
-
-    case registration(RequestUserData)
-    case login(RequestLoginData)
-    case logout(_ id: Int)
-    case changeUserData(_ userData: RequestUserData)
-    case catalog(_ page: Int, _ category: Int)
+    
+    case login(_ loginPass: RequestLogin)
+    case logout(_ token: String)
+    case registration(_ info: RequestUserInfo)
+    case changeUserData(_ userData: RequestUserInfo)
+    case catalog(_ page: Int, _ category: Int?)
     case product(_ id: Int)
 }
 
 extension NetworkEndpoint: Endpoint {
     // MARK: - Computed Properties
-
+    
     var baseURL: URLComponents {
         var components = URLComponents()
         components.scheme = "https"
-        components.host = "raw.githubusercontent.com"
+        components.host = "toxic-frog-company.herokuapp.com"
         return components
     }
-
     var path: String {
-        var base = "/GeekBrainsTutorial/online-store-api/master/responses"
-
         switch self {
-        case .registration:
-            base += "/registerUser.json"
         case .login:
-            base += "/login.json"
+            return "/auth/login"
         case .logout:
-            base += "/logout.json"
+            return "/auth/logout"
+        case .registration:
+            return "/user/registration"
         case .changeUserData:
-            base += "/changeUserData.json"
+            return "/user/changeInfo"
         case .catalog:
-            base += "/catalogData.json"
-        case.product:
-            base += "/getGoodById.json"
+            return "/catalog"
+        case.product(let id):
+            return"/catalog/product/\(id)"
         }
-
-        return base
     }
 
     var method: RequestMethod {
         switch self {
-        case .registration,
-                .login,
-                .logout,
-                .changeUserData,
-                .catalog,
+        case .catalog,
                 .product:
             return .GET
+        case .login,
+                .logout,
+                .registration,
+                .changeUserData:
+            return .POST
         }
     }
 
@@ -67,27 +63,50 @@ extension NetworkEndpoint: Endpoint {
         var base: [URLQueryItem] = []
 
         switch self {
-        case .registration(let data),
-                .changeUserData(let data):
-            base.append(.init(name: "id_user", value: String(data.id)))
-            base.append(.init(name: "username", value: data.username))
-            base.append(.init(name: "password", value: data.password))
-            base.append(.init(name: "email", value: data.email))
-            base.append(.init(name: "gender", value: data.gender))
-            base.append(.init(name: "credit_card", value: data.creditCard))
-            base.append(.init(name: "bio", value: data.bio))
-        case .login(let data):
-            base.append(.init(name: "username", value: data.username))
-            base.append(.init(name: "password", value: data.password))
-        case  .logout(let data):
-            base.append(.init(name: "id_user", value: String(data)))
         case .catalog(let page, let category):
             base.append(.init(name: "page_number", value: String(page)))
-            base.append(.init(name: "id_category", value: String(category)))
-        case .product(let data):
-            base.append(.init(name: "id_product", value: String(data)))
+            if let category = category {
+                base.append(.init(name: "id_category", value: String(category)))
+            }
+        case .login,
+                .logout,
+                .registration,
+                .changeUserData,
+                .product:
+            return nil
         }
-        
+
         return base
+    }
+
+    var body: Data? {
+        var base: [String: Any] = [:]
+
+        switch self {
+        case .login(let data):
+            base["login"] = data.login
+            base["password"] = data.password
+        case .logout(let token):
+            base["auth_token"] = token
+        case .registration(let data),
+                .changeUserData(let data):
+            base["login"] = data.login
+            base["password"] = data.password
+            base["firstname"] = data.firstname
+            base["lastname"] = data.lastname
+            base["email"] = data.email
+            base["gender"] = data.gender
+            base["credit_card"] = data.creditCard
+            base["bio"] = data.bio
+        case .catalog,
+                .product:
+            return nil
+        }
+
+        do {
+            return try JSONSerialization.data(withJSONObject: base, options: .sortedKeys)
+        } catch {
+            return nil
+        }
     }
 }
