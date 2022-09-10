@@ -9,13 +9,13 @@
 import XCTest
 
 class CatalogServiceTest: XCTestCase {
-    typealias Model = [ResponseCatalogModel]
+    typealias Model = ResponseCatalogModel
 
     // MARK: - Properties
 
     var network: NetworkMock!
-    var parser: ResponseParser<Model>!
-    var service: CatalogService<ResponseParser<Model>>!
+    var parser: DecoderResponse<Model>!
+    var service: CatalogService<DecoderResponse<Model>>!
 
     // MARK: - Initialization
 
@@ -60,6 +60,6 @@ class CatalogServiceTest: XCTestCase {
 
         waitForExpectations(timeout: 1)
         XCTAssertNotNil(lastFetch)
-        XCTAssertNotEqual(lastFetch?.count, service.data?.count)
+        XCTAssertNotEqual(lastFetch?.products.count, service.data?.products.count)
     }
 }

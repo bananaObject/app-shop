@@ -14,8 +14,8 @@ class LoginServiceTest: XCTestCase {
     // MARK: - Properties
 
     var network: NetworkMock!
-    var parser: ResponseParser<Model>!
-    var service: LoginService<ResponseParser<Model>>!
+    var parser: DecoderResponse<Model>!
+    var service: LoginService<DecoderResponse<Model>>!
 
     // MARK: - Initialization
 
@@ -62,6 +62,6 @@ class LoginServiceTest: XCTestCase {
 
         waitForExpectations(timeout: 1)
         XCTAssertNotNil(lastFetch)
-        XCTAssertNotEqual(lastFetch?.result, service.data?.result)
+        XCTAssertNotEqual(lastFetch?.authToken, service.data?.authToken)
     }
 }
