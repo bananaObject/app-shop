@@ -10,40 +10,40 @@ import Foundation
 /// Services factory.
 final class ServiceFactory {
     // MARK: - Public Methods
-    
-    func makeRegistrationService() -> RegistrationService<ResponseParser<ResponseRegistrationModel>> {
-        let decoder = ResponseParser<ResponseRegistrationModel>()
-        let network: NetworkProtocol = Network()
-        return RegistrationService(network, decoder)
-    }
 
-    func makeLoginService() -> LoginService<ResponseParser<ResponseLoginModel>> {
-        let decoder = ResponseParser<ResponseLoginModel>()
+    func makeLoginService() -> LoginService<DecoderResponse<ResponseLoginModel>> {
+        let decoder = DecoderResponse<ResponseLoginModel>()
         let network: NetworkProtocol = Network()
         return LoginService(network, decoder)
     }
 
-    func makeLogoutService() -> LogoutService<ResponseParser<ResponseResultModel>> {
-        let decoder = ResponseParser<ResponseResultModel>()
+    func makeLogoutService() -> LogoutService<DecoderResponse<ResponseMessageModel>> {
+        let decoder = DecoderResponse<ResponseMessageModel>()
         let network: NetworkProtocol = Network()
         return LogoutService(network, decoder)
     }
-
-    func makeChangUserDataService()
-    -> ChangeUserDataService<ResponseParser<ResponseResultModel>> {
-        let decoder = ResponseParser<ResponseResultModel>()
+    
+    func makeRegistrationService() -> RegistrationService<DecoderResponse<ResponseMessageModel>> {
+        let decoder = DecoderResponse<ResponseMessageModel>()
         let network: NetworkProtocol = Network()
-        return ChangeUserDataService(network, decoder)
+        return RegistrationService(network, decoder)
     }
 
-    func makeCatalogService() -> CatalogService<ResponseParser<[ResponseCatalogModel]>> {
-        let decoder = ResponseParser<[ResponseCatalogModel]>()
+    func makeChangUserInfoService()
+    -> ChangeUserInfoService<DecoderResponse<ResponseMessageModel>> {
+        let decoder = DecoderResponse<ResponseMessageModel>()
+        let network: NetworkProtocol = Network()
+        return ChangeUserInfoService(network, decoder)
+    }
+
+    func makeCatalogService() -> CatalogService<DecoderResponse<ResponseCatalogModel>> {
+        let decoder = DecoderResponse<ResponseCatalogModel>()
         let network: NetworkProtocol = Network()
         return CatalogService(network, decoder)
     }
 
-    func makeProductService() -> ProductService<ResponseParser<ResponseProductModel>> {
-        let decoder = ResponseParser<ResponseProductModel>()
+    func makeProductService() -> ProductService<DecoderResponse<ResponseProductModel>> {
+        let decoder = DecoderResponse<ResponseProductModel>()
         let network: NetworkProtocol = Network()
         return ProductService(network, decoder)
     }

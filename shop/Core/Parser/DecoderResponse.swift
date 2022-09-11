@@ -1,5 +1,5 @@
 //
-//  ResponseParser.swift
+//  DecoderResponse.swift
 //  shop
 //
 //  Created by Ke4a on 31.08.2022.
@@ -8,7 +8,7 @@
 import Foundation
 
 /// Decoder for response data from the network.
-protocol ResponseParserProtocol: AnyObject {
+protocol DecoderResponseProtocol: AnyObject {
     associatedtype Model: Decodable
 
     /// Decodes the server response date.
@@ -22,9 +22,11 @@ protocol ResponseParserProtocol: AnyObject {
     /// - Parameter data: Response data.
     /// - Returns: Associated type model.
     func decode(data: Data) async throws -> Model
+
+    func decodeError(data: Data) throws -> ResponseErrorModel
 }
 
-final class ResponseParser<T: Decodable>: ResponseParserProtocol {
+final class DecoderResponse<T: Decodable>: DecoderResponseProtocol {
     // MARK: - Private Properties
 
     private let decoder = JSONDecoder()
@@ -42,5 +44,9 @@ final class ResponseParser<T: Decodable>: ResponseParserProtocol {
         }
 
         return try await itemTask.value
+    }
+
+    func decodeError(data: Data) throws -> ResponseErrorModel {
+        return try decoder.decode(ResponseErrorModel.self, from: data)
     }
 }

@@ -7,16 +7,18 @@
 
 import Foundation
 
-struct  ResponseProductModel: Decodable {
-    let result: Int
-    let productName: String
-    let productPrice: Int
-    let productDescription: String
+struct ResponseProductModel: Decodable {
+    let id: Int
+    let category: Int
+    let name: String
+    let price: Int
+    let description: String
 
     enum CodingKeys: String, CodingKey {
-        case result
-        case productName = "product_name"
-        case productPrice = "product_price"
-        case productDescription = "product_description"
+        case id
+        case category
+        case name
+        case price
+        case description
     }
 }

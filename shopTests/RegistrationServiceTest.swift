@@ -9,13 +9,13 @@
 import XCTest
 
 class RegistrationServiceTest: XCTestCase {
-    typealias Model = ResponseRegistrationModel
+    typealias Model = ResponseMessageModel
 
     // MARK: - Properties
 
     var network: NetworkMock!
-    var parser: ResponseParser<Model>!
-    var service: RegistrationService<ResponseParser<Model>>!
+    var parser: DecoderResponse<Model>!
+    var service: RegistrationService<DecoderResponse<Model>>!
 
     // MARK: - Initialization
 
@@ -62,6 +62,6 @@ class RegistrationServiceTest: XCTestCase {
 
         waitForExpectations(timeout: 1)
         XCTAssertNotNil(lastFetch)
-        XCTAssertNotEqual(lastFetch?.result, service.data?.result)
+        XCTAssertNotEqual(lastFetch?.message, service.data?.message)
     }
 }

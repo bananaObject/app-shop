@@ -8,10 +8,10 @@
 import Foundation
 
 /// Registration service.
-final class RegistrationService<Parser: ResponseParserProtocol> {
+final class RegistrationService<Parser: DecoderResponseProtocol> {
     // MARK: - Private Properties
     
-    private(set) var requestData: RequestUserData?
+    private(set) var userInfo: RequestUserInfo?
     private(set) var data: Parser.Model?
 
     private let network: NetworkProtocol
@@ -23,13 +23,14 @@ final class RegistrationService<Parser: ResponseParserProtocol> {
         self.network = network
         self.decoder = decoder
         
-        requestData = RequestUserData(id: 123,
-                                      username: "Somebody",
-                                      password: "mypassword",
-                                      email: "some@some.ru",
-                                      gender: "m",
-                                      creditCard: "9872389-2424-234224-234",
-                                      bio: "This is good! I think I will switch to another language")
+        userInfo = RequestUserInfo(login: "Somebody",
+                                   password: "mypassword",
+                                   firstname: "Spider" ,
+                                   lastname: "Man" ,
+                                   email: "some@some.ru",
+                                   gender: "m",
+                                   creditCard: "9872389-2424-234224-234",
+                                   bio: "This is good! I think I will switch to another language")
     }
 
     // MARK: - Public Methods
@@ -37,22 +38,32 @@ final class RegistrationService<Parser: ResponseParserProtocol> {
     /// Fetch async data.
     /// The decoded models are written to the date property.
     func fetchAsync() {
-        guard let requestData = requestData else { return }
+        guard let userInfo = userInfo else { return }
 
         DispatchQueue.global(qos: .background).async {
-            self.network.fetch(.registration(requestData)) {
+            self.network.fetch(.registration(userInfo)) {
                 // Отключил пока вызывается в appDelegate, так как там не сохраняется
                 // [weak self]
                 result in
                 
                 // guard let self = self else { return }
-                
-                switch result {
-                case .success(let data):
-                    guard let response = try? self.decoder.decode(data: data) else { return }
-                    self.data = response
-                case .failure:
-                    break
+
+                do {
+                    switch result {
+                    case .success(let data):
+                        let response = try self.decoder.decode(data: data)
+                        self.data = response
+                    case .failure(let error):
+                        switch error {
+                        case .clientError(let status, let data):
+                            let decodeError = try self.decoder.decodeError(data: data)
+                            print("status: \(status) \n\(decodeError)")
+                        default:
+                            throw error
+                        }
+                    }
+                } catch {
+                    print(error)
                 }
             }
         }

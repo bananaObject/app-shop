@@ -37,7 +37,10 @@ final class Network: NetworkProtocol {
         // Getting data from Enum.
         var urlComponents: URLComponents = endpoint.baseURL
         urlComponents.path = endpoint.path
-        urlComponents.queryItems = endpoint.params
+
+        if let params = endpoint.params {
+            urlComponents.queryItems = params
+        }
 
         guard let url: URL = urlComponents.url else {
             completion(.failure(.invalidURL))
@@ -46,6 +49,11 @@ final class Network: NetworkProtocol {
 
         var request = URLRequest(url: url)
         request.httpMethod = endpoint.method.rawValue
+
+        if let body = endpoint.body {
+            request.httpBody = body
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
 
         urlSession.dataTask(with: request) { data, response, _ in
             guard let response = response as? HTTPURLResponse else {
@@ -59,6 +67,12 @@ final class Network: NetworkProtocol {
                     return
                 }
                 completion(.success(data))
+            case 400...499:
+                guard let data = data else {
+                    return
+                }
+                
+                completion(.failure(.clientError(response.statusCode, data)))
             default:
                 completion(.failure(.unexpectedStatusCode))
             }
@@ -70,7 +84,9 @@ final class Network: NetworkProtocol {
         return try await withCheckedThrowingContinuation { continuation in
             var urlComponents: URLComponents = endpoint.baseURL
             urlComponents.path = endpoint.path
-            urlComponents.queryItems = endpoint.params
+            if let params = endpoint.params {
+                urlComponents.queryItems = params
+            }
 
             guard let url: URL = urlComponents.url else {
                 continuation.resume(throwing: RequestError.invalidURL)
@@ -79,6 +95,11 @@ final class Network: NetworkProtocol {
 
             var request = URLRequest(url: url)
             request.httpMethod = endpoint.method.rawValue
+
+            if let body = endpoint.body {
+                request.httpBody = body
+                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            }
 
             urlSession.dataTask(with: request) { data, response, _ in
                 guard let response = response as? HTTPURLResponse else {

@@ -8,10 +8,10 @@
 import Foundation
 
 /// Login service.
-final class LoginService<Parser: ResponseParserProtocol> {
+final class LoginService<Parser: DecoderResponseProtocol> {
     // MARK: - Private Properties
 
-    private(set) var requestData: RequestLoginData?
+    private(set) var loginPass: RequestLogin?
     private(set) var data: Parser.Model?
 
     private let network: NetworkProtocol
@@ -23,7 +23,7 @@ final class LoginService<Parser: ResponseParserProtocol> {
         self.network = network
         self.decoder = decoder
         
-        requestData = RequestLoginData(username: "Somebody", password: "mypassword")
+        loginPass = RequestLogin(login: "admin", password: "admin")
     }
 
     // MARK: - Public Methods
@@ -31,26 +31,31 @@ final class LoginService<Parser: ResponseParserProtocol> {
     /// Fetch async data.
     /// The decoded models are written to the date property.
     func fetchAsync() {
-        guard let requestData = requestData else { return }
+        guard let loginPass = loginPass else { return }
         DispatchQueue.global(qos: .background).async {
-            self.network.fetch(.login(requestData)) {
+            self.network.fetch(.login(loginPass)) {
                 // Отключил пока вызывается в appDelegate, так как там не сохраняется
                 // [weak self]
                 result in
 
                 // guard let self = self else { return }
-                
-                switch result {
-                case .success(let data):
-                    do {
+                do {
+                    switch result {
+                    case .success(let data):
                         let response = try self.decoder.decode(data: data)
                         self.data = response
-                    } catch {
-                        print(error)
+                        
+                    case .failure(let error):
+                        switch error {
+                        case .clientError(let status, let data):
+                            let decodeError = try self.decoder.decodeError(data: data)
+                            print("status: \(status) \n\(decodeError)")
+                        default:
+                            throw error
+                        }
                     }
-
-                case .failure:
-                    break
+                } catch {
+                    print(error)
                 }
             }
         }

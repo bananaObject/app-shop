@@ -14,8 +14,8 @@ class ProductServiceTest: XCTestCase {
     // MARK: - Properties
 
     var network: NetworkMock!
-    var parser: ResponseParser<Model>!
-    var service: ProductService<ResponseParser<Model>>!
+    var parser: DecoderResponse<Model>!
+    var service: ProductService<DecoderResponse<Model>>!
 
     // MARK: - Initialization
 
@@ -62,6 +62,6 @@ class ProductServiceTest: XCTestCase {
 
         waitForExpectations(timeout: 1)
         XCTAssertNotNil(lastFetch)
-        XCTAssertNotEqual(lastFetch?.result, service.data?.result)
+        XCTAssertNotEqual(lastFetch?.id, service.data?.id)
     }
 }

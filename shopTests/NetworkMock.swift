@@ -10,13 +10,14 @@ import Foundation
 
 /// Network layer simulation.
 class NetworkMock: NetworkProtocol {
+    private let jsonEncoder = JSONEncoder()
     // MARK: - Properties
 
     /// Сlosure request completion.
     var completionRequest: (() -> Void)?
 
     /// Repeated request will give a new info.
-    var firstTime = true
+    private var firstTime = true
 
     // MARK: - Methods
 
@@ -29,37 +30,66 @@ class NetworkMock: NetworkProtocol {
 
         switch endpoint {
         case .registration:
+            let word = firstTime ?  "Регистрация прошла успешно!" : "Succes"
 
             json = """
-                          {"result": \(firstTime ? 1 : 0), "userMessage": "Регистрация прошла успешно!"}
+                          { "message": "\(word)" }
                         """
         case .login:
+            let word = firstTime ?  "905ef89d-25a4-4255-902f-fafd4f6a9774" : "905ef89d-25a4d4f6a9774"
+
             json = """
-                         { "result": \(firstTime ? 1 : 0),
-                           "user": {
-                             "id_user": 123, "user_login": "geekbrains", "user_name": "John",
-                             "user_lastname": "Doe"
-                           },
-                           "authToken": "some_authorizaion_token" }
+                         { "auth_token": "\(word)",
+                             "user": {
+                                 "lastname": "Frog",
+                                 "firstname": "Toxic",
+                                 "login": "admin",
+                                 "id": 0 }}
                         """
-        case .logout, .changeUserData:
+        case .logout:
+            let word = firstTime ?  "Вы успешно вышли из приложения" : "Succes"
+
             json = """
-                        {"result": \(firstTime ? 1 : 0) }
+                        { "message": "\(word)" }
+                        """
+        case  .changeUserData:
+            let word = firstTime ?  "Данные изменены!" : "Succes"
+
+            json = """
+                        { "message": "\(word)" }
                         """
         case .catalog:
-            json = firstTime ?
-                        """
-                         [ { "id_product": 123, "product_name": "Ноутбук", "price": 45600 },
-                           { "id_product": 456, "product_name": "Мышка", "price": 1000 } ]
-                        """
-            :
-                        """
-                         []
+            let array = firstTime ? """
+            [ {
+                    "id": 48,
+                    "description": "Мощный товар 48",
+                    "category": 1,
+                    "name": "Товар 48",
+                    "price": 18357
+                },
+                {
+                    "id": 50,
+                    "description": "Мощный товар 50",
+                    "category": 1,
+                    "name": "Товар 50",
+                    "price": 99241
+                }]
+            """
+            : "[]"
+            json = """
+                        { "products": \(array),
+                            "max_page": 1,
+                            "page_number": 1 }
                         """
         case .product:
+            let word = firstTime ?  "1" : "2"
+
             json = """
-                         { "result": \(firstTime ? 1 : 0), "product_name": "Ноутбук",
-                           "product_price": 45600,  "product_description": "Мощный игровой ноутбук" }
+                         { "id": \(word),
+                             "description": "Мощный товар 1",
+                             "category": 2,
+                             "name": "Товар 1",
+                             "price": 6283 }
                         """
         }
 

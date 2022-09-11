@@ -33,7 +33,7 @@ class NetworkEndpoitTest: XCTestCase {
     func testRegistrationEndpoint() {
         endpoint = .registration(.init())
 
-        let url = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/registerUser.json?id_user=0&username=&password=&email=&gender=&credit_card=&bio="
+        let url = "https://toxic-frog-company.herokuapp.com/user/registration"
         do {
             let answerEndpoint = try getUrl(endpoint)
 
@@ -44,11 +44,11 @@ class NetworkEndpoitTest: XCTestCase {
     }
 
     func testLoginEndpoint() {
-        let userName = "1234"
+        let login = "1234"
         let password = "4321"
-        endpoint = .login(.init(username: userName, password: password))
+        endpoint = .login(.init(login: login, password: password))
 
-        let url = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/login.json?username=\(userName)&password=\(password)"
+        let url = "https://toxic-frog-company.herokuapp.com/auth/login"
         do {
             let answerEndpoint = try getUrl(endpoint)
 
@@ -59,13 +59,13 @@ class NetworkEndpoitTest: XCTestCase {
     }
 
     func testLogoutEndpoint() {
-        let id = 12424
-        endpoint = .logout(id)
+        let token = "fh931fg99g19gf977gf739g"
+        endpoint = .logout(token)
 
-        let url = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/logout.json?id_user=\(id)"
+        let url = "https://toxic-frog-company.herokuapp.com/auth/logout"
         do {
             let answerEndpoint = try getUrl(endpoint)
-
+            
             XCTAssertEqual(answerEndpoint, url)
         } catch {
             XCTFail("testLogoutEndpoint = fail")
@@ -73,10 +73,18 @@ class NetworkEndpoitTest: XCTestCase {
     }
 
     func testChangeUserDataEndpoint() {
-        let id = 12424
-        endpoint = .logout(id)
+        let user = RequestUserInfo(login: "Somebody",
+                                   password: "mypassword",
+                                   firstname: "1" ,
+                                   lastname: "1" ,
+                                   email: "some@some.ru",
+                                   gender: "m",
+                                   creditCard: "9872389-2424-234224-234",
+                                   bio: "This is good! I think I will switch to another language")
 
-        let url = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/logout.json?id_user=\(id)"
+        endpoint = .changeUserData(user)
+
+        let url = "https://toxic-frog-company.herokuapp.com/user/changeInfo"
         do {
             let answerEndpoint = try getUrl(endpoint)
 
@@ -91,7 +99,7 @@ class NetworkEndpoitTest: XCTestCase {
         let category = 1
         endpoint = .catalog(page, category)
 
-        let url = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/catalogData.json?page_number=\(page)&id_category=\(category)"
+        let url = "https://toxic-frog-company.herokuapp.com/catalog?page_number=\(page)&id_category=\(category)"
         do {
             let answerEndpoint = try getUrl(endpoint)
 
@@ -105,7 +113,7 @@ class NetworkEndpoitTest: XCTestCase {
         let id = 1
         endpoint = .product(id)
 
-        let url = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/getGoodById.json?id_product=\(id)"
+        let url = "https://toxic-frog-company.herokuapp.com/catalog/product/\(id)"
         do {
             let answerEndpoint = try getUrl(endpoint)
 
