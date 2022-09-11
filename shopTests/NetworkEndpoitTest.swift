@@ -65,7 +65,7 @@ class NetworkEndpoitTest: XCTestCase {
         let url = "https://toxic-frog-company.herokuapp.com/auth/logout"
         do {
             let answerEndpoint = try getUrl(endpoint)
-            print(answerEndpoint)
+            
             XCTAssertEqual(answerEndpoint, url)
         } catch {
             XCTFail("testLogoutEndpoint = fail")
