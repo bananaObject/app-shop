@@ -10,6 +10,10 @@
 		F204BB5128BF432400936A62 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = F204BB5028BF432400936A62 /* Network.swift */; };
 		F204BB5B28BF4E7400936A62 /* NetworkEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F204BB5A28BF4E7400936A62 /* NetworkEndpoint.swift */; };
 		F204BB5D28BF61CC00936A62 /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F204BB5C28BF61CC00936A62 /* RequestError.swift */; };
+		F244AF1C28D0798800A6ED96 /* ResponseReviewsProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = F244AF1B28D0798800A6ED96 /* ResponseReviewsProduct.swift */; };
+		F244AF1E28D079A300A6ED96 /* ResponseReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F244AF1D28D079A300A6ED96 /* ResponseReview.swift */; };
+		F244AF2028D083D300A6ED96 /* ReviewsProductService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F244AF1F28D083D300A6ED96 /* ReviewsProductService.swift */; };
+		F244AF2228D08CD100A6ED96 /* RequestAddReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F244AF2128D08CD100A6ED96 /* RequestAddReview.swift */; };
 		F253C6EF28CC915500F86E82 /* ResponseErrorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F253C6EE28CC915500F86E82 /* ResponseErrorModel.swift */; };
 		F259296A28C5DFC60075E881 /* ResponseMessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F259296928C5DFC60075E881 /* ResponseMessageModel.swift */; };
 		F259296C28C5E0040075E881 /* LogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F259296B28C5E0040075E881 /* LogoutService.swift */; };
@@ -55,6 +59,10 @@
 		F204BB5028BF432400936A62 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		F204BB5A28BF4E7400936A62 /* NetworkEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkEndpoint.swift; sourceTree = "<group>"; };
 		F204BB5C28BF61CC00936A62 /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
+		F244AF1B28D0798800A6ED96 /* ResponseReviewsProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseReviewsProduct.swift; sourceTree = "<group>"; };
+		F244AF1D28D079A300A6ED96 /* ResponseReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseReview.swift; sourceTree = "<group>"; };
+		F244AF1F28D083D300A6ED96 /* ReviewsProductService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsProductService.swift; sourceTree = "<group>"; };
+		F244AF2128D08CD100A6ED96 /* RequestAddReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAddReview.swift; sourceTree = "<group>"; };
 		F253C6EE28CC915500F86E82 /* ResponseErrorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseErrorModel.swift; sourceTree = "<group>"; };
 		F259296928C5DFC60075E881 /* ResponseMessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseMessageModel.swift; sourceTree = "<group>"; };
 		F259296B28C5E0040075E881 /* LogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutService.swift; sourceTree = "<group>"; };
@@ -229,6 +237,8 @@
 				F289160E28BFB82300288308 /* ResponseLoginModel.swift */,
 				F297190928C87F4400F05021 /* ResponseCatalogModel.swift */,
 				F297190D28C89AA500F05021 /* ResponseProductModel.swift */,
+				F244AF1B28D0798800A6ED96 /* ResponseReviewsProduct.swift */,
+				F244AF1D28D079A300A6ED96 /* ResponseReview.swift */,
 			);
 			path = NetworkResponse;
 			sourceTree = "<group>";
@@ -250,6 +260,7 @@
 				F259297128C5EC720075E881 /* ChangeUserInfoService.swift */,
 				F297190B28C8813F00F05021 /* CatalogService.swift */,
 				F297190F28C89D6B00F05021 /* ProductService.swift */,
+				F244AF1F28D083D300A6ED96 /* ReviewsProductService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -259,6 +270,7 @@
 			children = (
 				F259296F28C5EA180075E881 /* RequestLogin.swift */,
 				F289160528BFADC100288308 /* RequestUserInfo.swift */,
+				F244AF2128D08CD100A6ED96 /* RequestAddReview.swift */,
 			);
 			path = RequestData;
 			sourceTree = "<group>";
@@ -475,11 +487,15 @@
 				F289160328BFA40200288308 /* ServiceFactory.swift in Sources */,
 				F204BB5B28BF4E7400936A62 /* NetworkEndpoint.swift in Sources */,
 				F289160128BFA08B00288308 /* RegistrationService.swift in Sources */,
+				F244AF1E28D079A300A6ED96 /* ResponseReview.swift in Sources */,
 				F289160628BFADC100288308 /* RequestUserInfo.swift in Sources */,
 				F259297028C5EA180075E881 /* RequestLogin.swift in Sources */,
+				F244AF1C28D0798800A6ED96 /* ResponseReviewsProduct.swift in Sources */,
 				F297190A28C87F4400F05021 /* ResponseCatalogModel.swift in Sources */,
 				F297190C28C8813F00F05021 /* CatalogService.swift in Sources */,
 				F204BB5128BF432400936A62 /* Network.swift in Sources */,
+				F244AF2028D083D300A6ED96 /* ReviewsProductService.swift in Sources */,
+				F244AF2228D08CD100A6ED96 /* RequestAddReview.swift in Sources */,
 				F2FC18A628C7500D00E4C20B /* Endpoint.swift in Sources */,
 				F28915F628BF860600288308 /* DecoderResponse.swift in Sources */,
 			);

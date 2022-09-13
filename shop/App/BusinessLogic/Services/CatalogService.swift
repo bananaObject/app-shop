@@ -8,19 +8,20 @@
 import Foundation
 
 /// Catalog service.
-final class CatalogService<Parser: DecoderResponseProtocol> {
+final class CatalogService {
+    typealias Model = ResponseCatalogModel
     // MARK: - Private Properties
 
     private(set) var page: Int
     private(set) var category: Int?
-    private(set) var data: Parser.Model?
+    private(set) var data: Model?
 
     private let network: NetworkProtocol
-    private let decoder: Parser
+    private let decoder: DecoderResponseProtocol
 
     // MARK: - Initialization
     
-    init(_ network: NetworkProtocol, _ decoder: Parser) {
+    init(_ network: NetworkProtocol, _ decoder: DecoderResponseProtocol) {
         self.network = network
         self.decoder = decoder
 
@@ -43,7 +44,7 @@ final class CatalogService<Parser: DecoderResponseProtocol> {
                 do {
                     switch result {
                     case .success(let data):
-                        let response = try self.decoder.decode(data: data)
+                        let response = try self.decoder.decode(data: data, model: Model.self)
                         self.data = response
                     case .failure(let error):
                         switch error {

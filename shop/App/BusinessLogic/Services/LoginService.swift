@@ -8,18 +8,20 @@
 import Foundation
 
 /// Login service.
-final class LoginService<Parser: DecoderResponseProtocol> {
+final class LoginService {
+    typealias Model = ResponseLoginModel
+    
     // MARK: - Private Properties
 
     private(set) var loginPass: RequestLogin?
-    private(set) var data: Parser.Model?
+    private(set) var data: Model?
 
     private let network: NetworkProtocol
-    private let decoder: Parser
+    private let decoder: DecoderResponseProtocol
 
     // MARK: - Initialization
 
-    init(_ network: NetworkProtocol, _ decoder: Parser) {
+    init(_ network: NetworkProtocol, _ decoder: DecoderResponseProtocol) {
         self.network = network
         self.decoder = decoder
         
@@ -42,7 +44,7 @@ final class LoginService<Parser: DecoderResponseProtocol> {
                 do {
                     switch result {
                     case .success(let data):
-                        let response = try self.decoder.decode(data: data)
+                        let response = try self.decoder.decode(data: data, model: Model.self)
                         self.data = response
                         
                     case .failure(let error):
