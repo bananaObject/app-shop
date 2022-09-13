@@ -14,15 +14,15 @@ class RegistrationServiceTest: XCTestCase {
     // MARK: - Properties
 
     var network: NetworkMock!
-    var parser: DecoderResponse<Model>!
-    var service: RegistrationService<DecoderResponse<Model>>!
+    var parser: DecoderResponseProtocol!
+    var service: RegistrationService!
 
     // MARK: - Initialization
 
     override func setUp() {
         super.setUp()
         network = .init()
-        parser = .init()
+        parser = DecoderResponse()
         service = .init(network, parser)
     }
 

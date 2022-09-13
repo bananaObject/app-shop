@@ -14,15 +14,15 @@ class LogoutServiceTest: XCTestCase {
     // MARK: - Properties
 
     var network: NetworkMock!
-    var parser: DecoderResponse<Model>!
-    var service: LogoutService<DecoderResponse<Model>>!
+    var parser: DecoderResponseProtocol!
+    var service: LogoutService!
 
     // MARK: - Initialization
 
     override func setUp() {
         super.setUp()
         network = .init()
-        parser = .init()
+        parser = DecoderResponse()
         service = .init(network, parser)
     }
 

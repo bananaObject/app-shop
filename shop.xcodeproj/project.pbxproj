@@ -42,6 +42,7 @@
 		F2982CB228BB932900D2C53E /* shop.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F2982CB028BB932900D2C53E /* shop.xcdatamodeld */; };
 		F2982CB428BB932A00D2C53E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2982CB328BB932A00D2C53E /* Assets.xcassets */; };
 		F2982CB728BB932A00D2C53E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F2982CB528BB932A00D2C53E /* LaunchScreen.storyboard */; };
+		F29F605D28D117C200D9E646 /* ReviewServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29F605C28D117C200D9E646 /* ReviewServiceTest.swift */; };
 		F2FC18A628C7500D00E4C20B /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2FC18A528C7500D00E4C20B /* Endpoint.swift */; };
 /* End PBXBuildFile section */
 
@@ -94,6 +95,7 @@
 		F2982CB328BB932A00D2C53E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F2982CB628BB932A00D2C53E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F2982CB828BB932A00D2C53E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F29F605C28D117C200D9E646 /* ReviewServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewServiceTest.swift; sourceTree = "<group>"; };
 		F2FC18A528C7500D00E4C20B /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -278,10 +280,8 @@
 		F297192328C8AD4B00F05021 /* shopTests */ = {
 			isa = PBXGroup;
 			children = (
-				F297193328C906AA00F05021 /* Services */,
-				F297192428C8AD4B00F05021 /* ResponseParserTests.swift */,
-				F297192B28C8AE2400F05021 /* NetworkMock.swift */,
-				F297192F28C8E99000F05021 /* NetworkEndpoitTest.swift */,
+				F29F605F28D1197800D9E646 /* Test */,
+				F29F605E28D1196A00D9E646 /* Mock */,
 			);
 			path = shopTests;
 			sourceTree = "<group>";
@@ -295,6 +295,7 @@
 				F297193828C9279400F05021 /* ChangeUserDataServiceTest.swift */,
 				F297193A28C927F900F05021 /* CatalogServiceTest.swift */,
 				F297193C28C928DE00F05021 /* ProductServiceTest.swift */,
+				F29F605C28D117C200D9E646 /* ReviewServiceTest.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -326,6 +327,24 @@
 				F225758B28BBE8B8009E23C2 /* Environments */,
 			);
 			path = shop;
+			sourceTree = "<group>";
+		};
+		F29F605E28D1196A00D9E646 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				F297192B28C8AE2400F05021 /* NetworkMock.swift */,
+			);
+			name = Mock;
+			sourceTree = "<group>";
+		};
+		F29F605F28D1197800D9E646 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				F297193328C906AA00F05021 /* Services */,
+				F297192428C8AD4B00F05021 /* ResponseParserTests.swift */,
+				F297192F28C8E99000F05021 /* NetworkEndpoitTest.swift */,
+			);
+			name = Test;
 			sourceTree = "<group>";
 		};
 		F2FC18A428C74FFC00E4C20B /* Protocol */ = {
@@ -466,6 +485,7 @@
 				F297193928C9279400F05021 /* ChangeUserDataServiceTest.swift in Sources */,
 				F297193028C8E99000F05021 /* NetworkEndpoitTest.swift in Sources */,
 				F297193B28C927F900F05021 /* CatalogServiceTest.swift in Sources */,
+				F29F605D28D117C200D9E646 /* ReviewServiceTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

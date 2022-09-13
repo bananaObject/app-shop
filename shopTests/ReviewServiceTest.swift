@@ -1,21 +1,18 @@
 //
-//  LoginServiceTest.swift
+//  ReviewServiceTest.swift
 //  shopTests
 //
-//  Created by Ke4a on 07.09.2022.
+//  Created by Ke4a on 13.09.2022.
 //
-
 @testable import shop
 import XCTest
 
-class LoginServiceTest: XCTestCase {
-    typealias Model = ResponseLoginModel
-
+class ReviewServiceTest: XCTestCase {
     // MARK: - Properties
 
     var network: NetworkMock!
     var parser: DecoderResponseProtocol!
-    var service: LoginService!
+    var service: ReviewsProductService!
 
     // MARK: - Initialization
 
@@ -39,10 +36,10 @@ class LoginServiceTest: XCTestCase {
 
     /// Test double fetch.
     /// The first request for data is checked. The second request is getting data and difference from the first one.
-    func testFetchDouble() {
-        var lastFetch: Model?
+    func testFetchCatalogDouble() {
+        var lastFetch: ResponseReviewsProductModel?
 
-        let expectationFirst = expectation(description: "LoginServiceTestFirst")
+        let expectationFirst = expectation(description: "ReviewServiceTestFirst")
 
         service.fetchAsync()
         network.completionRequest = {
@@ -53,7 +50,7 @@ class LoginServiceTest: XCTestCase {
         XCTAssertNotNil(service.data)
         lastFetch = service.data
 
-        let expectationSecond = expectation(description: "LoginServiceTestSecond")
+        let expectationSecond = expectation(description: "ReviewServiceTestSecond")
 
         service.fetchAsync()
         network.completionRequest = {
@@ -62,6 +59,6 @@ class LoginServiceTest: XCTestCase {
 
         waitForExpectations(timeout: 1)
         XCTAssertNotNil(lastFetch)
-        XCTAssertNotEqual(lastFetch?.authToken, service.data?.authToken)
+        XCTAssertNotEqual(lastFetch?.items.first?.idUser, service.data?.items.first?.idUser)
     }
 }

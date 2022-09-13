@@ -14,15 +14,15 @@ class ChangeUserDataServiceTest: XCTestCase {
     // MARK: - Properties
 
     var network: NetworkMock!
-    var parser: DecoderResponse<Model>!
-    var service: ChangeUserInfoService<DecoderResponse<Model>>!
+    var parser: DecoderResponseProtocol!
+    var service: ChangeUserInfoService!
 
     // MARK: - Initialization
 
     override func setUp() {
         super.setUp()
         network = .init()
-        parser = .init()
+        parser = DecoderResponse()
         service = .init(network, parser)
     }
 
@@ -42,7 +42,7 @@ class ChangeUserDataServiceTest: XCTestCase {
     func testFetchDouble() {
         var lastFetch: Model?
 
-        let expectationFirst = expectation(description: "LoginServiceTestFirst")
+        let expectationFirst = expectation(description: "ChangeUserDataServiceTestFirst")
 
         service.fetchAsync()
         network.completionRequest = {
@@ -53,7 +53,7 @@ class ChangeUserDataServiceTest: XCTestCase {
         XCTAssertNotNil(service.data)
         lastFetch = service.data
 
-        let expectationSecond = expectation(description: "LoginServiceTestSecond")
+        let expectationSecond = expectation(description: "ChangeUserDataServiceTestSecond")
 
         service.fetchAsync()
         network.completionRequest = {
