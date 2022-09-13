@@ -46,4 +46,10 @@ final class ServiceFactory {
         let network: NetworkProtocol = Network()
         return ProductService(network, decoder)
     }
+
+    func makeReviewsProductService() -> ReviewsProductService {
+        let decoder = DecoderResponse()
+        let network: NetworkProtocol = Network()
+        return ReviewsProductService(network, decoder)
+    }
 }

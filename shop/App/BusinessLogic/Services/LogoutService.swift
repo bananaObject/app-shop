@@ -36,7 +36,7 @@ final class LogoutService {
         guard let token = token else { return }
 
         DispatchQueue.global(qos: .background).async {
-            self.network.fetch(.logout(token)) {
+            self.network.fetch(.logout) {
                 // Отключил пока вызывается в appDelegate, так как там не сохраняется
                 // [weak self]
                 result in

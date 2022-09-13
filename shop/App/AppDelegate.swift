@@ -16,9 +16,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         // Override point for customization after application launch.
         let factory = ServiceFactory()
-        let service = factory.makeProductService()
-        service.fetchAsync()
+        let service = factory.makeReviewsProductService()
         
+        service.fetchAsync()
+
+        // Задержка, так как потом добавляется в массив
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            service.addReview("fafawfnu93 f9h27hf82 f7sh fg6f267 2g7fg67")
+        }
+
+        // Задержка, так как на сервере удаляется реальный отзыв который был добавлен ранее
+        DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
+            service.deleteReview(0)
+        }
+
         return true
     }
 
