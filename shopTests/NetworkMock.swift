@@ -91,6 +91,28 @@ class NetworkMock: NetworkProtocol {
                              "name": "Товар 1",
                              "price": 6283 }
                         """
+        case .reviews:
+            let word = firstTime ?  0 : 1
+            json = """
+                    { "max_page": 1,
+                        "items": [{ "id_user": \(word),
+                            "user_name": "Пользователь \(word)",
+                            "id_review": 25,
+                            "text": "review 25" }]}
+                    """
+        case .addReview:
+            let word = firstTime ?  0 : 1
+            json = """
+                    { "id_review": 8332,
+                        "user_name": "Toxic Frog",
+                        "id_user": \(word),
+                        "text": "awf[akwf[jp03hf 209jf02f0 20jf9823 h9fh 923fh9" }
+                    """
+        case .deleteReview:
+            let word = firstTime ?  0 : 1
+            json = """
+                    { "message": "succes! \(word)" }
+                    """
         }
 
         guard let data = json.data(using: .utf8) else { return }

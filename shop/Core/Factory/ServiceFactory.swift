@@ -11,40 +11,45 @@ import Foundation
 final class ServiceFactory {
     // MARK: - Public Methods
 
-    func makeLoginService() -> LoginService<DecoderResponse<ResponseLoginModel>> {
-        let decoder = DecoderResponse<ResponseLoginModel>()
+    func makeLoginService() -> LoginService {
+        let decoder = DecoderResponse()
         let network: NetworkProtocol = Network()
         return LoginService(network, decoder)
     }
 
-    func makeLogoutService() -> LogoutService<DecoderResponse<ResponseMessageModel>> {
-        let decoder = DecoderResponse<ResponseMessageModel>()
+    func makeLogoutService() -> LogoutService {
+        let decoder = DecoderResponse()
         let network: NetworkProtocol = Network()
         return LogoutService(network, decoder)
     }
     
-    func makeRegistrationService() -> RegistrationService<DecoderResponse<ResponseMessageModel>> {
-        let decoder = DecoderResponse<ResponseMessageModel>()
+    func makeRegistrationService() -> RegistrationService {
+        let decoder = DecoderResponse()
         let network: NetworkProtocol = Network()
         return RegistrationService(network, decoder)
     }
 
-    func makeChangUserInfoService()
-    -> ChangeUserInfoService<DecoderResponse<ResponseMessageModel>> {
-        let decoder = DecoderResponse<ResponseMessageModel>()
+    func makeChangUserInfoService() -> ChangeUserInfoService {
+        let decoder = DecoderResponse()
         let network: NetworkProtocol = Network()
         return ChangeUserInfoService(network, decoder)
     }
 
-    func makeCatalogService() -> CatalogService<DecoderResponse<ResponseCatalogModel>> {
-        let decoder = DecoderResponse<ResponseCatalogModel>()
+    func makeCatalogService() -> CatalogService {
+        let decoder = DecoderResponse()
         let network: NetworkProtocol = Network()
         return CatalogService(network, decoder)
     }
 
-    func makeProductService() -> ProductService<DecoderResponse<ResponseProductModel>> {
-        let decoder = DecoderResponse<ResponseProductModel>()
+    func makeProductService() -> ProductService {
+        let decoder = DecoderResponse()
         let network: NetworkProtocol = Network()
         return ProductService(network, decoder)
+    }
+
+    func makeReviewsProductService() -> ReviewsProductService {
+        let decoder = DecoderResponse()
+        let network: NetworkProtocol = Network()
+        return ReviewsProductService(network, decoder)
     }
 }

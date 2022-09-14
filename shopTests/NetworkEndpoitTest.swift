@@ -59,8 +59,7 @@ class NetworkEndpoitTest: XCTestCase {
     }
 
     func testLogoutEndpoint() {
-        let token = "fh931fg99g19gf977gf739g"
-        endpoint = .logout(token)
+        endpoint = .logout
 
         let url = "https://toxic-frog-company.herokuapp.com/auth/logout"
         do {
@@ -114,6 +113,53 @@ class NetworkEndpoitTest: XCTestCase {
         endpoint = .product(id)
 
         let url = "https://toxic-frog-company.herokuapp.com/catalog/product/\(id)"
+        do {
+            let answerEndpoint = try getUrl(endpoint)
+
+            XCTAssertEqual(answerEndpoint, url)
+        } catch {
+            XCTFail("testProductEndpoint = fail")
+        }
+    }
+
+
+    func testReviewsEndpoint() {
+        let id = 1
+        let page = 1
+        endpoint = .reviews(id, page)
+
+        let url = "https://toxic-frog-company.herokuapp.com/catalog/product/\(id)/reviews?page_number=\(page)"
+        do {
+            let answerEndpoint = try getUrl(endpoint)
+
+            XCTAssertEqual(answerEndpoint, url)
+        } catch {
+            XCTFail("testProductEndpoint = fail")
+        }
+    }
+
+    func testAddReviewEndpoint() {
+        let id = 1
+        let text = "awfhufwuh9h 9hf9 h19"
+        endpoint = .addReview(id, text)
+
+        let url = "https://toxic-frog-company.herokuapp.com/catalog/product/\(id)/review/add"
+        do {
+            let answerEndpoint = try getUrl(endpoint)
+
+            XCTAssertEqual(answerEndpoint, url)
+        } catch {
+            XCTFail("testProductEndpoint = fail")
+        }
+    }
+
+
+    func testDeleteReviewEndpoint() {
+        let id = 1
+        let idReview = 1
+        endpoint = .deleteReview(id, idReview)
+
+        let url = "https://toxic-frog-company.herokuapp.com/catalog/product/\(id)/review/delete"
         do {
             let answerEndpoint = try getUrl(endpoint)
 

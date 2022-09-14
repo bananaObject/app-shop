@@ -14,15 +14,15 @@ class CatalogServiceTest: XCTestCase {
     // MARK: - Properties
 
     var network: NetworkMock!
-    var parser: DecoderResponse<Model>!
-    var service: CatalogService<DecoderResponse<Model>>!
+    var parser: DecoderResponseProtocol!
+    var service: CatalogService!
 
     // MARK: - Initialization
 
     override func setUp() {
         super.setUp()
         network = .init()
-        parser = .init()
+        parser = DecoderResponse()
         service = .init(network, parser)
     }
 
@@ -40,7 +40,7 @@ class CatalogServiceTest: XCTestCase {
     func testFetchDouble() {
         var lastFetch: Model?
 
-        let expectationFirst = expectation(description: "LogoutServiceTestFirst")
+        let expectationFirst = expectation(description: "CatalogServiceTestFirst")
 
         service.fetchAsync()
         network.completionRequest = {
@@ -51,7 +51,7 @@ class CatalogServiceTest: XCTestCase {
         XCTAssertNotNil(service.data)
         lastFetch = service.data
 
-        let expectationSecond = expectation(description: "LogoutServiceTestSecond")
+        let expectationSecond = expectation(description: "CatalogServiceTestSecond")
 
         service.fetchAsync()
         network.completionRequest = {

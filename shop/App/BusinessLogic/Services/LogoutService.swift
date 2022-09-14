@@ -8,18 +8,20 @@
 import Foundation
 
 /// Logout service.
-final class LogoutService<Parser: DecoderResponseProtocol> {
+final class LogoutService {
+    typealias Model = ResponseMessageModel
+    
     // MARK: - Private Properties
 
     private(set) var token: String?
-    private(set) var data: Parser.Model?
+    private(set) var data: Model?
 
     private let network: NetworkProtocol
-    private let decoder: Parser
+    private let decoder: DecoderResponseProtocol
 
     // MARK: - Initialization
 
-    init(_ network: NetworkProtocol, _ decoder: Parser) {
+    init(_ network: NetworkProtocol, _ decoder: DecoderResponseProtocol) {
         self.network = network
         self.decoder = decoder
 
@@ -34,7 +36,7 @@ final class LogoutService<Parser: DecoderResponseProtocol> {
         guard let token = token else { return }
 
         DispatchQueue.global(qos: .background).async {
-            self.network.fetch(.logout(token)) {
+            self.network.fetch(.logout) {
                 // Отключил пока вызывается в appDelegate, так как там не сохраняется
                 // [weak self]
                 result in
@@ -43,7 +45,7 @@ final class LogoutService<Parser: DecoderResponseProtocol> {
                 do {
                     switch result {
                     case .success(let data):
-                        let response = try self.decoder.decode(data: data)
+                        let response = try self.decoder.decode(data: data, model: Model.self)
                         self.data = response
                     case .failure(let error):
                         switch error {
