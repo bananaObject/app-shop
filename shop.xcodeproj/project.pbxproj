@@ -21,6 +21,7 @@
 		F259296C28C5E0040075E881 /* LogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F259296B28C5E0040075E881 /* LogoutService.swift */; };
 		F259297028C5EA180075E881 /* RequestLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = F259296F28C5EA180075E881 /* RequestLogin.swift */; };
 		F259297228C5EC720075E881 /* ChangeUserInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F259297128C5EC720075E881 /* ChangeUserInfoService.swift */; };
+		F26E5B9828D3815B0000CE7A /* BasketReviewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26E5B9728D3815B0000CE7A /* BasketReviewTest.swift */; };
 		F28915F628BF860600288308 /* DecoderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F28915F528BF860600288308 /* DecoderResponse.swift */; };
 		F289160128BFA08B00288308 /* RegistrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F289160028BFA08B00288308 /* RegistrationService.swift */; };
 		F289160328BFA40200288308 /* ServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F289160228BFA40200288308 /* ServiceFactory.swift */; };
@@ -73,6 +74,7 @@
 		F259296B28C5E0040075E881 /* LogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutService.swift; sourceTree = "<group>"; };
 		F259296F28C5EA180075E881 /* RequestLogin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestLogin.swift; sourceTree = "<group>"; };
 		F259297128C5EC720075E881 /* ChangeUserInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUserInfoService.swift; sourceTree = "<group>"; };
+		F26E5B9728D3815B0000CE7A /* BasketReviewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketReviewTest.swift; sourceTree = "<group>"; };
 		F28915F528BF860600288308 /* DecoderResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecoderResponse.swift; sourceTree = "<group>"; };
 		F289160028BFA08B00288308 /* RegistrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationService.swift; sourceTree = "<group>"; };
 		F289160228BFA40200288308 /* ServiceFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceFactory.swift; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 				F297193A28C927F900F05021 /* CatalogServiceTest.swift */,
 				F297193C28C928DE00F05021 /* ProductServiceTest.swift */,
 				F29F605C28D117C200D9E646 /* ReviewServiceTest.swift */,
+				F26E5B9728D3815B0000CE7A /* BasketReviewTest.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -490,6 +493,7 @@
 				F297192C28C8AE2400F05021 /* NetworkMock.swift in Sources */,
 				F297193928C9279400F05021 /* ChangeUserDataServiceTest.swift in Sources */,
 				F297193028C8E99000F05021 /* NetworkEndpoitTest.swift in Sources */,
+				F26E5B9828D3815B0000CE7A /* BasketReviewTest.swift in Sources */,
 				F297193B28C927F900F05021 /* CatalogServiceTest.swift in Sources */,
 				F29F605D28D117C200D9E646 /* ReviewServiceTest.swift in Sources */,
 			);

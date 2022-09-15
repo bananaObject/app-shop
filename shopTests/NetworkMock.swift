@@ -29,15 +29,20 @@ class NetworkMock: NetworkProtocol {
         var json: String
 
         switch endpoint {
-        case .registration:
-            let word = firstTime ?  "Регистрация прошла успешно!" : "Succes"
-
+        case .registration,
+                .logout,
+                .changeUserData,
+                .deleteReview,
+                .addToBasket,
+                .removeItemToBasket,
+                .removeAllToBasket,
+                .payBasket:
+            let word = firstTime ?  0 : 1
             json = """
-                          { "message": "\(word)" }
-                        """
+                    { "message": "succes! \(word)" }
+                    """
         case .login:
             let word = firstTime ?  "905ef89d-25a4-4255-902f-fafd4f6a9774" : "905ef89d-25a4d4f6a9774"
-
             json = """
                          { "auth_token": "\(word)",
                              "user": {
@@ -45,18 +50,6 @@ class NetworkMock: NetworkProtocol {
                                  "firstname": "Toxic",
                                  "login": "admin",
                                  "id": 0 }}
-                        """
-        case .logout:
-            let word = firstTime ?  "Вы успешно вышли из приложения" : "Succes"
-
-            json = """
-                        { "message": "\(word)" }
-                        """
-        case  .changeUserData:
-            let word = firstTime ?  "Данные изменены!" : "Succes"
-
-            json = """
-                        { "message": "\(word)" }
                         """
         case .catalog:
             let array = firstTime ? """
@@ -108,10 +101,19 @@ class NetworkMock: NetworkProtocol {
                         "id_user": \(word),
                         "text": "awf[akwf[jp03hf 209jf02f0 20jf9823 h9fh 923fh9" }
                     """
-        case .deleteReview:
-            let word = firstTime ?  0 : 1
+        case .basket:
+            let word = firstTime ?  1 : 2
             json = """
-                    { "message": "succes! \(word)" }
+                    [{
+                            "product": {
+                                "description": "Мощный товар 1",
+                                "price": 67673,
+                                "name": "Товар 1",
+                                "id": 1,
+                                "category": 2
+                            },
+                            "quantity": \(word)
+                        }]
                     """
         }
 

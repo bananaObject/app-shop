@@ -8,14 +8,20 @@
 import Foundation
 
 final class BasketService {
-    private let product: ResponseProductModel
-    private let creditCard: String
+    // MARK: - Public Properties
 
     var data: [ResponseBasketModel]?
+
+    // MARK: - Private Properties
+
+    private let product: ResponseProductModel
+    private let creditCard: String
 
     private let network: NetworkProtocol
     private let decoder: DecoderResponseProtocol
 
+    // MARK: - Initialization
+    /// The decoded models are written to the date property.
     init(_ network: NetworkProtocol, _ decoder: DecoderResponseProtocol) {
         self.network = network
         self.decoder = decoder
@@ -27,6 +33,8 @@ final class BasketService {
                                             description: "Мощный товар 1")
         self.creditCard = "9872389-2424-234224-234"
     }
+
+    // MARK: - Public Methods
 
     /// Fetch basket.
     func fetchBasketAsync() {
