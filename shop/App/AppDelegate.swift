@@ -14,20 +14,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        // Override point for customization after application launch.
         let factory = ServiceFactory()
-        let service = factory.makeReviewsProductService()
-        
-        service.fetchAsync()
+        let service = factory.makeBasketService()
 
-        // Задержка, так как потом добавляется в массив
+        // Запрос корзины
+        service.fetchBasketAsync()
+
+        // Добавляем товар в корзину
         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            service.addReview("fafawfnu93 f9h27hf82 f7sh fg6f267 2g7fg67")
+            service.fetchAddItemToBasketAsync()
         }
 
-        // Задержка, так как на сервере удаляется реальный отзыв который был добавлен ранее
+        // Удаляем товар из корзины
         DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
-            service.deleteReview(0)
+            service.fetchRemoveItemToBasketAsync()
+        }
+
+        // Будет ошибка, пустую корзину не даст оплатить
+        DispatchQueue.main.asyncAfter(deadline: .now() + 12) {
+            service.fetchPayBasketAsync()
+        }
+
+        // Добавляем товар в корзину
+        DispatchQueue.main.asyncAfter(deadline: .now() + 16) {
+            service.fetchAddItemToBasketAsync()
+        }
+
+        // товар в корзине есть, оплата произойдет успешно
+        DispatchQueue.main.asyncAfter(deadline: .now() + 20) {
+            service.fetchPayBasketAsync()
         }
 
         return true

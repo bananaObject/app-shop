@@ -21,15 +21,21 @@ enum NetworkEndpoint {
     case reviews(_ productId: Int, _ page: Int)
     case addReview(_ idProduct: Int, _ text: String)
     case deleteReview(_ idProduct: Int, _ idReview: Int)
+    case basket
+    case addToBasket(_ idProduct: Int)
+    case removeItemToBasket(_ idProduct: Int)
+    case removeAllToBasket
+    case payBasket(_ creditCard: String)
 }
 
 extension NetworkEndpoint: Endpoint {
+    // MARK: - Computed Properties
+
     private var authToken: String {
         // В будущем кейчейн сделаю
         "905ef89d-25a4-4255-902f-fafd4f6a9774"
     }
-    // MARK: - Computed Properties
-    
+
     var baseURL: URLComponents {
         var components = URLComponents()
         components.scheme = "https"
@@ -56,6 +62,16 @@ extension NetworkEndpoint: Endpoint {
             return "/catalog/product/\(id)/review/add"
         case .deleteReview(let id, _):
             return "/catalog/product/\(id)/review/delete"
+        case .basket:
+            return "/basket"
+        case .addToBasket:
+            return "/basket/add"
+        case .removeItemToBasket:
+            return "/basket/remove"
+        case .removeAllToBasket:
+            return "/basket/removeAll"
+        case .payBasket:
+            return "/basket/pay"
         }
     }
 
@@ -70,7 +86,12 @@ extension NetworkEndpoint: Endpoint {
                 .registration,
                 .changeUserData,
                 .addReview,
-                .deleteReview:
+                .deleteReview,
+                .basket,
+                .addToBasket,
+                .removeItemToBasket,
+                .removeAllToBasket,
+                .payBasket:
             return .POST
         }
     }
@@ -92,7 +113,12 @@ extension NetworkEndpoint: Endpoint {
                 .changeUserData,
                 .product,
                 .addReview,
-                .deleteReview:
+                .deleteReview,
+                .basket,
+                .addToBasket,
+                .removeItemToBasket,
+                .removeAllToBasket,
+                .payBasket:
             return nil
         }
 
@@ -106,7 +132,9 @@ extension NetworkEndpoint: Endpoint {
         case .login(let data):
             base["login"] = data.login
             base["password"] = data.password
-        case .logout:
+        case .logout,
+                .basket,
+                .removeAllToBasket:
             base["auth_token"] = self.authToken
         case .registration(let data),
                 .changeUserData(let data):
@@ -124,6 +152,13 @@ extension NetworkEndpoint: Endpoint {
         case .deleteReview(_, let id):
             base["auth_token"] = self.authToken
             base["id_review"] = id
+        case .addToBasket(let id),
+                .removeItemToBasket(let id):
+            base["auth_token"] = self.authToken
+            base["id_product"] = id
+        case .payBasket(let card):
+            base["auth_token"] = self.authToken
+            base["credit_card"] = card
         case .catalog,
                 .product,
                 .reviews:
