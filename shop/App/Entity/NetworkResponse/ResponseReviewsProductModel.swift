@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Network response reviews.
 struct ResponseReviewsProductModel: Codable {
     let maxPage: Int
     var items: [ResponseReviewModel]

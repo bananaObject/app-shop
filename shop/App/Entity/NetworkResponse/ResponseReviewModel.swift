@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Network response review.
 struct ResponseReviewModel: Codable {
     let text: String
     let userName: String

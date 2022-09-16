@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Network response product.
 struct ResponseProductModel: Decodable {
     let id: Int
     let category: Int

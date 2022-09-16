@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Network response basket.
 struct ResponseBasketModel: Decodable {
     var quantity: Int
     let product: ResponseProductModel

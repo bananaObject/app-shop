@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Network response fail message.
 struct ResponseErrorModel: Codable {
     let error: Bool
     let reason: String?

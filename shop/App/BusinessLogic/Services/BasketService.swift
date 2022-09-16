@@ -21,7 +21,7 @@ final class BasketService {
     private let decoder: DecoderResponseProtocol
 
     // MARK: - Initialization
-    /// The decoded models are written to the date property.
+    
     init(_ network: NetworkProtocol, _ decoder: DecoderResponseProtocol) {
         self.network = network
         self.decoder = decoder
@@ -37,6 +37,7 @@ final class BasketService {
     // MARK: - Public Methods
 
     /// Fetch basket.
+    /// The decoded models are written to the date property.
     func fetchBasketAsync() {
         DispatchQueue.global(qos: .background).async {
             self.network.fetch(.basket) {

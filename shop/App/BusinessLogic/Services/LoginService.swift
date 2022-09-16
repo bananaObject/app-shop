@@ -46,7 +46,6 @@ final class LoginService {
                     case .success(let data):
                         let response = try self.decoder.decode(data: data, model: Model.self)
                         self.data = response
-                        
                     case .failure(let error):
                         switch error {
                         case .clientError(let status, let data):

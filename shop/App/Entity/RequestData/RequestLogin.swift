@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Network request data for auth.
 struct RequestLogin {
     var login: String = ""
     var password: String = ""
