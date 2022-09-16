@@ -122,7 +122,6 @@ class NetworkEndpoitTest: XCTestCase {
         }
     }
 
-
     func testReviewsEndpoint() {
         let id = 1
         let page = 1
@@ -153,13 +152,77 @@ class NetworkEndpoitTest: XCTestCase {
         }
     }
 
-
     func testDeleteReviewEndpoint() {
         let id = 1
         let idReview = 1
         endpoint = .deleteReview(id, idReview)
 
         let url = "https://toxic-frog-company.herokuapp.com/catalog/product/\(id)/review/delete"
+        do {
+            let answerEndpoint = try getUrl(endpoint)
+
+            XCTAssertEqual(answerEndpoint, url)
+        } catch {
+            XCTFail("testProductEndpoint = fail")
+        }
+    }
+
+    func testBasketEndpoint() {
+        endpoint = .basket
+
+        let url = "https://toxic-frog-company.herokuapp.com/basket"
+        do {
+            let answerEndpoint = try getUrl(endpoint)
+
+            XCTAssertEqual(answerEndpoint, url)
+        } catch {
+            XCTFail("testProductEndpoint = fail")
+        }
+    }
+
+    func testAddToBasketEndpoint() {
+        endpoint = .addToBasket(1)
+
+        let url = "https://toxic-frog-company.herokuapp.com/basket/add"
+        do {
+            let answerEndpoint = try getUrl(endpoint)
+
+            XCTAssertEqual(answerEndpoint, url)
+        } catch {
+            XCTFail("testProductEndpoint = fail")
+        }
+    }
+
+    func testRemoveToBasketEndpoint() {
+        endpoint = .removeItemToBasket(1)
+
+        let url = "https://toxic-frog-company.herokuapp.com/basket/remove"
+        do {
+            let answerEndpoint = try getUrl(endpoint)
+
+            XCTAssertEqual(answerEndpoint, url)
+        } catch {
+            XCTFail("testProductEndpoint = fail")
+        }
+    }
+
+    func testRemoveAllToBasketEndpoint() {
+        endpoint = .removeAllToBasket
+
+        let url = "https://toxic-frog-company.herokuapp.com/basket/removeAll"
+        do {
+            let answerEndpoint = try getUrl(endpoint)
+
+            XCTAssertEqual(answerEndpoint, url)
+        } catch {
+            XCTFail("testProductEndpoint = fail")
+        }
+    }
+
+    func testPayBasketEndpoint() {
+        endpoint = .payBasket("")
+
+        let url = "https://toxic-frog-company.herokuapp.com/basket/pay"
         do {
             let answerEndpoint = try getUrl(endpoint)
 

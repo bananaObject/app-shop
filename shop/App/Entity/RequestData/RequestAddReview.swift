@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Network request data  for "Add review".
 struct RequestAddReview {
     let idProduct: Int
     let text: String

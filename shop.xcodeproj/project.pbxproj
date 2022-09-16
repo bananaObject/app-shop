@@ -10,6 +10,8 @@
 		F204BB5128BF432400936A62 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = F204BB5028BF432400936A62 /* Network.swift */; };
 		F204BB5B28BF4E7400936A62 /* NetworkEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F204BB5A28BF4E7400936A62 /* NetworkEndpoint.swift */; };
 		F204BB5D28BF61CC00936A62 /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F204BB5C28BF61CC00936A62 /* RequestError.swift */; };
+		F23EB26F28D33DF300392421 /* BasketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23EB26E28D33DF300392421 /* BasketService.swift */; };
+		F23EB27228D33EEE00392421 /* ResponseBasketModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23EB27128D33EEE00392421 /* ResponseBasketModel.swift */; };
 		F244AF1C28D0798800A6ED96 /* ResponseReviewsProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F244AF1B28D0798800A6ED96 /* ResponseReviewsProductModel.swift */; };
 		F244AF1E28D079A300A6ED96 /* ResponseReviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F244AF1D28D079A300A6ED96 /* ResponseReviewModel.swift */; };
 		F244AF2028D083D300A6ED96 /* ReviewsProductService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F244AF1F28D083D300A6ED96 /* ReviewsProductService.swift */; };
@@ -19,6 +21,7 @@
 		F259296C28C5E0040075E881 /* LogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F259296B28C5E0040075E881 /* LogoutService.swift */; };
 		F259297028C5EA180075E881 /* RequestLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = F259296F28C5EA180075E881 /* RequestLogin.swift */; };
 		F259297228C5EC720075E881 /* ChangeUserInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F259297128C5EC720075E881 /* ChangeUserInfoService.swift */; };
+		F26E5B9828D3815B0000CE7A /* BasketReviewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26E5B9728D3815B0000CE7A /* BasketReviewTest.swift */; };
 		F28915F628BF860600288308 /* DecoderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F28915F528BF860600288308 /* DecoderResponse.swift */; };
 		F289160128BFA08B00288308 /* RegistrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F289160028BFA08B00288308 /* RegistrationService.swift */; };
 		F289160328BFA40200288308 /* ServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F289160228BFA40200288308 /* ServiceFactory.swift */; };
@@ -60,6 +63,8 @@
 		F204BB5028BF432400936A62 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		F204BB5A28BF4E7400936A62 /* NetworkEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkEndpoint.swift; sourceTree = "<group>"; };
 		F204BB5C28BF61CC00936A62 /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
+		F23EB26E28D33DF300392421 /* BasketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketService.swift; sourceTree = "<group>"; };
+		F23EB27128D33EEE00392421 /* ResponseBasketModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseBasketModel.swift; sourceTree = "<group>"; };
 		F244AF1B28D0798800A6ED96 /* ResponseReviewsProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseReviewsProductModel.swift; sourceTree = "<group>"; };
 		F244AF1D28D079A300A6ED96 /* ResponseReviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseReviewModel.swift; sourceTree = "<group>"; };
 		F244AF1F28D083D300A6ED96 /* ReviewsProductService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsProductService.swift; sourceTree = "<group>"; };
@@ -69,6 +74,7 @@
 		F259296B28C5E0040075E881 /* LogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutService.swift; sourceTree = "<group>"; };
 		F259296F28C5EA180075E881 /* RequestLogin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestLogin.swift; sourceTree = "<group>"; };
 		F259297128C5EC720075E881 /* ChangeUserInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUserInfoService.swift; sourceTree = "<group>"; };
+		F26E5B9728D3815B0000CE7A /* BasketReviewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketReviewTest.swift; sourceTree = "<group>"; };
 		F28915F528BF860600288308 /* DecoderResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecoderResponse.swift; sourceTree = "<group>"; };
 		F289160028BFA08B00288308 /* RegistrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationService.swift; sourceTree = "<group>"; };
 		F289160228BFA40200288308 /* ServiceFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceFactory.swift; sourceTree = "<group>"; };
@@ -241,6 +247,7 @@
 				F297190D28C89AA500F05021 /* ResponseProductModel.swift */,
 				F244AF1B28D0798800A6ED96 /* ResponseReviewsProductModel.swift */,
 				F244AF1D28D079A300A6ED96 /* ResponseReviewModel.swift */,
+				F23EB27128D33EEE00392421 /* ResponseBasketModel.swift */,
 			);
 			path = NetworkResponse;
 			sourceTree = "<group>";
@@ -263,6 +270,7 @@
 				F297190B28C8813F00F05021 /* CatalogService.swift */,
 				F297190F28C89D6B00F05021 /* ProductService.swift */,
 				F244AF1F28D083D300A6ED96 /* ReviewsProductService.swift */,
+				F23EB26E28D33DF300392421 /* BasketService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -296,6 +304,7 @@
 				F297193A28C927F900F05021 /* CatalogServiceTest.swift */,
 				F297193C28C928DE00F05021 /* ProductServiceTest.swift */,
 				F29F605C28D117C200D9E646 /* ReviewServiceTest.swift */,
+				F26E5B9728D3815B0000CE7A /* BasketReviewTest.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -484,6 +493,7 @@
 				F297192C28C8AE2400F05021 /* NetworkMock.swift in Sources */,
 				F297193928C9279400F05021 /* ChangeUserDataServiceTest.swift in Sources */,
 				F297193028C8E99000F05021 /* NetworkEndpoitTest.swift in Sources */,
+				F26E5B9828D3815B0000CE7A /* BasketReviewTest.swift in Sources */,
 				F297193B28C927F900F05021 /* CatalogServiceTest.swift in Sources */,
 				F29F605D28D117C200D9E646 /* ReviewServiceTest.swift in Sources */,
 			);
@@ -504,12 +514,14 @@
 				F259296C28C5E0040075E881 /* LogoutService.swift in Sources */,
 				F297190E28C89AA500F05021 /* ResponseProductModel.swift in Sources */,
 				F259296A28C5DFC60075E881 /* ResponseMessageModel.swift in Sources */,
+				F23EB27228D33EEE00392421 /* ResponseBasketModel.swift in Sources */,
 				F289160328BFA40200288308 /* ServiceFactory.swift in Sources */,
 				F204BB5B28BF4E7400936A62 /* NetworkEndpoint.swift in Sources */,
 				F289160128BFA08B00288308 /* RegistrationService.swift in Sources */,
 				F244AF1E28D079A300A6ED96 /* ResponseReviewModel.swift in Sources */,
 				F289160628BFADC100288308 /* RequestUserInfo.swift in Sources */,
 				F259297028C5EA180075E881 /* RequestLogin.swift in Sources */,
+				F23EB26F28D33DF300392421 /* BasketService.swift in Sources */,
 				F244AF1C28D0798800A6ED96 /* ResponseReviewsProductModel.swift in Sources */,
 				F297190A28C87F4400F05021 /* ResponseCatalogModel.swift in Sources */,
 				F297190C28C8813F00F05021 /* CatalogService.swift in Sources */,

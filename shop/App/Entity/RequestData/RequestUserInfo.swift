@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Network request data for registration.
 struct RequestUserInfo {
     var login: String = ""
     var password: String = ""

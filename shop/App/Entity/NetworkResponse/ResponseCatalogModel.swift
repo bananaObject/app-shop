@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Network response catalog.
 struct ResponseCatalogModel: Decodable {
     let pageNumber: Int
     let maxPage: Int

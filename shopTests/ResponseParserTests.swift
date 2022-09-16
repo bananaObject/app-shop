@@ -42,7 +42,7 @@ class ResponseParserTests: XCTestCase {
                 guard let decodeResult = try? decoder.decode(data: data, model: Model.self)
                 else { return XCTFail("testRegistrationDecoder = Fail") }
                 
-                XCTAssertEqual(decodeResult.message, "Регистрация прошла успешно!")
+                XCTAssertEqual(decodeResult.message, "succes! 0")
                 XCTAssertTrue(type(of: decodeResult) == Model.self)
             case .failure:
                 break
@@ -59,7 +59,7 @@ class ResponseParserTests: XCTestCase {
             let data = try await network.fetch(.registration(.init()))
             let decodeResult = try await decoder.decode(data: data, model: Model.self)
             
-            XCTAssertEqual(decodeResult.message, "Регистрация прошла успешно!")
+            XCTAssertEqual(decodeResult.message, "succes! 0")
             XCTAssertTrue(type(of: decodeResult) == Model.self)
         } catch {
             XCTFail("testRegistrationDecoderIos13 = Fail")
@@ -112,7 +112,7 @@ class ResponseParserTests: XCTestCase {
                 guard let decodeResult = try? decoder.decode(data: data, model: Model.self)
                 else { return XCTFail("testLogoutDecoder = Fail") }
                 
-                XCTAssertEqual(decodeResult.message, "Вы успешно вышли из приложения")
+                XCTAssertEqual(decodeResult.message, "succes! 0")
                 XCTAssertTrue(type(of: decodeResult) == Model.self)
             case .failure:
                 break
@@ -129,7 +129,7 @@ class ResponseParserTests: XCTestCase {
             let data = try await network.fetch(.logout)
             let decodeResult = try await decoder.decode(data: data, model: Model.self)
             
-            XCTAssertEqual(decodeResult.message, "Вы успешно вышли из приложения")
+            XCTAssertEqual(decodeResult.message, "succes! 0")
             XCTAssertTrue(type(of: decodeResult) == Model.self)
         } catch {
             XCTFail("testLogoutDecoderIos13 = Fail")
@@ -304,6 +304,176 @@ class ResponseParserTests: XCTestCase {
 
         } catch {
             XCTFail("testDeleteReviewDecoderIos13 = Fail")
+        }
+    }
+
+    func testBasketDecoder() throws {
+        typealias Model = [ResponseBasketModel]
+
+        let decoder = DecoderResponse()
+
+        network.fetch(.basket) { result in
+            switch result {
+            case .success(let data):
+                guard let decodeResult = try? decoder.decode(data: data, model: Model.self)
+                else { return XCTFail("testProductDecoder = Fail") }
+
+                XCTAssertEqual(decodeResult.first?.quantity, 1)
+                XCTAssertTrue(type(of: decodeResult) == Model.self)
+            case .failure:
+                break
+            }
+        }
+    }
+
+    func testBasketDecoderIos13() async throws {
+        typealias Model = [ResponseBasketModel]
+
+        do {
+            let data = try await network.fetch(.basket)
+            let decodeResult = try await decoder.decode(data: data, model: Model.self)
+
+            XCTAssertEqual(decodeResult.first?.quantity, 1)
+            XCTAssertTrue(type(of: decodeResult) == Model.self)
+
+        } catch {
+            XCTFail("testBasketDecoderIos13 = Fail")
+        }
+    }
+
+    func testAddToBasketDecoder() throws {
+        typealias Model = ResponseMessageModel
+
+        let decoder = DecoderResponse()
+
+        network.fetch(.addToBasket(1)) { result in
+            switch result {
+            case .success(let data):
+                guard let decodeResult = try? decoder.decode(data: data, model: Model.self)
+                else { return XCTFail("testProductDecoder = Fail") }
+
+                XCTAssertEqual(decodeResult.message, "succes! 0")
+                XCTAssertTrue(type(of: decodeResult) == Model.self)
+            case .failure:
+                break
+            }
+        }
+    }
+
+    func testAddToBasketDecoderIos13() async throws {
+        typealias Model = ResponseMessageModel
+
+        do {
+            let data = try await network.fetch(.addToBasket(1))
+            let decodeResult = try await decoder.decode(data: data, model: Model.self)
+
+            XCTAssertEqual(decodeResult.message, "succes! 0")
+            XCTAssertTrue(type(of: decodeResult) == Model.self)
+
+        } catch {
+            XCTFail("testBasketDecoderIos13 = Fail")
+        }
+    }
+
+    func testRemoveToBasketDecoder() throws {
+        typealias Model = ResponseMessageModel
+
+        let decoder = DecoderResponse()
+
+        network.fetch(.removeItemToBasket(1)) { result in
+            switch result {
+            case .success(let data):
+                guard let decodeResult = try? decoder.decode(data: data, model: Model.self)
+                else { return XCTFail("testProductDecoder = Fail") }
+
+                XCTAssertEqual(decodeResult.message, "succes! 0")
+                XCTAssertTrue(type(of: decodeResult) == Model.self)
+            case .failure:
+                break
+            }
+        }
+    }
+
+    func testRemoveToBasketDecoderIos13() async throws {
+        typealias Model = ResponseMessageModel
+
+        do {
+            let data = try await network.fetch(.removeItemToBasket(1))
+            let decodeResult = try await decoder.decode(data: data, model: Model.self)
+
+            XCTAssertEqual(decodeResult.message, "succes! 0")
+            XCTAssertTrue(type(of: decodeResult) == Model.self)
+
+        } catch {
+            XCTFail("testRemoveToBasketDecoderIos13 = Fail")
+        }
+    }
+
+    func testRemoveAllToBasketDecoder() throws {
+        typealias Model = ResponseMessageModel
+
+        let decoder = DecoderResponse()
+
+        network.fetch(.removeAllToBasket) { result in
+            switch result {
+            case .success(let data):
+                guard let decodeResult = try? decoder.decode(data: data, model: Model.self)
+                else { return XCTFail("testProductDecoder = Fail") }
+
+                XCTAssertEqual(decodeResult.message, "succes! 0")
+                XCTAssertTrue(type(of: decodeResult) == Model.self)
+            case .failure:
+                break
+            }
+        }
+    }
+
+    func testRemoveAllToBasketDecoderIos13() async throws {
+        typealias Model = ResponseMessageModel
+
+        do {
+            let data = try await network.fetch(.removeAllToBasket)
+            let decodeResult = try await decoder.decode(data: data, model: Model.self)
+
+            XCTAssertEqual(decodeResult.message, "succes! 0")
+            XCTAssertTrue(type(of: decodeResult) == Model.self)
+
+        } catch {
+            XCTFail("testRemoveAllToBasketDecoderIos13 = Fail")
+        }
+    }
+
+    func testPayBasketDecoder() throws {
+        typealias Model = ResponseMessageModel
+
+        let decoder = DecoderResponse()
+
+        network.fetch(.payBasket("")) { result in
+            switch result {
+            case .success(let data):
+                guard let decodeResult = try? decoder.decode(data: data, model: Model.self)
+                else { return XCTFail("testProductDecoder = Fail") }
+
+                XCTAssertEqual(decodeResult.message, "succes! 0")
+                XCTAssertTrue(type(of: decodeResult) == Model.self)
+            case .failure:
+                break
+            }
+        }
+    }
+
+    func testPayBasketDecoderIos13() async throws {
+        typealias Model = ResponseMessageModel
+
+        do {
+            let data = try await network.fetch(.payBasket(""))
+            let decodeResult = try await decoder.decode(data: data, model: Model.self)
+
+            XCTAssertEqual(decodeResult.message, "succes! 0")
+            XCTAssertTrue(type(of: decodeResult) == Model.self)
+
+        } catch {
+            XCTFail("testPayBasketDecoderIos13 = Fail")
         }
     }
 }

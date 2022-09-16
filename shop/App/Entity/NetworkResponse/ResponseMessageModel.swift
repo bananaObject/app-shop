@@ -7,6 +7,7 @@
 
 import Foundation
 
+///  Network success response  message.
 struct ResponseMessageModel: Decodable {
     let message: String
 }
