@@ -26,8 +26,16 @@ enum RequestError: Error {
         switch self {
         case .decode:
             return "Decode error"
+        case .invalidURL:
+            return "invalid URL"
+        case .noResponse:
+            return "no response"
+        case .parseError:
+            return "parse error"
+        case .unexpectedStatusCode:
+            return "unexpected statusCode"
         default:
-            return "Unknown error"
+            return "uknow error"
         }
     }
 }
