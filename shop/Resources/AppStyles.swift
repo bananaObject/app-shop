@@ -7,41 +7,56 @@
 
 import UIKit
 
-/// Application style and settings.
+/// Application namespace style and settings.
 enum AppStyles {
     // MARK: - Static Methods
-    
-    static let color = Color()
-    static let frame = Frame()
-    static let image = Image()
+
+    /// Application color.
+    static var color: Color {
+        Color()
+    }
+
+    /// Application size.
+    static var size: Size {
+        Size()
+    }
+
+    /// Application font.
+    static var font: Font {
+        Font()
+    }
 }
 
-extension AppStyles {
-    // MARK: - Color
+// MARK: - Color
 
+extension AppStyles {
     struct Color {
-        let incomplete: UIColor = .lightGray
-        let complete: UIColor = .gray
-        let background: UIColor = .white
-    }
-
-    // MARK: - Image
-
-    struct Image {
-        let eyeOpen: String = "eyeOpen"
-        let eyeClose: String = "eyeClose"
-        let signUp: String = "signUp"
+        var main: UIColor { .gray }
+        var incomplete: UIColor { .lightGray }
+        var complete: UIColor { self.main }
+        var background: UIColor { .white }
     }
 }
 
-// MARK: - Frame
+// MARK: - Font
 
 extension AppStyles {
-    struct Frame {
-        let height = Height()
+    struct Font {
+        var logo: UIFont { .monospacedDigitSystemFont(ofSize: 48, weight: .thin) }
+    }
+}
+
+// MARK: - Size
+
+extension AppStyles {
+    struct Size {
+        var padding: CGFloat { 8 }
+        var height: Height { Height() }
     }
 
     struct Height {
-        let textfield: CGFloat = 40
+        var textfield: CGFloat { 40 }
+        var textView: CGFloat { textfield * 3 }
+        var button: CGFloat { textfield * 1.32 }
     }
 }

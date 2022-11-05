@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let controller = AppModuleBuilder.loginBuild()
         controller.modalPresentationStyle = .fullScreen
 
-        window?.rootViewController = controller
+        window?.rootViewController = UINavigationController(rootViewController: controller)
         window?.makeKeyAndVisible()
         
         return true

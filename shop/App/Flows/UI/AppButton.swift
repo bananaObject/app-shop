@@ -7,13 +7,40 @@
 
 import UIKit
 
+/// Application-style button with animation click and load indicator.
 class AppButton: UIButton {
+    // MARK: - Private Properties
+
+    /// Text title.
+    private var text: String?
+
+    // MARK: - Visual Components
+
+    /// Load indicator.
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.isHidden = true
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = AppStyles.color.background
+        return activityIndicator
+    }()
+
     // MARK: - Initialization
 
-    init(text: String) {
+    /// Application button with animation click and load indicator.
+    /// - Parameters:
+    ///   - tittle: Text button.
+    ///   - activityIndicator: Loading animation.
+    init(tittle: String, activityIndicator: Bool) {
         super.init(frame: .zero)
-        setTitle(text, for: .normal)
+        setTitle(tittle, for: .normal)
         setupUI()
+
+        if activityIndicator {
+            self.text = tittle
+            addAcivityIndiactor()
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -21,7 +48,8 @@ class AppButton: UIButton {
     }
 
     // MARK: - Setting UI Methods
-
+    /// Application-style label view contains inside filed.
+    /// Settings for the visual part.
     private func setupUI() {
         setTitleColor(.lightGray, for: .disabled)
         setTitleColor(.white, for: .normal)
@@ -30,20 +58,32 @@ class AppButton: UIButton {
         layer.borderColor = AppStyles.color.incomplete.cgColor
         layer.cornerRadius = 10
     }
+
+    /// Adds loading indicator.
+    private func addAcivityIndiactor() {
+        addSubview(self.activityIndicator)
+        NSLayoutConstraint.activate([
+            self.activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            self.activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+    }
     
     // MARK: - Public Methods
 
+    /// Click animation.
     func clickAnimation() {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.20, delay: 0, options: [.autoreverse, .curveEaseInOut]) {
-                self.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+                self.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
             } completion: { _ in
                 self.transform = CGAffineTransform.identity
             }
         }
     }
 
-    func buttonIsEnable(enable: Bool) {
+    /// Button access.
+    /// - Parameter enable: Enable button.
+    func setIsEnable(enable: Bool) {
         isEnabled = enable
 
         DispatchQueue.main.async {
@@ -54,6 +94,21 @@ class AppButton: UIButton {
                     self.backgroundColor = AppStyles.color.background
                 }
             }
+        }
+    }
+
+    /// Shows loading animation.
+    /// - Parameter isLoading: Enable loading animation.
+    func showLoadingIndicator(_ isLoading: Bool) {
+        // Checks that there is no unnecessary overwriting of data
+        if isLoading && text != nil {
+            setTitle("", for: .normal)
+            activityIndicator.isHidden = !isLoading
+            activityIndicator.startAnimating()
+        } else if text != nil {
+            setTitle(text, for: .normal)
+            activityIndicator.isHidden = !isLoading
+            activityIndicator.stopAnimating()
         }
     }
 }

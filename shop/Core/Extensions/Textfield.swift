@@ -8,6 +8,10 @@
 import UIKit
 
 extension UITextField {
+    /// Sets padding inside textfield.
+    /// - Parameters:
+    ///   - left: Left padding.
+    ///   - right: Right padding.
     func setPadding(left: CGFloat, right: CGFloat? = nil) {
         setLeftPadding(left)
         if let rightPadding = right {
