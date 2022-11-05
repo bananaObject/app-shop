@@ -7,20 +7,27 @@
 
 import Foundation
 
+/// Interactor protocol for presenter "sign in". Contains business logic.
 protocol LoginInteractorInput {
     func fetchAsync(_ data: RequestLogin,
                     completion: @escaping (Result<ResponseLoginModel, NetworkErrorModel>) -> Void)
 }
 
-/// Login service.
+/// Interactor for presenter "sign in". Contains business logic.
 final class LoginInteractor: LoginInteractorInput {
     // MARK: - Private Properties
 
+    /// Network service.
     private let network: NetworkProtocol
+    /// Decoder service.
     private let decoder: DecoderResponseProtocol
 
     // MARK: - Initialization
 
+    /// Interactor for presenter "sign in". Contains business logic.
+    /// - Parameters:
+    ///   - network: Network service.
+    ///   - decoder: Decoder srevice.
     init(_ network: NetworkProtocol, _ decoder: DecoderResponseProtocol) {
         self.network = network
         self.decoder = decoder
@@ -32,13 +39,14 @@ final class LoginInteractor: LoginInteractorInput {
     /// The decoded models are written to the date property.
     func fetchAsync(_ data: RequestLogin,
                     completion: @escaping (Result<ResponseLoginModel, NetworkErrorModel>
-    ) -> Void) {
+                    ) -> Void) {
         DispatchQueue.global(qos: .background).async {
             self.network.fetch(.login(data)) { [weak self] result in
                 guard let self = self else { return }
                 do {
                     switch result {
                     case .success(let data):
+                        // Decode response
                         let response = try self.decoder.decode(data: data, model: ResponseLoginModel.self)
                         completion(.success(response))
                     case .failure(let error):

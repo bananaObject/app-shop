@@ -7,52 +7,69 @@
 
 import UIKit
 
+/// "Sign in" screen with presenter.
 class LoginViewController: UIViewController {
     // MARK: - Visual Components
 
+    /// Button sign up.
     private lazy var signUpButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        let image = UIImage(named: AppStyles.image.signUp)
+        let image = UIImage(named: AppDataScreen.image.signUp)
         button.setImage(image, for: .normal)
         button.tintColor = AppStyles.color.incomplete
         return button
     }()
 
+    /// Logo
     private lazy var logoLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .monospacedDigitSystemFont(ofSize: 44, weight: .thin)
-        label.text = "SHOP"
+        label.font = AppStyles.font.logo
+        label.text = AppDataScreen.login.logoName
         label.textColor = AppStyles.color.incomplete
         return label
     }()
 
+    /// Field for login.
     private lazy var loginTextfield: AppTextfield = {
-        let field = AppTextfield("Login",
-                                 defaultColor: AppStyles.color.incomplete,
-                                 completeColor: AppStyles.color.complete)
+        let field = AppTextfield(AppDataScreen.login.loginPlaceholder,
+                                 incompleteColor: AppStyles.color.incomplete,
+                                 completeColor: AppStyles.color.complete,
+                                 minChar: 5)
         field.translatesAutoresizingMaskIntoConstraints = false
         return field
     }()
 
+    /// Field for password.
     private lazy var passTextfield: AppTextfield = {
-        let field = AppTextfield("Password", secureEnable: true,
-                                 defaultColor: AppStyles.color.incomplete,
-                                 completeColor: AppStyles.color.complete)
+        let field = AppTextfield(AppDataScreen.login.passPlaceholder,
+                                 incompleteColor: AppStyles.color.incomplete,
+                                 completeColor: AppStyles.color.complete,
+                                 minChar: 5,
+                                 mode: .secure)
         field.translatesAutoresizingMaskIntoConstraints = false
         return field
     }()
 
+    /// Submit button.
     private lazy var signInButton: AppButton = {
-        let button = AppButton(text: "Sign in")
+        let button = AppButton(tittle: AppDataScreen.login.submitButton,
+                               activityIndicator: true)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isEnabled = false
         return button
     }()
 
+    // MARK: - Private Properties
+
+    /// Presenter with screen control.
     private var presenter: LoginViewOutput?
 
+    // MARK: - Initialization
+
+    /// Presenter with screen control.
+    /// - Parameter presenter: Presenter with screen control protocol
     init(_ presenter: LoginViewOutput) {
         super.init(nibName: nil, bundle: nil)
         self.presenter = presenter
@@ -73,10 +90,18 @@ class LoginViewController: UIViewController {
         passTextfield.delegate = self
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hiding the navbar
+        self.navigationController?.isNavigationBarHidden = true
+    }
+
     // MARK: - Setting UI Methods
 
+    /// Settings for the visual part.
     private func setupUI() {
-        let padding: CGFloat = 8
+        let padding: CGFloat = AppStyles.size.padding
+
         view.backgroundColor = AppStyles.color.background
 
         view.addSubview(signUpButton)
@@ -88,19 +113,19 @@ class LoginViewController: UIViewController {
             signUpButton.widthAnchor.constraint(equalToConstant: 32)
         ])
 
-        view.addSubview(logoLabel)
-        NSLayoutConstraint.activate([
-            logoLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            logoLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: -100)
-        ])
-
         view.addSubview(loginTextfield)
         NSLayoutConstraint.activate([
-            loginTextfield.topAnchor.constraint(equalTo: logoLabel.bottomAnchor, constant: 24),
+            loginTextfield.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             loginTextfield.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
             loginTextfield.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
                                                      constant: -padding),
-            loginTextfield.heightAnchor.constraint(equalToConstant: AppStyles.frame.height.textfield)
+            loginTextfield.heightAnchor.constraint(equalToConstant: AppStyles.size.height.textfield)
+        ])
+
+        view.addSubview(logoLabel)
+        NSLayoutConstraint.activate([
+            logoLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            logoLabel.bottomAnchor.constraint(equalTo: loginTextfield.topAnchor, constant: -(padding * 3))
         ])
 
         view.addSubview(passTextfield)
@@ -116,85 +141,70 @@ class LoginViewController: UIViewController {
             signInButton.topAnchor.constraint(equalTo: passTextfield.bottomAnchor, constant: padding),
             signInButton.leadingAnchor.constraint(equalTo: passTextfield.leadingAnchor),
             signInButton.trailingAnchor.constraint(equalTo: passTextfield.trailingAnchor),
-            signInButton.heightAnchor.constraint(equalTo: passTextfield.heightAnchor, multiplier: 1.2)
+            signInButton.heightAnchor.constraint(equalToConstant: AppStyles.size.height.button)
         ])
     }
 
     // MARK: - Private Methods
 
-    private func clickButtonAnimation(_ button: UIButton) {
-        if let button = button as? AppButton {
-            button.clickAnimation()
-        } else {
-            UIView.animate(withDuration: 0.20, delay: 0, options: [.autoreverse, .curveEaseInOut]) {
-                button.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
-            } completion: { _ in
-                button.transform = CGAffineTransform.identity
-            }
-        }
-    }
+    /// Animation of the logo and button if the fields are filled or unfilled.
+    /// - Parameter filled: Fields is filled.
+    private func filledFieldsAnimation(filled: Bool) {
+        // If the field is considered filled and the color changes with animation.
+        // The color is checked so that each time the text field changes, it doesn't change to the same color.
 
-    /// Full field animation.
-    private func completeFieldsAnimation() {
-        let completeColor = UIColor.gray
-        let defualtColor = UIColor.lightGray
-
-        guard let login = loginTextfield.text?.count, let pass = passTextfield.text?.count else { return }
-
-        // If the field contains more than 5, the field is considered filled and I change the color with animation.
-        // The color is checked so that for each change in the textfield, it will not be changed to the same color.
-
-        if login >= 5 && loginTextfield.textColor == defualtColor {
-            loginTextfield.animationComplete(true)
-        } else if login < 5 && loginTextfield.textColor != defualtColor {
-            loginTextfield.animationComplete(false)
-        }
-
-        if pass >= 5 && passTextfield.textColor == defualtColor {
-            passTextfield.animationComplete(true)
-        } else if pass < 5 && passTextfield.textColor != defualtColor {
-            passTextfield.animationComplete(false)
-        }
-
-        if login >= 5 && pass >= 5 && signInButton.isEnabled == false {
+        if filled && signInButton.isEnabled == false {
             UIView.animate(withDuration: 0.6, delay: 0, options: .curveEaseInOut) {
-                self.logoLabel.textColor = completeColor
+                self.logoLabel.textColor = AppStyles.color.complete
                 self.logoLabel.layer.shadowColor = UIColor.black.cgColor
                 self.logoLabel.layer.shadowRadius = 1.5
                 self.logoLabel.layer.shadowOpacity = 1.0
                 self.logoLabel.layer.shadowOffset = CGSize(width: 2, height: 2)
             }
 
-            self.signInButton.buttonIsEnable(enable: true)
-        } else if (login < 5 || pass < 5) && signInButton.isEnabled == true {
+            self.signInButton.setIsEnable(enable: true)
+        } else if !filled && signInButton.isEnabled == true {
             UIView.animate(withDuration: 0.6, delay: 0, options: .curveEaseInOut) {
-                self.logoLabel.textColor = defualtColor
+                self.logoLabel.textColor = AppStyles.color.incomplete
                 self.logoLabel.layer.shadowColor = .none
                 self.logoLabel.layer.shadowRadius = 0
                 self.logoLabel.layer.shadowOpacity = 0
                 self.logoLabel.layer.shadowOffset = .zero
             }
 
-            self.signInButton.buttonIsEnable(enable: false)
+            self.signInButton.setIsEnable(enable: false)
         }
     }
 
+    /// Checking the minimum number of characters for the fields and starting the animation if the field are filled or all fields filled
+    private func checkMinCharAnimation() {
+        let loginIsField = loginTextfield.checkMinCharAnimation()
+        let passIsField = passTextfield.checkMinCharAnimation()
+
+        filledFieldsAnimation(filled: loginIsField && passIsField)
+    }
+
+    /// Adds action for buttons.
     private func addButtonAction() {
         signUpButton.addTarget(self, action: #selector(signUpButtonAction), for: .touchUpInside)
         signInButton.addTarget(self, action: #selector(signInButtonAction), for: .touchUpInside)
     }
 
     // MARK: - Actions
-    
-    @objc private func signInButtonAction(_ sender: UIButton) {
-        clickButtonAnimation(sender)
+
+    /// Action button sign in.
+    /// - Parameter sender: Button sign in.
+    @objc private func signInButtonAction(_ sender: AppButton) {
+        sender.clickAnimation()
 
         guard let login = loginTextfield.text, let pass = passTextfield.text else { return }
         self.presenter?.viewSignIn(login, pass)
     }
 
+    /// Action button sign up.
+    /// - Parameter sender: Button sign up.
     @objc private func signUpButtonAction(_ sender: UIButton) {
-        clickButtonAnimation(sender)
+        self.presenter?.viewSignUp()
     }
 }
 
@@ -210,12 +220,16 @@ extension LoginViewController: LoginViewInput {
             self.present(alertContoller, animated: true)
         }
     }
+
+    func showLoadingButton(_ isLoading: Bool) {
+        signInButton.showLoadingIndicator(isLoading)
+    }
 }
 
 // MARK: - UITextFieldDelegate
 
 extension LoginViewController: UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        completeFieldsAnimation()
+        checkMinCharAnimation()
     }
 }
