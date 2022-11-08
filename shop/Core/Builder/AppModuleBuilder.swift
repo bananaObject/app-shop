@@ -13,7 +13,7 @@ enum AppModuleBuilder {
 
     /// Builds "sign in" screen + presenter + interactor + router .
     /// - Returns: Login controller.
-    static func loginBuild() -> (UIViewController & LoginViewInput) {
+    static func loginBuild() -> (UIViewController & LoginViewControllerInput) {
         let network = Network()
         let decoder = DecoderResponse()
 
