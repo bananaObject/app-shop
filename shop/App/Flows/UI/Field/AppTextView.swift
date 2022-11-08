@@ -136,8 +136,8 @@ class AppTextView: UITextView {
     }
 
     /// Check animation for the filled field.
-    func checkMinCharAnimation() -> Bool {
-        guard let count = text?.count else { return true }
+    func checkMinCharAnimation() {
+        guard let count = text?.count else { return }
 
         // An additional color check to ensure that old values are not overwritten with the same ones.
         if count >= minChar && textColor == incompleteColor {
@@ -160,26 +160,42 @@ class AppTextView: UITextView {
                 }
             }
         }
-
-        return count >= minChar
     }
 
-    /// Checks the maximum number of characters and starts the animation if the field is overflowing.
-    /// - Returns: The field is overflowing.
-    func checkMaxCharAnimation() -> Bool {
+    /// Checks the maximum number of characters.
+    ///  In case of prohibition it starts the animation.
+    /// - Returns: Is input allowed.
+    func checkInputPermission(_ character: String) -> Bool {
+        // Checking if a character is a backspace
+        if let char = character.cString(using: String.Encoding.utf8) {
+            let isBackSpace = strcmp(char, "\\b")
+            if isBackSpace == -92 {
+                return true
+            }
+        }
+
         guard let count = text?.count else { return true }
 
         // If max char is zero, then there is no limit.
-        if count >= maxChar && maxChar != 0 {
-            let animation = CABasicAnimation(keyPath: "position")
-            animation.duration = 0.03
-            animation.repeatCount = 4
-            animation.autoreverses = true
-            animation.fromValue = NSValue(cgPoint: CGPoint(x: center.x, y: center.y - 2))
-            animation.toValue = NSValue(cgPoint: CGPoint(x: center.x, y: center.y + 2))
-            layer.add(animation, forKey: "position")
+        // Check for a forbidden character or field overflow.
+        if count + character.count > maxChar && maxChar != 0 {
+            errorAnimation()
+            return false
         }
 
-        return count >= maxChar
+        return true
+    }
+
+    // MARK: - Private Methods
+
+    /// Field error shake animation.
+    private func errorAnimation() {
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.duration = 0.03
+        animation.repeatCount = 4
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: center.x, y: center.y - 2))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: center.x, y: center.y + 2))
+        layer.add(animation, forKey: "position")
     }
 }

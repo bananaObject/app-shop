@@ -146,8 +146,8 @@ class AppTextfield: UITextField {
     // MARK: - Public Methods
 
     /// Checks the minimum number of characters and starts the animation if the field is full.
-    func checkMinCharAnimation() -> Bool {
-        guard let count = text?.count else { return true }
+    func checkMinCharAnimation() {
+        guard let count = text?.count else { return }
 
         // An additional color check to ensure that old values are not overwritten with the same ones.
         if count >= minChar && textColor == incompleteColor {
@@ -182,33 +182,65 @@ class AppTextfield: UITextField {
                 }
             }
         }
-
-        return count >= minChar
     }
 
-    /// Checks the maximum number of characters and starts the animation if the field is overflowing.
-    /// - Returns: The field is overflowing.
-    func checkMaxCharAnimation() -> Bool {
+    /// Checks the maximum number of characters and unallowed characters,.
+    ///  In case of prohibition it starts the animation.
+    /// - Parameter character: Сharacter to check.
+    /// - Returns: Is input allowed.
+    func checkInputPermission(_ character: String) -> Bool {
+        // Checking if a character is a backspace
+        if let char = character.cString(using: String.Encoding.utf8) {
+            let isBackSpace = strcmp(char, "\\b")
+            if isBackSpace == -92 {
+                return true
+            }
+        }
+
         guard let count = text?.count else { return true }
 
         // If max char is zero, then there is no limit.
-        if count >= maxChar && maxChar != 0 {
-            let animation = CABasicAnimation(keyPath: "position")
-            animation.duration = 0.03
-            animation.repeatCount = 4
-            animation.autoreverses = true
-            animation.fromValue = NSValue(cgPoint: CGPoint(x: center.x, y: center.y - 2))
-            animation.toValue = NSValue(cgPoint: CGPoint(x: center.x, y: center.y + 2))
-            layer.add(animation, forKey: "position")
+        // Check for a forbidden character or field overflow.
+        if (count + character.count > maxChar && maxChar != 0) || checkWrongCharacter(character: character) {
+            errorAnimation()
             return false
         }
 
         return true
     }
-    
+
+    // MARK: - Private Methods
+
+    /// Checking if a character is prohibited.
+    /// - Parameter character: Сharacter to check.
+    /// - Returns: Whether the symbol is prohibited.
+    private func checkWrongCharacter(character: String) -> Bool {
+        guard let textContentType = textContentType else { return false }
+
+        switch textContentType {
+        case .creditCardNumber:
+            return !character.isNumbers
+        case .familyName:
+            return !character.isLetters
+        default:
+            return false
+        }
+    }
+
+    /// Field error shake animation.
+    private func errorAnimation() {
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.duration = 0.03
+        animation.repeatCount = 4
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: center.x, y: center.y - 2))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: center.x, y: center.y + 2))
+        layer.add(animation, forKey: "position")
+    }
+
     // MARK: - Actions
 
-    ///  Button action show passwor
+    ///  Button action show password.
     @objc private func actionSecureButton() {
         isSecureTextEntry.toggle()
         secureButton.isSelected.toggle()

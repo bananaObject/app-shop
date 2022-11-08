@@ -76,8 +76,8 @@ class LoginView: UIView {
         return (login, pass)
     }
 
-    /// The text field’s delegate.
-    var delegate: (UIViewController & UITextFieldDelegate)? {
+    /// The  delegate controller.
+    weak var delegate: (UIViewController & UITextFieldDelegate)? {
         willSet {
             loginTextfield.delegate = newValue
             passTextfield.delegate = newValue

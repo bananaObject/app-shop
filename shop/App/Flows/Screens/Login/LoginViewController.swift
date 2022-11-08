@@ -30,8 +30,10 @@ protocol LoginViewControllerOutput {
 
 /// "Sign in" screen with presenter.
 class LoginViewController: UIViewController {
+    // MARK: - Visual Components
+    
     /// Screen view.
-    var loginView: LoginView {
+    private var loginView: LoginView {
         // I do not like force unwrap, so i wrote such a thing.
         // I know that there will never be an error, but in order not to write force unwrap, i write like this.
         guard let view = self.view as? LoginView else {
@@ -65,7 +67,7 @@ class LoginViewController: UIViewController {
 
     override func loadView() {
         super.loadView()
-        // We change the view
+        // Change root view
         self.view = LoginView()
     }
 

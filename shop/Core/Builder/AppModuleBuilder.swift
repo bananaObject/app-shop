@@ -31,7 +31,7 @@ enum AppModuleBuilder {
 
     /// Builds "sign up" screen + presenter + interactor + router .
     /// - Returns: Registration controller.
-    static func signUpBuild() -> (UIViewController & SignUpViewInput) {
+    static func signUpBuild() -> (UIViewController & SignUpViewControllerInput) {
         let network = Network()
         let decoder = DecoderResponse()
 
