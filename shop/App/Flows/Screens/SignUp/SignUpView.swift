@@ -208,12 +208,13 @@ class SignUpView: UIView {
         if contentInsets == .zero {
             return
         }
-        
+    }
+
+    func scrollToActiveFrame() {
         if let viewFrame = activeFieldFrame {
             scrollView.scrollRectToVisible(viewFrame, animated: true)
-        } else {
+        } else if let viewFrame = stackView.arrangedSubviews.last?.frame {
             // If for some reason the required frame is missing, it will scroll to the very bottom
-            let viewFrame = stackView.arrangedSubviews.last?.frame ?? .zero
             scrollView.scrollRectToVisible(viewFrame, animated: true)
         }
     }

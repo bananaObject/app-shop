@@ -144,6 +144,7 @@ class SignUpViewController: UIViewController {
                                          bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom,
                                          right: 0)
         registrationView.setSize(contentInsets: contentInsets)
+        registrationView.scrollToActiveFrame()
     }
 
     /// Called when the keyboard is hide.
