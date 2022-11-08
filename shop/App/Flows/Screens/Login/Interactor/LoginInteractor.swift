@@ -9,6 +9,8 @@ import Foundation
 
 /// Interactor protocol for presenter "sign in". Contains business logic.
 protocol LoginInteractorInput {
+    /// Fetch async data.
+    /// The decoded models are written to the date property.
     func fetchAsync(_ data: RequestLogin,
                     completion: @escaping (Result<ResponseLoginModel, NetworkErrorModel>) -> Void)
 }
@@ -35,8 +37,6 @@ final class LoginInteractor: LoginInteractorInput {
 
     // MARK: - Public Methods
     
-    /// Fetch async data.
-    /// The decoded models are written to the date property.
     func fetchAsync(_ data: RequestLogin,
                     completion: @escaping (Result<ResponseLoginModel, NetworkErrorModel>
                     ) -> Void) {
