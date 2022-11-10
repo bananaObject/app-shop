@@ -1,0 +1,51 @@
+//
+//  AppModuleBuilder.swift
+//  shop
+//
+//  Created by Ke4a on 31.10.2022.
+//
+
+import UIKit
+
+/// Builder controllers.
+enum AppModuleBuilder {
+    // MARK: - Static Methods
+
+    /// Builds "sign in" screen + presenter + interactor + router .
+    /// - Returns: Login controller.
+    static func loginBuild() -> (UIViewController & LoginViewControllerInput) {
+        let network = Network()
+        let decoder = DecoderResponse()
+
+        let interactor = LoginInteractor(network, decoder)
+        let router = LoginRouter()
+        let presenter = LoginPresenter(interactor: interactor, router: router)
+        interactor.presenter = presenter
+
+        let controller = LoginViewController(presenter)
+
+        presenter.viewInput = controller
+        router.controller = controller
+
+        return controller
+    }
+
+    /// Builds "sign up" screen + presenter + interactor + router .
+    /// - Returns: Registration controller.
+    static func signUpBuild() -> (UIViewController & SignUpViewControllerInput) {
+        let network = Network()
+        let decoder = DecoderResponse()
+
+        let interactor = SignUpInteractor(network, decoder)
+        let router = SignUpRouter()
+        let presenter = SignUpPresenter(interactor: interactor, router: router)
+        interactor.presenter = presenter
+        
+        let controller = SignUpViewController(presenter: presenter)
+
+        presenter.viewInput = controller
+        router.controller = controller
+
+        return controller
+    }
+}
