@@ -23,7 +23,7 @@ protocol DecoderResponseProtocol: AnyObject {
     /// - Returns: Associated type model.
     func decode<U: Decodable>(data: Data, model: U.Type) async throws -> U
 
-    func decodeError(data: Data) throws -> ResponseErrorModel
+    func decodeError(data: Data) throws -> NetworkErrorModel
 }
 
 final class DecoderResponse: DecoderResponseProtocol {
@@ -37,7 +37,6 @@ final class DecoderResponse: DecoderResponseProtocol {
         return try decoder.decode(U.self, from: data)
     }
 
-
     @available(iOS 13.0.0, *)
     func decode<U: Decodable>(data: Data, model: U.Type) async throws -> U {
         let itemTask = Task<U, Error> {
@@ -47,7 +46,7 @@ final class DecoderResponse: DecoderResponseProtocol {
         return try await itemTask.value
     }
 
-    func decodeError(data: Data) throws -> ResponseErrorModel {
-        return try decoder.decode(ResponseErrorModel.self, from: data)
+    func decodeError(data: Data) throws -> NetworkErrorModel {
+        return try decoder.decode(NetworkErrorModel.self, from: data)
     }
 }
