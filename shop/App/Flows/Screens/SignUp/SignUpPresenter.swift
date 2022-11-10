@@ -1,5 +1,5 @@
 //
-//  SingUpPresenter.swift
+//  SignUpPresenter.swift
 //  shop
 //
 //  Created by Ke4a on 01.11.2022.
@@ -8,7 +8,7 @@
 import UIKit
 
 /// "Sign up" presenter. Manages user interaction and view.
-class SingUpPresenter {
+class SignUpPresenter {
     // MARK: - Public Properties
 
     /// Input view controller. For manages.
@@ -41,17 +41,7 @@ class SingUpPresenter {
     ///   - data: Request user info data.
     private func fetchRequest(_ data: RequestUserInfo) {
         viewInput?.showLoadingButton(true)
-        interactor.fetchAsync(data) { result in
-            DispatchQueue.main.async {
-                self.viewInput?.showLoadingButton(false)
-            }
-            switch result {
-            case .success(let success):
-                self.viewInput?.showAllert("Succes", success.message, false)
-            case .failure(let failure):
-                self.viewInput?.showAllert("Error", failure.reason ?? "unknown error", true)
-            }
-        }
+        interactor.fetchAsync(data)
     }
 
     /// Assembly of the request structure.
@@ -92,7 +82,7 @@ class SingUpPresenter {
 
 // MARK: - SignUpViewControllerOutput
 
-extension SingUpPresenter: SignUpViewControllerOutput {
+extension SignUpPresenter: SignUpViewControllerOutput {
     var components: [AppDataScreen.signUp.Component] {
         self.componentsData
     }
@@ -104,5 +94,21 @@ extension SingUpPresenter: SignUpViewControllerOutput {
     func viewSignUp() {
         let request = getRequestUserInfo()
         fetchRequest(request)
+    }
+}
+
+// MARK: - SignUpInteractorOutput
+
+extension SignUpPresenter: SignUpInteractorOutput {
+    func interactorSendResultFetch(_ result: Result<ResponseMessageModel, NetworkErrorModel>) {
+        DispatchQueue.main.async {
+            self.viewInput?.showLoadingButton(false)
+        }
+        switch result {
+        case .success(let success):
+            self.viewInput?.showAllert("Succes", success.message, false)
+        case .failure(let failure):
+            self.viewInput?.showAllert("Error", failure.reason ?? "unknown error", true)
+        }
     }
 }

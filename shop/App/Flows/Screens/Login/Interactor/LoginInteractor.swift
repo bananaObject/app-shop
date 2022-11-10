@@ -11,12 +11,23 @@ import Foundation
 protocol LoginInteractorInput {
     /// Fetch async data.
     /// The decoded models are written to the date property.
-    func fetchAsync(_ data: RequestLogin,
-                    completion: @escaping (Result<ResponseLoginModel, NetworkErrorModel>) -> Void)
+    func fetchAsync(_ data: RequestLogin)
+}
+
+/// Interactor protocol for presenter "sign in". Contains  interactor output logic.
+protocol LoginInteractorOutput {
+    /// Request result.
+    /// - Parameter result: Result response succes/fail
+    func interactorSendResultFetch(_ result: Result<ResponseLoginModel, NetworkErrorModel>)
 }
 
 /// Interactor for presenter "sign in". Contains business logic.
 final class LoginInteractor: LoginInteractorInput {
+    // MARK: - Public Properties
+
+    /// Controls the display of the view.
+    weak var presenter: (AnyObject & LoginInteractorOutput)?
+    
     // MARK: - Private Properties
 
     /// Network service.
@@ -37,9 +48,7 @@ final class LoginInteractor: LoginInteractorInput {
 
     // MARK: - Public Methods
     
-    func fetchAsync(_ data: RequestLogin,
-                    completion: @escaping (Result<ResponseLoginModel, NetworkErrorModel>
-                    ) -> Void) {
+    func fetchAsync(_ data: RequestLogin) {
         DispatchQueue.global(qos: .background).async {
             self.network.fetch(.login(data)) { [weak self] result in
                 guard let self = self else { return }
@@ -48,20 +57,20 @@ final class LoginInteractor: LoginInteractorInput {
                     case .success(let data):
                         // Decode response
                         let response = try self.decoder.decode(data: data, model: ResponseLoginModel.self)
-                        completion(.success(response))
+                        self.presenter?.interactorSendResultFetch(.success(response))
                     case .failure(let error):
                         switch error {
                         case .clientError(_, let data):
                             let decodeError = try self.decoder.decodeError(data: data)
-                            completion(.failure(decodeError))
+                            self.presenter?.interactorSendResultFetch(.failure(decodeError))
                         default:
-                            completion(.failure(
+                            self.presenter?.interactorSendResultFetch(.failure(
                                 .init(error: true, reason: error.customMessage)
                             ))
                         }
                     }
                 } catch {
-                    completion(.failure(
+                    self.presenter?.interactorSendResultFetch(.failure(
                         .init(error: true, reason: "App error")
                     ))
                 }

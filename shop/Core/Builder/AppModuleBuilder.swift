@@ -20,6 +20,7 @@ enum AppModuleBuilder {
         let interactor = LoginInteractor(network, decoder)
         let router = LoginRouter()
         let presenter = LoginPresenter(interactor: interactor, router: router)
+        interactor.presenter = presenter
 
         let controller = LoginViewController(presenter)
 
@@ -37,8 +38,9 @@ enum AppModuleBuilder {
 
         let interactor = SignUpInteractor(network, decoder)
         let router = SignUpRouter()
-        let presenter = SingUpPresenter(interactor: interactor, router: router)
-
+        let presenter = SignUpPresenter(interactor: interactor, router: router)
+        interactor.presenter = presenter
+        
         let controller = SignUpViewController(presenter: presenter)
 
         presenter.viewInput = controller

@@ -42,17 +42,7 @@ class LoginPresenter {
         let requestData = RequestLogin(login: login, password: pass)
 
         viewInput?.showLoadingButton(true)
-        interactor.fetchAsync(requestData) { result in
-            DispatchQueue.main.async {
-                self.viewInput?.showLoadingButton(false)
-            }
-            switch result {
-            case .success:
-                self.router.openUserInfo()
-            case .failure(let failure):
-                self.viewInput?.showError(failure.reason ?? "error")
-            }
-        }
+        interactor.fetchAsync(requestData)
     }
 }
 
@@ -65,5 +55,21 @@ extension LoginPresenter: LoginViewControllerOutput {
 
     func viewSignIn(_ login: String, _ pass: String) {
         fetchRequest(login: login, pass: pass)
+    }
+}
+
+// MARK: - LoginInteractorOutput
+
+extension LoginPresenter: LoginInteractorOutput {
+    func interactorSendResultFetch(_ result: Result<ResponseLoginModel, NetworkErrorModel>) {
+        DispatchQueue.main.async {
+            self.viewInput?.showLoadingButton(false)
+        }
+        switch result {
+        case .success:
+            self.router.openUserInfo()
+        case .failure(let failure):
+            self.viewInput?.showError(failure.reason ?? "error")
+        }
     }
 }

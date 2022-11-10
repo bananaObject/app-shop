@@ -10,8 +10,11 @@ import UIKit
 extension AppTextfield {
     /// Settings right view.
     enum RightView {
+        /// Adds a show password button to the right margin of the view.
         case secure
+        /// Adds a check mark to the right edge of the view. If the field is filled.
         case checkMark
+        /// Doesn't add anything.
         case none
     }
 }

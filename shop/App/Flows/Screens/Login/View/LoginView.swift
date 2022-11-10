@@ -10,7 +10,9 @@ import UIKit
 extension LoginView {
     /// Screen buttons.
     enum Button {
+        /// Button sign in. Responsible for Authorization.
         case signIn
+        /// Button sign up. Responsible for registration.
         case signUp
     }
 }
