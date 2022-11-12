@@ -19,6 +19,7 @@ enum AppDataScreen {
         static var eyeClose: String { "eyeClose" }
         static var signUp: String { "signUp" }
         static var checkMark: String { "checkMark" }
+        static var catalogProduct: String { "catalogProduct" }
     }
 }
 
@@ -98,5 +99,14 @@ extension AppDataScreen {
         static var loginPlaceholder: String { "Login" }
         static var passPlaceholder: String { "Password" }
         static var submitButton: String { "Sign in" }
+    }
+}
+
+// MARK: - Catalog
+
+extension AppDataScreen {
+    /// Data for "catalog" screen.
+    enum catalog {
+        static var tittleNav: String { "Catalog" }
     }
 }

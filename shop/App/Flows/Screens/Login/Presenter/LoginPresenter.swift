@@ -67,7 +67,7 @@ extension LoginPresenter: LoginInteractorOutput {
         }
         switch result {
         case .success:
-            self.router.openUserInfo()
+            self.router.openCatalog()
         case .failure(let failure):
             self.viewInput?.showError(failure.reason ?? "error")
         }
