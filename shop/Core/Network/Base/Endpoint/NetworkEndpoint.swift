@@ -22,10 +22,11 @@ enum NetworkEndpoint {
     case addReview(_ idProduct: Int, _ text: String)
     case deleteReview(_ idProduct: Int, _ idReview: Int)
     case basket
-    case addToBasket(_ idProduct: Int)
+    case addToBasket(_ idProduct: Int, _ quantity: Int)
     case removeItemToBasket(_ idProduct: Int)
     case removeAllToBasket
     case payBasket(_ creditCard: String)
+    case getUserInfo(_ token: String)
 }
 
 extension NetworkEndpoint: Endpoint {
@@ -52,6 +53,8 @@ extension NetworkEndpoint: Endpoint {
             return "/user/registration"
         case .changeUserData:
             return "/user/changeInfo"
+        case .getUserInfo:
+            return "/user/getUserInfo"
         case .catalog:
             return "/catalog"
         case .product(let id):
@@ -91,7 +94,8 @@ extension NetworkEndpoint: Endpoint {
                 .addToBasket,
                 .removeItemToBasket,
                 .removeAllToBasket,
-                .payBasket:
+                .payBasket,
+                .getUserInfo:
             return .POST
         }
     }
@@ -118,7 +122,8 @@ extension NetworkEndpoint: Endpoint {
                 .addToBasket,
                 .removeItemToBasket,
                 .removeAllToBasket,
-                .payBasket:
+                .payBasket,
+                .getUserInfo:
             return nil
         }
 
@@ -152,13 +157,18 @@ extension NetworkEndpoint: Endpoint {
         case .deleteReview(_, let id):
             base["auth_token"] = self.authToken
             base["id_review"] = id
-        case .addToBasket(let id),
-                .removeItemToBasket(let id):
+        case .removeItemToBasket(let id):
             base["auth_token"] = self.authToken
             base["id_product"] = id
+        case .addToBasket(let id, let qt):
+            base["auth_token"] = self.authToken
+            base["id_product"] = id
+            base["quantity"] = qt
         case .payBasket(let card):
             base["auth_token"] = self.authToken
             base["credit_card"] = card
+        case .getUserInfo:
+            base["auth_token"] = self.authToken
         case .catalog,
                 .product,
                 .reviews:
