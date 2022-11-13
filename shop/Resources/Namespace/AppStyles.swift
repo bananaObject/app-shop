@@ -45,3 +45,17 @@ extension AppStyles {
         }
     }
 }
+
+// MARK: - Layer
+
+extension AppStyles {
+    /// Application layer.
+    enum layer {
+        static var cornerRadius: CGFloat { 10 }
+
+        enum borderWidth {
+            static var incomplete: CGFloat { 0.7 }
+            static var complete: CGFloat { 1 }
+        }
+    }
+}

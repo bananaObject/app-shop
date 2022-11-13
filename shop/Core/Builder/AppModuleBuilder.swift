@@ -48,4 +48,23 @@ enum AppModuleBuilder {
 
         return controller
     }
+
+    /// Builds "catalog" screen + presenter + interactor + router .
+    /// - Returns: Catalog products controller.
+    static func catalogBuild() -> (UIViewController & CatalogViewControllerInput) {
+        let network = Network()
+        let decoder = DecoderResponse()
+
+        let interactor = CatalogInteractor(network: network, decoder: decoder)
+        let router = CatalogRouter()
+        let presenter = CatalogPresenter(interactor: interactor, router: router)
+        interactor.presenter = presenter
+
+        let controller = CatalogViewController(presenter: presenter)
+
+        presenter.viewInput = controller
+        router.controller = controller
+
+        return controller
+    }
 }

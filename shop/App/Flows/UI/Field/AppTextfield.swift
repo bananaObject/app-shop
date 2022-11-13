@@ -97,8 +97,8 @@ class AppTextfield: UITextField {
     private func setupUI() {
         setPadding(left: 8, right: 8)
         backgroundColor = AppStyles.color.background
-        layer.borderWidth = 0.7
-        layer.cornerRadius = 10
+        layer.borderWidth = AppStyles.layer.borderWidth.incomplete
+        layer.cornerRadius = AppStyles.layer.cornerRadius
         layer.borderColor = incompleteColor.cgColor
         textColor = incompleteColor
         autocapitalizationType = .none
@@ -165,7 +165,7 @@ class AppTextfield: UITextField {
 
                     self.textColor = self.completeColor
                     self.layer.borderColor = self.completeColor.cgColor
-                    self.layer.borderWidth = 1
+                    self.layer.borderWidth = AppStyles.layer.borderWidth.complete
                 }
             }
             // An additional color check to ensure that old values are not overwritten with the same ones.
@@ -181,7 +181,7 @@ class AppTextfield: UITextField {
 
                     self.textColor = self.incompleteColor
                     self.layer.borderColor = self.incompleteColor.cgColor
-                    self.layer.borderWidth = 0.7
+                    self.layer.borderWidth = AppStyles.layer.borderWidth.incomplete
                 }
             }
         }

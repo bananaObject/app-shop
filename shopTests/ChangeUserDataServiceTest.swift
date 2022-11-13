@@ -44,7 +44,7 @@ class ChangeUserDataServiceTest: XCTestCase {
 
         let expectationFirst = expectation(description: "ChangeUserDataServiceTestFirst")
 
-        service.fetchAsync()
+        service.fetchChangeInfoAsync()
         network.completionRequest = {
             expectationFirst.fulfill()
         }
@@ -55,7 +55,7 @@ class ChangeUserDataServiceTest: XCTestCase {
 
         let expectationSecond = expectation(description: "ChangeUserDataServiceTestSecond")
 
-        service.fetchAsync()
+        service.fetchChangeInfoAsync()
         network.completionRequest = {
             expectationSecond.fulfill()
         }

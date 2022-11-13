@@ -18,7 +18,7 @@ class SignUpRouter: SignUpRouterInput {
     // MARK: - Public Properties
     
     /// Screen controller.
-    weak var controller: (UIViewController & SignUpViewControllerInput)?
+    weak var controller: UIViewController?
 
     // MARK: - Public Methods
 
