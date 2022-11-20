@@ -15,9 +15,6 @@ class SignUpView: UIView {
     private lazy var scrollView: UIScrollView = {
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
-        let insets = UIEdgeInsets.zero
-        scroll.contentInset = insets
-        scroll.scrollIndicatorInsets = insets
         scroll.delaysContentTouches = false
         return scroll
     }()

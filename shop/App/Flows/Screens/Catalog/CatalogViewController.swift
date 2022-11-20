@@ -47,6 +47,10 @@ protocol CatalogViewControllerOutput {
     /// View call a request for basket data.
     func viewFetchBasket()
 
+    /// View call a open product info.
+    /// - Parameter index: Product index.
+    func viewOpenProductInfo(_ index: Int)
+
     /// Get the quantity of the item in the cart.
     /// - Parameter index: Index product.
     /// - Returns: Product Quantity.
@@ -96,13 +100,14 @@ class CatalogViewController: UIViewController {
         catalogView.setupUI()
         setupNavController()
         presenter?.viewFetchData(page: 1, category: nil)
-        presenter?.viewFetchBasket()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = false
-        
+
+        // Refresh the basket when they are returned to the screen or on first load.
+        presenter?.viewFetchBasket()
     }
 
     // MARK: - Setting UI Methods
@@ -140,6 +145,10 @@ extension CatalogViewController: CatalogViewControllerInput {
 // MARK: - CatalogViewOutput
 
 extension CatalogViewController: CatalogViewOutput {
+    func openProductInfo(_ index: Int) {
+        presenter?.viewOpenProductInfo(index)
+    }
+
     func getQtItem(_ index: Int) -> Int {
         presenter?.getQtToBasket(index) ?? 0
     }

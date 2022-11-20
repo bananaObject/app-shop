@@ -20,6 +20,8 @@ enum AppDataScreen {
         static var signUp: String { "signUp" }
         static var checkMark: String { "checkMark" }
         static var catalogProduct: String { "catalogProduct" }
+        static var minus: String { "minus" }
+        static var plus: String { "plus" }
     }
 }
 
@@ -108,5 +110,34 @@ extension AppDataScreen {
     /// Data for "catalog" screen.
     enum catalog {
         static var tittleNav: String { "Catalog" }
+    }
+}
+
+// MARK: - Product info
+
+extension AppDataScreen {
+    /// Data for "product info" screen.
+    enum productInfo {
+        /// Number of items per cell other products.
+        static var qtInCellOtherProducts: Int { 3 }
+
+        static var sectionTableView: [Сomponent] {
+            [ .info([.images]),
+              .info([.productName, .description]),
+              .info([.review]),
+              .otherProducts ]
+        }
+
+        enum Сomponent {
+            case info(_ components: [Info])
+            case otherProducts
+        }
+
+        enum Info {
+            case images
+            case productName
+            case review
+            case description
+        }
     }
 }

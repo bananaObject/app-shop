@@ -13,8 +13,9 @@ extension LoadingView {
         override init(frame: CGRect) {
             super.init(frame: frame)
             translatesAutoresizingMaskIntoConstraints = false
-            font = UIFont.systemFont(ofSize: 20)
             text = "●"
+            adjustsFontForContentSizeCategory = true
+            font = .preferredFont(forTextStyle: .title3)
             textColor = AppStyles.color.main
         }
 

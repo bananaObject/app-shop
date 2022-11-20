@@ -67,4 +67,25 @@ enum AppModuleBuilder {
 
         return controller
     }
+
+    /// Builds "Product info" screen + presenter + interactor + router .
+    /// - Returns: Product info controller.
+    /// - Parameters:
+    ///   - idProduct: Product id.
+    static func productInfoBuild(_ idProduct: Int) -> (UIViewController & ProductInfoViewControllerInput) {
+        let network = Network()
+        let decoder = DecoderResponse()
+
+        let interactor = ProductInfoInteractor(network: network, decoder: decoder)
+        let router = ProductInfoRouter()
+        let presenter = ProductInfoPresenter(interactor: interactor, router: router, product: idProduct)
+        interactor.presenter = presenter
+
+        let controller = ProductInfoViewController(presenter: presenter)
+
+        presenter.viewInput = controller
+        router.controller = controller
+
+        return controller
+    }
 }
