@@ -23,7 +23,7 @@ enum NetworkEndpoint {
     case deleteReview(_ idProduct: Int, _ idReview: Int)
     case basket
     case addToBasket(_ idProduct: Int, _ quantity: Int)
-    case removeItemToBasket(_ idProduct: Int)
+    case removeItemToBasket(_ idProduct: Int, _ quantity: Int)
     case removeAllToBasket
     case payBasket(_ creditCard: String)
     case getUserInfo(_ token: String)
@@ -157,9 +157,10 @@ extension NetworkEndpoint: Endpoint {
         case .deleteReview(_, let id):
             base["auth_token"] = self.authToken
             base["id_review"] = id
-        case .removeItemToBasket(let id):
+        case .removeItemToBasket(let id, let qt):
             base["auth_token"] = self.authToken
             base["id_product"] = id
+            base["quantity"] = qt
         case .addToBasket(let id, let qt):
             base["auth_token"] = self.authToken
             base["id_product"] = id

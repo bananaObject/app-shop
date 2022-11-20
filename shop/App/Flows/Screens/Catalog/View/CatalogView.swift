@@ -21,6 +21,10 @@ protocol CatalogViewOutput {
     /// - Parameter index: Index product in collection.
     /// - Parameter qt: Product quantity added to cart.
     func addProductToCart(_ index: Int, qt: Int)
+
+    /// Open product info.
+    /// - Parameter index: Index product.
+    func openProductInfo(_ index: Int)
 }
 
 /// View "Catalog".
@@ -145,6 +149,10 @@ extension CatalogView: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension CatalogView: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        controller?.openProductInfo(indexPath.item)
+    }
+    
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath

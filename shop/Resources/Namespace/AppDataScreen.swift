@@ -20,6 +20,8 @@ enum AppDataScreen {
         static var signUp: String { "signUp" }
         static var checkMark: String { "checkMark" }
         static var catalogProduct: String { "catalogProduct" }
+        static var minus: String { "minus" }
+        static var plus: String { "plus" }
     }
 }
 

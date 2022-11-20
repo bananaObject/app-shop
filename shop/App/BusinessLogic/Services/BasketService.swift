@@ -42,7 +42,7 @@ final class BasketService {
         let id = self.product.id
 
         DispatchQueue.global(qos: .background).async {
-            self.network.fetch(.removeItemToBasket(id)) {
+            self.network.fetch(.removeItemToBasket(id, 0)) {
                 // Отключил пока вызывается в appDelegate, так как там не сохраняется
                 // [weak self]
                 result in
