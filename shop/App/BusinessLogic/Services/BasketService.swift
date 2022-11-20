@@ -30,7 +30,8 @@ final class BasketService {
                                             category: 1,
                                             name: "Товар 1",
                                             price: 60217,
-                                            description: "Мощный товар 1")
+                                            description: "Мощный товар 1",
+                                            lastReview: nil)
         self.creditCard = "9872389-2424-234224-234"
     }
 
