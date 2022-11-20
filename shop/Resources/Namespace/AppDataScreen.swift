@@ -112,3 +112,32 @@ extension AppDataScreen {
         static var tittleNav: String { "Catalog" }
     }
 }
+
+// MARK: - Product info
+
+extension AppDataScreen {
+    /// Data for "product info" screen.
+    enum productInfo {
+        /// Number of items per cell other products.
+        static var qtInCellOtherProducts: Int { 3 }
+
+        static var sectionTableView: [Сomponent] {
+            [ .info([.images]),
+              .info([.productName, .description]),
+              .info([.review]),
+              .otherProducts ]
+        }
+
+        enum Сomponent {
+            case info(_ components: [Info])
+            case otherProducts
+        }
+
+        enum Info {
+            case images
+            case productName
+            case review
+            case description
+        }
+    }
+}
