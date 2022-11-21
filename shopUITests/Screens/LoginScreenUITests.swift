@@ -119,9 +119,15 @@ final class LoginScreenUITests: XCTestCase {
         let loginField = viewApp.textFields["loginTextfield"].firstMatch
         let passField = viewApp.secureTextFields["passTextfield"].firstMatch
 
+        XCTAssertTrue(loginField.exists)
+        XCTAssertTrue(passField.exists)
+
         loginField.tap()
         loginField.typeText(login)
         passField.tap()
+        // If error "Failed to synthesize event: Neither element nor any descendant has keyboard focus."
+        // Run the command once "defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0".
+        // Disable by default hardware keyboard.
         passField.typeText(pass)
     }
 }
