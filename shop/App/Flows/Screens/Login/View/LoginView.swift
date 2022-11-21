@@ -141,6 +141,9 @@ class LoginView: UIView {
             signInButton.trailingAnchor.constraint(equalTo: passTextfield.trailingAnchor),
             signInButton.heightAnchor.constraint(equalToConstant: AppStyles.size.height.button)
         ])
+
+        // I'm running here because lazy variables, so as not to run at the init.
+        setUITests()
     }
 
     // MARK: - Private Methods
@@ -202,5 +205,15 @@ class LoginView: UIView {
 
             self.signInButton.setIsEnable(enable: false)
         }
+    }
+
+    /// Set identifier for components.
+    private func setUITests() {
+        self.accessibilityIdentifier = "loginView"
+        logoLabel.accessibilityIdentifier = "logoLabel"
+        loginTextfield.accessibilityIdentifier = "loginTextfield"
+        passTextfield.accessibilityIdentifier = "passTextfield"
+        signInButton.accessibilityIdentifier = "signInButton"
+        signUpButton.accessibilityIdentifier = "signUpButton"
     }
 }

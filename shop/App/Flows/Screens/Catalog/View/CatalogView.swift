@@ -105,9 +105,11 @@ class CatalogView: UIView {
             loadingView.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
             loadingView.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor)
         ])
+
+        setUITests()
     }
 
-    // MARK: - Private Methods
+    // MARK: - Public Methods
 
     /// Reload data collectionView
     func reloadCollectionView() {
@@ -119,6 +121,14 @@ class CatalogView: UIView {
     func loadingAnimation(_ isEnable: Bool) {
         loadingView.animation(isEnable)
     }
+
+    // MARK: - Private Methods
+
+    /// Set identifier for components.
+    private func setUITests() {
+        self.accessibilityIdentifier = "catalogView"
+    }
+    
 }
 
 // MARK: - UICollectionViewDataSource
