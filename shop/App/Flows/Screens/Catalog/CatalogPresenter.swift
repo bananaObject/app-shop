@@ -51,6 +51,11 @@ class CatalogPresenter {
 // MARK: - CatalogViewControllerOutput
 
 extension CatalogPresenter: CatalogViewControllerOutput {
+    func viewOpenProductInfo(_ index: Int) {
+        let product = data[index]
+        router.openProductInfo(product.id)
+    }
+
     func viewFetchBasket() {
         viewInput?.loadingAnimation(true)
         interactor.fetchBasketAsync()

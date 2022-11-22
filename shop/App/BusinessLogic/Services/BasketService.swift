@@ -30,7 +30,8 @@ final class BasketService {
                                             category: 1,
                                             name: "Товар 1",
                                             price: 60217,
-                                            description: "Мощный товар 1")
+                                            description: "Мощный товар 1",
+                                            lastReview: nil)
         self.creditCard = "9872389-2424-234224-234"
     }
 
@@ -41,7 +42,7 @@ final class BasketService {
         let id = self.product.id
 
         DispatchQueue.global(qos: .background).async {
-            self.network.fetch(.removeItemToBasket(id)) {
+            self.network.fetch(.removeItemToBasket(id, 0)) {
                 // Отключил пока вызывается в appDelegate, так как там не сохраняется
                 // [weak self]
                 result in

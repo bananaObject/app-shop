@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
 
-        let controller = AppModuleBuilder.loginBuild()
+        let controller = AppModuleBuilder.catalogBuild()
         controller.modalPresentationStyle = .fullScreen
 
         window?.rootViewController = UINavigationController(rootViewController: controller)
@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: - Core Data stack
+
 
     lazy var persistentContainer: NSPersistentContainer = {
         /*
