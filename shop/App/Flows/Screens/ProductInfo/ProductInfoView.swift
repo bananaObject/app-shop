@@ -39,56 +39,17 @@ class ProductInfoView: UIView {
         return view
     }()
 
-    private lazy var footer: UIStackView = {
-        let view = UIStackView()
+    private lazy var footer: UIView = {
+        let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.spacing = 8
-        view.distribution = .fillEqually
-        view.backgroundColor = AppStyles.color.background
-        let padding = AppStyles.size.padding * 2
-        view.layoutMargins = UIEdgeInsets(top: padding,
-                                          left: padding,
-                                          bottom: padding,
-                                          right: padding)
-        view.isLayoutMarginsRelativeArrangement = true
         view.backgroundColor = AppStyles.color.background
         return view
     }()
 
-    private lazy var removeItemButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        let image = UIImage(named: AppDataScreen.image.minus)
-        button.setImage(image, for: .normal)
-        button.imageView?.contentMode = .scaleAspectFit
-        button.layer.cornerRadius = AppStyles.layer.cornerRadius
-        button.backgroundColor = AppStyles.color.complete
-        button.tintColor = AppStyles.color.background
-        return button
-    }()
-
-    private lazy var qtLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.font = .preferredFont(forTextStyle: .largeTitle)
-        label.adjustsFontForContentSizeCategory = true
-        label.textColor = AppStyles.color.complete
-        label.backgroundColor = AppStyles.color.background
-        return label
-    }()
-
-    private lazy var addItemButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        let image = UIImage(named: AppDataScreen.image.plus)
-        button.setImage(image, for: .normal)
-        button.imageView?.contentMode = .scaleAspectFit
-        button.layer.cornerRadius = AppStyles.layer.cornerRadius
-        button.backgroundColor = AppStyles.color.complete
-        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0)
-        button.tintColor = AppStyles.color.background
-        return button
+    private lazy var qtView: QtView = {
+        let view = QtView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     // MARK: - Private Properties
@@ -104,10 +65,6 @@ class ProductInfoView: UIView {
     init(_ controller: UIViewController & ProductInfoViewOutput) {
         super.init(frame: .zero)
         self.controller = controller
-
-        tableView.dataSource = self
-        tableView.delegate = self
-        registerCell()
     }
     
     required init?(coder: NSCoder) {
@@ -118,21 +75,29 @@ class ProductInfoView: UIView {
 
     /// Settings for the visual part.
     func setupUI() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        registerCell()
+        
         backgroundColor = AppStyles.color.background
         tableView.showsVerticalScrollIndicator = false
-
-        footer.addArrangedSubview(removeItemButton)
-        footer.addArrangedSubview(qtLabel)
-        footer.addArrangedSubview(addItemButton)
 
         addSubview(footer)
         NSLayoutConstraint.activate([
             footer.bottomAnchor.constraint(equalTo: bottomAnchor),
             footer.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             footer.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            footer.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.15)
+            footer.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.12)
         ])
-        
+
+        footer.addSubview(qtView)
+        NSLayoutConstraint.activate([
+            qtView.centerYAnchor.constraint(equalTo: footer.centerYAnchor),
+            qtView.centerXAnchor.constraint(equalTo: footer.centerXAnchor),
+            qtView.widthAnchor.constraint(equalTo: footer.widthAnchor, multiplier: 0.8),
+            qtView.heightAnchor.constraint(equalTo: footer.heightAnchor, multiplier: 0.6)
+        ])
+        qtView.addTarget(self, actionAdd: #selector(addProductAction), actionRemove: #selector(removeProductAction))
 
         addSubview(tableView)
         NSLayoutConstraint.activate([
@@ -151,9 +116,6 @@ class ProductInfoView: UIView {
             loadingView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             loadingView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
         ])
-
-        removeItemButton.addTarget(self, action: #selector(removeProductAction), for: .touchUpInside)
-        addItemButton.addTarget(self, action: #selector(addProductAction), for: .touchUpInside)
     }
 
     /// Registration cell.
@@ -268,15 +230,7 @@ class ProductInfoView: UIView {
     /// - Parameter sendQt: Fetch quantity on server.
     private func updateQt(_ sendQt: Bool) {
         guard let qt = self.qt else { return }
-        qtLabel.text = "x \(qt)"
-
-        if qt > 0 && !removeItemButton.isEnabled {
-            removeItemButton.isEnabled = true
-            removeItemButton.backgroundColor = AppStyles.color.complete
-        } else if qt <= 0 && removeItemButton.isEnabled {
-            removeItemButton.isEnabled = false
-            removeItemButton.backgroundColor = AppStyles.color.incomplete
-        }
+        qtView.setQt(qt)
 
         // Devounce function
         if sendQt {
