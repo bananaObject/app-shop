@@ -36,9 +36,9 @@ class BasketPresenter {
     }
 }
 
-// MARK: - PaymentMoackViewControllerDelegate
+// MARK: - PaymentMockViewControllerDelegate
 
-extension BasketPresenter: PaymentMoackViewControllerDelegate {
+extension BasketPresenter: PaymentMockViewControllerDelegate {
     func paymentIsSucces(_ isSucces: Bool) {
         DispatchQueue.main.async {
             if isSucces {

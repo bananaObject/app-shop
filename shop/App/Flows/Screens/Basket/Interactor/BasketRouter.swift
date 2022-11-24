@@ -11,7 +11,7 @@ import UIKit
 protocol BasketRouterInput {
     /// Open form sheet payment.
     /// - Parameter delegate: Delegate class.
-    func openPaymentFormSheet(_ delegate: PaymentMoackViewControllerDelegate)
+    func openPaymentFormSheet(_ delegate: PaymentMockViewControllerDelegate)
 }
 
 /// Router for presenter "Basket". Navigating between screens.
@@ -21,8 +21,8 @@ class BasketRouter: BasketRouterInput {
     /// Screen controller.
     weak var controller: UIViewController?
 
-    func openPaymentFormSheet(_ delegate: PaymentMoackViewControllerDelegate) {
-        let vc = PaymentMoackViewController()
+    func openPaymentFormSheet(_ delegate: PaymentMockViewControllerDelegate) {
+        let vc = PaymentMockViewController()
         vc.modalPresentationStyle = .formSheet
         vc.delegate = delegate
         controller?.present(vc, animated: true)

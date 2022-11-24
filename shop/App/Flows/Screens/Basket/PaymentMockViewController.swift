@@ -1,5 +1,5 @@
 //
-//  PayViewController.swift
+//  PaymentMockViewController.swift
 //  shop
 //
 //  Created by Ke4a on 23.11.2022.
@@ -8,14 +8,14 @@
 import UIKit
 import WebKit
 
-protocol PaymentMoackViewControllerDelegate: AnyObject {
+protocol PaymentMockViewControllerDelegate: AnyObject {
     ///  Payment is successful
     func paymentIsSucces(_ isSucces: Bool)
 }
 
-/// Mok payment basket, only instead of entering a card and 3ds secure.
+/// Mock payment basket, only instead of entering a card and 3ds secure.
 ///  You need to see three dogs and then the payment will be credited.
-class PaymentMoackViewController: UIViewController {
+class PaymentMockViewController: UIViewController {
     // MARK: - Visual Components
 
     private lazy var webView: WKWebView = {
@@ -39,7 +39,7 @@ class PaymentMoackViewController: UIViewController {
     // MARK: - Public Properties
 
     /// Controller delegate.
-    weak var delegate: (AnyObject & PaymentMoackViewControllerDelegate)?
+    weak var delegate: (AnyObject & PaymentMockViewControllerDelegate)?
 
     // MARK: - Private Properties
 
@@ -90,7 +90,6 @@ class PaymentMoackViewController: UIViewController {
             payButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.1)
         ])
 
-
         view.addSubview(webView)
         NSLayoutConstraint.activate([
             webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
@@ -113,6 +112,7 @@ class PaymentMoackViewController: UIViewController {
 
     /// Refreshes the page until the payment terms are met.
     @objc private func actionPayButton() {
+        payButton.clickAnimation()
         webView.reload()
         payButton.setIsEnable(enable: false)
         // If the dogs for payment are looked at, then the exit.
@@ -124,7 +124,7 @@ class PaymentMoackViewController: UIViewController {
 
 // MARK: - WKNavigationDelegate
 
-extension PaymentMoackViewController: WKNavigationDelegate {
+extension PaymentMockViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void

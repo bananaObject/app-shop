@@ -19,7 +19,7 @@
 		F22612B3292CF64D00B6F23F /* QtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F22612B2292CF64D00B6F23F /* QtView.swift */; };
 		F23A6B65291517FB00C146DB /* AppLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23A6B64291517FB00C146DB /* AppLabelView.swift */; };
 		F23D98B3292EBB780051C56D /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23D98B2292EBB780051C56D /* Int.swift */; };
-		F23D98B6292EC03F0051C56D /* PaymentMoackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23D98B5292EC03F0051C56D /* PaymentMoackViewController.swift */; };
+		F23D98B6292EC03F0051C56D /* PaymentMockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23D98B5292EC03F0051C56D /* PaymentMockViewController.swift */; };
 		F23EB26F28D33DF300392421 /* BasketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23EB26E28D33DF300392421 /* BasketService.swift */; };
 		F23EB27228D33EEE00392421 /* ResponseBasketModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23EB27128D33EEE00392421 /* ResponseBasketModel.swift */; };
 		F241E5E129202C3900709F7A /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F241E5E029202C3900709F7A /* LoadingView.swift */; };
@@ -109,7 +109,7 @@
 		F22612B2292CF64D00B6F23F /* QtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QtView.swift; sourceTree = "<group>"; };
 		F23A6B64291517FB00C146DB /* AppLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLabelView.swift; sourceTree = "<group>"; };
 		F23D98B2292EBB780051C56D /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
-		F23D98B5292EC03F0051C56D /* PaymentMoackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMoackViewController.swift; sourceTree = "<group>"; };
+		F23D98B5292EC03F0051C56D /* PaymentMockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMockViewController.swift; sourceTree = "<group>"; };
 		F23EB26E28D33DF300392421 /* BasketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketService.swift; sourceTree = "<group>"; };
 		F23EB27128D33EEE00392421 /* ResponseBasketModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseBasketModel.swift; sourceTree = "<group>"; };
 		F241E5E029202C3900709F7A /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
@@ -356,7 +356,7 @@
 		F23D98B4292EC0170051C56D /* Payment */ = {
 			isa = PBXGroup;
 			children = (
-				F23D98B5292EC03F0051C56D /* PaymentMoackViewController.swift */,
+				F23D98B5292EC03F0051C56D /* PaymentMockViewController.swift */,
 			);
 			name = Payment;
 			path = Basket;
@@ -917,7 +917,7 @@
 				F253C6EF28CC915500F86E82 /* NetworkErrorModel.swift in Sources */,
 				F259296C28C5E0040075E881 /* LogoutService.swift in Sources */,
 				F297190E28C89AA500F05021 /* ResponseProductModel.swift in Sources */,
-				F23D98B6292EC03F0051C56D /* PaymentMoackViewController.swift in Sources */,
+				F23D98B6292EC03F0051C56D /* PaymentMockViewController.swift in Sources */,
 				F28A71332928C99600EFE661 /* OtherProductView.swift in Sources */,
 				F2DF277C291023AD0060AE2B /* LoginRouter.swift in Sources */,
 				F284ECCD291D40E000392FE6 /* CatalogPresenter.swift in Sources */,

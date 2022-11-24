@@ -148,7 +148,7 @@ extension CatalogView: UICollectionViewDataSource {
         if let product = controller?.data[indexPath.item] {
             let qt = controller?.getQtItem(indexPath.item)
 
-            cell.configure(name: product.name, price: product.price, index: indexPath.item, quantity: qt)
+            cell.configure(name: product.name, price: product.price, index: indexPath.item, quantity: qt ?? 0)
             cell.delegate = self
         }
 
