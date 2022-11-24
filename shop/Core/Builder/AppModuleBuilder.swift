@@ -68,6 +68,25 @@ enum AppModuleBuilder {
         return controller
     }
 
+    /// Builds "basket" screen + presenter + interactor + router .
+    /// - Returns: Basket controller.
+    static func basketBuild() -> (UIViewController & BasketViewControllerInput) {
+        let network = Network()
+        let decoder = DecoderResponse()
+
+        let interactor = BasketInteractor(network: network, decoder: decoder)
+        let router = BasketRouter()
+        let presenter = BasketPresenter(interactor: interactor, router: router)
+        interactor.presenter = presenter
+
+        let controller = BasketViewController(presenter: presenter)
+
+        presenter.viewInput = controller
+        router.controller = controller
+
+        return controller
+    }
+
     /// Builds "Product info" screen + presenter + interactor + router .
     /// - Returns: Product info controller.
     /// - Parameters:

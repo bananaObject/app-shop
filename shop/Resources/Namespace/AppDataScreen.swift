@@ -22,6 +22,10 @@ enum AppDataScreen {
         static var catalogProduct: String { "catalogProduct" }
         static var minus: String { "minus" }
         static var plus: String { "plus" }
+        static var trash: String { "trash" }
+        static var cross: String { "cross" }
+        static var basket: String { "basket" }
+        static var payment: String { "payment" }
     }
 }
 
@@ -139,5 +143,16 @@ extension AppDataScreen {
             case review
             case description
         }
+    }
+}
+
+// MARK: - Basket
+
+extension AppDataScreen {
+    /// Data for "catalog" screen.
+    enum basket {
+        static var tittleNav: String { "Basket" }
+        /// Cell on screen.
+        static var cellOnscreen: CGFloat { 7 }
     }
 }

@@ -9,10 +9,12 @@ import UIKit
 
 /// Router protocol for presenter "Catalog". Navigating between screens.
 protocol CatalogRouterInput {
-    /// Open the screen with registration through the navigation controller.
+    /// Open the screen with product info through the navigation controller.
     /// - Parameters:
     ///   - id: Product id.
     func openProductInfo(_ id: Int)
+    /// Open the screen with basket through the navigation controller.
+    func openBasket()
 }
 
 /// Router for presenter "Catalog". Navigating between screens.
@@ -24,6 +26,12 @@ class CatalogRouter: CatalogRouterInput {
 
     func openProductInfo(_ id: Int) {
         let vc = AppModuleBuilder.productInfoBuild(id)
+        vc.modalPresentationStyle = .fullScreen
+        controller?.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    func openBasket() {
+        let vc = AppModuleBuilder.basketBuild()
         vc.modalPresentationStyle = .fullScreen
         controller?.navigationController?.pushViewController(vc, animated: true)
     }

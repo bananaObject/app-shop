@@ -7,28 +7,26 @@
 
 import UIKit
 
-/// Item counter with buttons.
+/// Item counter with buttons. With the ability to fill buttons.
 class QtView: UIStackView {
     // MARK: - Visual Components
 
     private lazy var removeItemButton: UIButton = {
         let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: AppDataScreen.image.minus)
         button.setImage(image, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
+        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0)
         button.layer.cornerRadius = AppStyles.layer.cornerRadius
-        button.backgroundColor = AppStyles.color.complete
-        button.tintColor = AppStyles.color.background
         return button
     }()
 
     private lazy var qtLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.baselineAdjustment = .alignCenters
         label.textAlignment = .center
         label.font = .preferredFont(forTextStyle: .largeTitle)
-        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         label.textColor = AppStyles.color.complete
         label.backgroundColor = AppStyles.color.background
         return label
@@ -36,22 +34,37 @@ class QtView: UIStackView {
 
     private lazy var addItemButton: UIButton = {
         let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: AppDataScreen.image.plus)
         button.setImage(image, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.layer.cornerRadius = AppStyles.layer.cornerRadius
-        button.backgroundColor = AppStyles.color.complete
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0)
-        button.tintColor = AppStyles.color.background
         return button
     }()
+
+    // MARK: - Public Properties
+
+    /// Button background fill,
+    var isFillButton: Bool = false {
+        didSet {
+            checkFillButton()
+        }
+    }
+
+    // MARK: - Private Properties
+
+    /// Maximum amount.
+    private var limitMax: Int = 99
+    /// Minimal amount.
+    private var limitMin: Int = 0
 
     // MARK: - Initialization
 
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupUI()
+        setQt(0)
+        checkFillButton()
     }
 
     required init(coder: NSCoder) {
@@ -62,21 +75,31 @@ class QtView: UIStackView {
 
     /// Settings visual components.
     private func setupUI() {
+        backgroundColor = AppStyles.color.background
         spacing = 8
         translatesAutoresizingMaskIntoConstraints = false
         distribution = .fillEqually
-        backgroundColor = AppStyles.color.background
         addArrangedSubview(removeItemButton)
         addArrangedSubview(qtLabel)
         addArrangedSubview(addItemButton)
     }
+
     // MARK: - Public Methods
 
     /// Changes the  of units with a check for disabling buttons if beyond the limits.
     /// - Parameter qt: Product quantity.
     func setQt(_ qt: Int) {
-        qtLabel.text = "x \(qt)"
+        qtLabel.text = "x\(qt)"
         limitCheckQt(qt)
+    }
+
+    /// Set product quantity limits. The default is 0-99.
+    /// - Parameters:
+    ///   - min:Max quantity.
+    ///   - max: Min quantity.
+    func setLimits(_ min: Int, _ max: Int) {
+        limitMax = max
+        limitMin = min
     }
 
     /// Adding an action to the add/remove product buttons
@@ -91,15 +114,56 @@ class QtView: UIStackView {
 
     // MARK: - Private Methods
 
+    /// Checking whether to fill the buttons.
+    private func checkFillButton() {
+        removeItemButton.backgroundColor = isFillButton ?
+        AppStyles.color.complete : AppStyles.color.background
+        removeItemButton.tintColor = isFillButton ?
+        AppStyles.color.background : AppStyles.color.complete
+
+        addItemButton.backgroundColor = isFillButton ?
+        AppStyles.color.complete : AppStyles.color.background
+        addItemButton.tintColor = isFillButton ?
+        AppStyles.color.background : AppStyles.color.complete
+    }
+
     /// Checking the limit of items, to disable buttons.
     /// - Parameter qt: Product qt.
     private func limitCheckQt(_ qt: Int) {
-        if qt > 0 && !removeItemButton.isEnabled {
+        if qt > limitMin && !removeItemButton.isEnabled {
             removeItemButton.isEnabled = true
-            removeItemButton.backgroundColor = AppStyles.color.complete
-        } else if qt <= 0 && removeItemButton.isEnabled {
+
+            if isFillButton {
+                removeItemButton.backgroundColor = AppStyles.color.complete
+            } else {
+                removeItemButton.tintColor = AppStyles.color.complete
+            }
+        } else if qt <= limitMin && removeItemButton.isEnabled {
             removeItemButton.isEnabled = false
-            removeItemButton.backgroundColor = AppStyles.color.incomplete
+
+            if isFillButton {
+                removeItemButton.backgroundColor = AppStyles.color.incomplete
+            } else {
+                removeItemButton.tintColor = AppStyles.color.incomplete
+            }
+        }
+
+        if qt < limitMax && !addItemButton.isEnabled {
+            addItemButton.isEnabled = true
+
+            if isFillButton {
+                addItemButton.backgroundColor = AppStyles.color.complete
+            } else {
+                addItemButton.tintColor = AppStyles.color.complete
+            }
+        } else if qt >= limitMax && addItemButton.isEnabled {
+            addItemButton.isEnabled = false
+            
+            if isFillButton {
+                addItemButton.backgroundColor = AppStyles.color.incomplete
+            } else {
+                addItemButton.tintColor = AppStyles.color.incomplete
+            }
         }
     }
 }

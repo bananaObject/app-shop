@@ -51,6 +51,10 @@ class CatalogPresenter {
 // MARK: - CatalogViewControllerOutput
 
 extension CatalogPresenter: CatalogViewControllerOutput {
+    func viewOpenBasket() {
+        router.openBasket()
+    }
+
     func viewOpenProductInfo(_ index: Int) {
         let product = data[index]
         router.openProductInfo(product.id)
@@ -71,6 +75,10 @@ extension CatalogPresenter: CatalogViewControllerOutput {
         }
 
         interactor.fetchAddItemToBasketAsync(id, qt: qt)
+    }
+    
+    var basketIsEmpty: Bool {
+        basket?.isEmpty ?? true
     }
 
     var data: [ResponseProductModel] {

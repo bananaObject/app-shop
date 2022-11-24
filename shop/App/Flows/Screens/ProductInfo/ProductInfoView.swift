@@ -48,6 +48,7 @@ class ProductInfoView: UIView {
 
     private lazy var qtView: QtView = {
         let view = QtView()
+        view.isFillButton = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

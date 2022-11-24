@@ -48,7 +48,7 @@ class CatalogCollectionViewCell: UICollectionViewCell {
         label.font = .preferredFont(forTextStyle: .headline)
         label.adjustsFontForContentSizeCategory = true
         label.textColor = AppStyles.color.main
-        label.textAlignment = .center
+        label.textAlignment = .right
         return label
     }()
 
@@ -192,7 +192,11 @@ class CatalogCollectionViewCell: UICollectionViewCell {
     ///   - price: Product price.
     func configure(name: String, price: Int, index: Int, quantity: Int? = nil) {
         nameLabel.text = name
-        priceLabel.text = "\(price) ₽"
+        if let formatString = price.formatThousandSeparator() {
+            priceLabel.text = "\(formatString) ₽"
+        } else {
+            priceLabel.text = "\(price) ₽"
+        }
         // Add index product to tag
         tag = index
         oldQuantity = quantity ?? oldQuantity

@@ -74,7 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func selectController(_ arguments: [String] ) -> UIViewController {
         let controller: UIViewController
 
-        if arguments.contains(AppUITestsKey.loginView)  {
+        if arguments.contains(AppUITestsKey.loginView) {
             controller = AppModuleBuilder.loginBuild()
         } else {
             controller = AppModuleBuilder.catalogBuild()
