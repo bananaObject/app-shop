@@ -31,6 +31,8 @@ protocol CatalogViewControllerOutput {
     var currentPage: Int { get }
     /// Data catalogs.
     var data: [ResponseProductModel] { get }
+    /// Basket is empty.
+    var basketIsEmpty: Bool { get }
     
     /// View call a request for data.
     /// - Parameters:
@@ -46,6 +48,13 @@ protocol CatalogViewControllerOutput {
 
     /// View call a request for basket data.
     func viewFetchBasket()
+
+    /// View call open screen basket.
+    func viewOpenBasket()
+
+    /// View call a open product info.
+    /// - Parameter index: Product index.
+    func viewOpenProductInfo(_ index: Int)
 
     /// Get the quantity of the item in the cart.
     /// - Parameter index: Index product.
@@ -96,29 +105,67 @@ class CatalogViewController: UIViewController {
         catalogView.setupUI()
         setupNavController()
         presenter?.viewFetchData(page: 1, category: nil)
-        presenter?.viewFetchBasket()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = false
-        
+
+        // Refresh the basket when they are returned to the screen or on first load.
+        presenter?.viewFetchBasket()
     }
 
     // MARK: - Setting UI Methods
 
     /// Settings navbar controller.
     private func setupNavController() {
+        guard let navBar = navigationController?.navigationBar else { return }
+
         navigationItem.title = AppDataScreen.catalog.tittleNav
 
-        navigationController?.navigationBar.tintColor = AppStyles.color.complete
-        navigationController?.navigationBar.backgroundColor = AppStyles.color.background
+        navBar.tintColor = AppStyles.color.complete
+        navBar.backgroundColor = AppStyles.color.background
 
         // Changes the color of the navbar title
         let textAttributes = [NSAttributedString.Key.foregroundColor: AppStyles.color.complete]
-        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        navBar.titleTextAttributes = textAttributes
+
+        let menuBtn = UIButton(type: .custom)
+        menuBtn.setImage(.init(named: AppDataScreen.image.basket), for: .normal)
+        menuBtn.addTarget(self, action: #selector(actionBasketButton), for: .touchUpInside)
+        menuBtn.imageView?.contentMode = .scaleAspectFit
+
+        let menuBarItem = UIBarButtonItem(customView: menuBtn)
+        menuBtn.translatesAutoresizingMaskIntoConstraints = true
+        menuBarItem.isEnabled = false
+        NSLayoutConstraint.activate([
+            menuBtn.heightAnchor.constraint(equalToConstant: navBar.frame.height ),
+            menuBtn.widthAnchor.constraint(equalTo: menuBtn.heightAnchor)
+        ])
+        navigationItem.rightBarButtonItem = menuBarItem
     }
 
+    /// Action basket bar button.
+    @objc func actionBasketButton() {
+        presenter?.viewOpenBasket()
+    }
+
+    /// Checking if the cart button should be enabled. If the cart is empty, then the button is disabled.
+    private func setEnableNavBarButtonBasket() {
+        guard let button = navigationItem.rightBarButtonItem, let presenter = presenter else { return }
+
+        if presenter.basketIsEmpty && button.isEnabled {
+            button.isEnabled = false
+        } else if !presenter.basketIsEmpty && !button.isEnabled {
+            button.isEnabled = true
+        }
+    }
+
+    /// Enable basket bar button.
+    private func enableBarButton() {
+        guard let button = navigationItem.rightBarButtonItem else { return }
+        button.isEnabled = true
+    }
 }
 
 // MARK: - CatalogViewControllerInput
@@ -133,6 +180,7 @@ extension CatalogViewController: CatalogViewControllerInput {
     func reloadCollectionView() {
         DispatchQueue.main.async {
             self.catalogView.reloadCollectionView()
+            self.setEnableNavBarButtonBasket()
         }
     }
 }
@@ -140,11 +188,16 @@ extension CatalogViewController: CatalogViewControllerInput {
 // MARK: - CatalogViewOutput
 
 extension CatalogViewController: CatalogViewOutput {
+    func openProductInfo(_ index: Int) {
+        presenter?.viewOpenProductInfo(index)
+    }
+
     func getQtItem(_ index: Int) -> Int {
         presenter?.getQtToBasket(index) ?? 0
     }
 
     func addProductToCart(_ index: Int, qt: Int) {
+        enableBarButton()
         presenter?.viewAddProductToCart(index, qt: qt)
     }
 

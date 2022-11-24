@@ -15,10 +15,12 @@ enum AppStyles {
 
     /// Application color.
     enum color {
+        static var text: UIColor { .darkGray }
         static var main: UIColor { .gray }
         static var incomplete: UIColor { .lightGray }
         static var complete: UIColor { self.main }
         static var background: UIColor { .white }
+        static var lightGray: UIColor { #colorLiteral(red: 0.9677423835, green: 0.9727136493, blue: 0.9683184028, alpha: 1) }
     }
 }
 
@@ -28,6 +30,7 @@ extension AppStyles {
     /// Application font.
     enum font {
         static var logo: UIFont { .monospacedDigitSystemFont(ofSize: 48, weight: .thin) }
+        static var tittle: UIFont { .systemFont(ofSize: 32, weight: .light) }
     }
 }
 
