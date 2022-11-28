@@ -74,9 +74,6 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        // FIXME: - Автоматически залогиниться. (для тестов)
-        
-        presenter?.viewSignIn("admin", "admin")
     }
 
     override func viewWillAppear(_ animated: Bool) {

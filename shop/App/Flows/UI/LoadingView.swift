@@ -71,7 +71,7 @@ final class LoadingView: UIView {
     /// - Parameter work: Animation is enable.
     func animation(_ work: Bool) {
         switch work {
-        case true:
+        case true where self.isHidden == true:
             self.isHidden = false
             var delay: Double = 0
 
@@ -81,12 +81,14 @@ final class LoadingView: UIView {
                 }
                 delay += 0.2
             }
-        case false:
+        case false where self.isHidden == false:
             self.isHidden = true
             dotArray.forEach { dot in
                 dot.layer.removeAllAnimations()
                 dot.alpha = 1
             }
+        default:
+           break
         }
     }
 }

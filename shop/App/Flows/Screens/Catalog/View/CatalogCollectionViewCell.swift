@@ -48,7 +48,7 @@ class CatalogCollectionViewCell: UICollectionViewCell {
         label.font = .preferredFont(forTextStyle: .headline)
         label.adjustsFontForContentSizeCategory = true
         label.textColor = AppStyles.color.main
-        label.textAlignment = .center
+        label.textAlignment = .right
         return label
     }()
 
@@ -158,10 +158,8 @@ class CatalogCollectionViewCell: UICollectionViewCell {
 
     /// Settings button add to cart.
     /// - Parameter quantity: The number of items added to the cart.
-    private func setupButton(quantity: Int?) {
-        if let quantity = quantity, quantity > 0 {
-            self.quantity = quantity
-
+    private func setupButton(quantity: Int) {
+        if quantity > 0 {
             addButton.isSelected = true
             addButton.setTitle("x \(quantity)", for: .selected)
             addButton.backgroundColor = AppStyles.color.main
@@ -190,12 +188,17 @@ class CatalogCollectionViewCell: UICollectionViewCell {
     /// - Parameters:
     ///   - name: Product name.
     ///   - price: Product price.
-    func configure(name: String, price: Int, index: Int, quantity: Int? = nil) {
+    func configure(name: String, price: Int, index: Int, quantity: Int) {
         nameLabel.text = name
-        priceLabel.text = "\(price) ₽"
+        if let formatString = price.formatThousandSeparator() {
+            priceLabel.text = "\(formatString) ₽"
+        } else {
+            priceLabel.text = "\(price) ₽"
+        }
         // Add index product to tag
         tag = index
-        oldQuantity = quantity ?? oldQuantity
+        self.quantity = quantity
+        oldQuantity = quantity
         setupButton(quantity: quantity)
     }
 
