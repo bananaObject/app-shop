@@ -8,7 +8,7 @@
 import Foundation
 
 /// "Basket" presenter. Manages user interaction and view.
-class BasketPresenter {
+class BasketPresenter: Analyticable {
     // MARK: - Public Properties
 
     /// Input view controller. For manages.
@@ -41,6 +41,7 @@ class BasketPresenter {
 extension BasketPresenter: PaymentMockViewControllerDelegate {
     func paymentIsSucces(_ isSucces: Bool) {
         DispatchQueue.main.async {
+            self.sendAnalytic(.payment(isSucces))
             if isSucces {
                 self.viewInput?.showPaymentAlert("Payment successful!")
                 self.interactor.requestRemoveAllFromBasket()
@@ -76,8 +77,10 @@ extension BasketPresenter: BasketViewControllerOutput {
 
         if difference > 0 {
             interactor.requestAddItemToBasket(id, qt: difference)
+            sendAnalytic(.addedProductToBasket(id, qt: difference))
         } else if difference < 0 {
             interactor.requestRemoveItemFromBasket(id, qt: -difference, deleteProduct: oldQt == -difference)
+            sendAnalytic(.removedProductFromBasket(id, qt: -difference))
         }
     }
 

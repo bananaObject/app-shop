@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CatalogPresenter {
+class CatalogPresenter: Analyticable {
     // MARK: - Public Properties
 
     /// Input view controller. For manages.
@@ -21,6 +21,11 @@ class CatalogPresenter {
     private var response: ResponseCatalogModel?
     /// Shopping basket. Stored according to product ID.
     private var basket: [Int: Int]? = [:]
+
+    /// Catalog page
+    private var page: Int?
+    /// Catalog category
+    private var category: Int?
 
     /// Interactor. Contains business logic.
     private let interactor: CatalogInteractorInput
@@ -51,6 +56,10 @@ class CatalogPresenter {
 // MARK: - CatalogViewControllerOutput
 
 extension CatalogPresenter: CatalogViewControllerOutput {
+    func viewSendAnalytic() {
+        sendAnalytic(.watchingCatalogScreen(page, category))
+    }
+
     func viewOpenBasket() {
         router.openBasket()
     }
@@ -75,6 +84,7 @@ extension CatalogPresenter: CatalogViewControllerOutput {
         }
 
         interactor.fetchAddItemToBasketAsync(id, qt: qt)
+        sendAnalytic(.addedProductToBasket(id, qt: qt))
     }
     
     var basketIsEmpty: Bool {
@@ -94,6 +104,8 @@ extension CatalogPresenter: CatalogViewControllerOutput {
     }
 
     func viewFetchData(page: Int, category: Int? = nil) {
+        self.page = page
+        self.category = category
         viewInput?.loadingAnimation(true)
         interactor.fetchCatalogAsync(page: page, category: category)
     }

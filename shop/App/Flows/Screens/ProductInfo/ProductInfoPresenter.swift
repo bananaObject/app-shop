@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProductInfoPresenter {
+class ProductInfoPresenter: Analyticable {
     // MARK: - Public Properties
 
     /// Input view controller. For manages.
@@ -68,6 +68,14 @@ extension ProductInfoPresenter: ProductInfoInteractorOutput {
 // MARK: - ProductInfoInteractorOutput
 
 extension ProductInfoPresenter: ProductInfoViewControllerOutput {
+    func viewSendError(_ error: ErrorForAnalytic) {
+        sendAnalytic(.applicationError(error))
+    }
+
+    func viewSendAnalytic() {
+        sendAnalytic(.watchingProductScreen(id))
+    }
+
     var qtProduct: Int {
         get {
             self.dataInfo?.qt ?? 0
@@ -82,8 +90,10 @@ extension ProductInfoPresenter: ProductInfoViewControllerOutput {
             // If the goods the number of goods has decreased, then delete the goods.
             if tempQt > 0 {
                 interactor.fetchAddItemToBasketAsync(self.id, qt: tempQt)
+                sendAnalytic(.addedProductToBasket(id, qt: tempQt))
             } else if tempQt < 0 {
                 interactor.fetchRemoveItemToBasketAsync(self.id, qt: -tempQt)
+                sendAnalytic(.removedProductFromBasket(id, qt: -tempQt))
             }
 
             self.dataInfo?.qt = newValue

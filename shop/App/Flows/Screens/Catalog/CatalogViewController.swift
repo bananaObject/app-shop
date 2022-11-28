@@ -56,6 +56,9 @@ protocol CatalogViewControllerOutput {
     /// - Parameter index: Product index.
     func viewOpenProductInfo(_ index: Int)
 
+    /// View send analytic;
+    func viewSendAnalytic()
+
     /// Get the quantity of the item in the cart.
     /// - Parameter index: Index product.
     /// - Returns: Product Quantity.
@@ -113,6 +116,7 @@ class CatalogViewController: UIViewController {
 
         // Refresh the basket when they are returned to the screen or on first load.
         presenter?.viewFetchBasket()
+        presenter?.viewSendAnalytic()
     }
 
     // MARK: - Setting UI Methods
