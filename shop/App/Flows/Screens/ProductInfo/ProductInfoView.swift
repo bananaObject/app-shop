@@ -21,6 +21,10 @@ protocol ProductInfoViewOutput {
     /// View sent the id of the product to be opened.
     /// - Parameter id: Product id.
     func viewSendId(_ id: Int)
+
+    /// View send error;
+    /// - Parameter error: Error.
+    func viewSendError(_ error: ErrorForAnalytic)
 }
 
 class ProductInfoView: UIView {
@@ -175,7 +179,12 @@ class ProductInfoView: UIView {
         case .info(let components) where components[indexPath.row] == .images:
             guard let newCell = tableView.dequeueReusableCell( withIdentifier: ProductImageCell.identifier,
                                                                for: indexPath )
-                    as? ProductImageCell else { preconditionFailure() }
+                    as? ProductImageCell else {
+                return sendError("No ProductImageCell",
+                                 "selectCell",
+                                 UITableViewCell.self
+                )
+            }
 
             // Stub pictures.
             let images: [UIImage] = [.init(named: "catalogProduct")!,
@@ -190,21 +199,36 @@ class ProductInfoView: UIView {
         case .info(let components) where components[indexPath.row] == .productName:
             guard let newCell = tableView.dequeueReusableCell( withIdentifier: ProductNameCell.identifier,
                                                                for: indexPath )
-                    as? ProductNameCell else { preconditionFailure() }
+                    as? ProductNameCell else {
+                return sendError("No ProductNameCell",
+                                 "selectCell",
+                                 UITableViewCell.self
+                )
+            }
 
             newCell.configure(info?.name ?? "##Error")
             return newCell
         case .info(let components) where components[indexPath.row] == .description:
             guard let newCell = tableView.dequeueReusableCell( withIdentifier: ProductDescriptionCell.identifier,
                                                                for: indexPath )
-                    as? ProductDescriptionCell else { preconditionFailure() }
+                    as? ProductDescriptionCell else {
+                return sendError("No ProductDescriptionCell",
+                                 "selectCell",
+                                 UITableViewCell.self
+                )
+            }
 
             newCell.configure(info?.description ?? "##Error##")
             return newCell
         case .info(let components) where components[indexPath.row] == .review:
             guard let newCell = tableView.dequeueReusableCell( withIdentifier: ProductReviewCell.identifier,
                                                                for: indexPath )
-                    as? ProductReviewCell else { preconditionFailure() }
+                    as? ProductReviewCell else {
+                return sendError("No ProductReviewCell",
+                                 "selectCell",
+                                 UITableViewCell.self
+                )
+            }
             guard let review = info?.lastReview else {
                 return UITableViewCell()
             }
@@ -218,7 +242,12 @@ class ProductInfoView: UIView {
             
             guard let newCell = tableView.dequeueReusableCell( withIdentifier: ProductOtherProductCell.identifier,
                                                                for: indexPath)
-                    as? ProductOtherProductCell else { preconditionFailure() }
+                    as? ProductOtherProductCell else {
+                return sendError("No ProductOtherProductCell",
+                                 "selectCell",
+                                 UITableViewCell.self
+                )
+            }
             newCell.delegate = self.controller
             newCell.configure(otherProducts)
             return newCell
@@ -241,6 +270,37 @@ class ProductInfoView: UIView {
                 object: nil)
             perform(#selector(actionDebounce), with: nil, afterDelay: 0.5)
         }
+    }
+
+    /// Send analytics in case of error.
+    /// - Parameters:
+    ///   - message: Message error.
+    ///   - method: Method.
+    /// - Returns: Optional component.
+    private func sendError<T: Any>(_ message: String, _ method: String, _ component: T.Type?) -> T {
+            #if DEBUG
+                    preconditionFailure(message)
+            #else
+                    controller?.viewSendError(.init(error: message,
+                                                    method: method,
+                                                    message: nil))
+                    return T
+            #endif
+    }
+
+
+    /// Send analytics in case of error.
+    /// - Parameters:
+    ///   - message: Message error.
+    ///   - method: Method.
+    private func sendError(_ message: String, _ method: String) {
+            #if DEBUG
+                    preconditionFailure(message)
+            #else
+                    controller?.viewSendError(.init(error: message,
+                                                    method: method,
+                                                    message: nil))
+            #endif
     }
 
     /// Adding a new quantity of goods to the cart

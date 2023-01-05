@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import Firebase
 import UIKit
 
 @main
@@ -20,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let controller = selectController(launchArguments)
         window?.rootViewController = UINavigationController(rootViewController: controller)
         window?.makeKeyAndVisible()
+        FirebaseApp.configure()
         return true
     }
 

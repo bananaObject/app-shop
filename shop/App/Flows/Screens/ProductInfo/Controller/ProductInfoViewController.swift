@@ -37,6 +37,13 @@ protocol ProductInfoViewControllerOutput {
     /// View requested open product.
     /// - Parameter id: Product id.
     func viewOpenProduct(_ id: Int)
+
+    /// View send analytic;
+    func viewSendAnalytic()
+
+    /// View send error;
+    /// - Parameter error: Error.
+    func viewSendError(_ error: ErrorForAnalytic)
 }
 
 class ProductInfoViewController: UIViewController {
@@ -82,6 +89,11 @@ class ProductInfoViewController: UIViewController {
         infoView.setupUI()
         presenter?.viewRequestsInfo()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter?.viewSendAnalytic()
+    }
 }
 
 // MARK: - ProductInfoViewControllerInput
@@ -109,6 +121,10 @@ extension ProductInfoViewController: ProductInfoViewControllerInput {
 // MARK: - ProductInfoViewOutput
 
 extension ProductInfoViewController: ProductInfoViewOutput {
+    func viewSendError(_ error: ErrorForAnalytic) {
+        presenter?.viewSendError(error)
+    }
+
     var qtProduct: Int {
         get {
             presenter?.qtProduct ?? 0
