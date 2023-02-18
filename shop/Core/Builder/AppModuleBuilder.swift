@@ -48,4 +48,63 @@ enum AppModuleBuilder {
 
         return controller
     }
+
+    /// Builds "catalog" screen + presenter + interactor + router .
+    /// - Returns: Catalog products controller.
+    static func catalogBuild() -> (UIViewController & CatalogViewControllerInput) {
+        let network = Network()
+        let decoder = DecoderResponse()
+
+        let interactor = CatalogInteractor(network: network, decoder: decoder)
+        let router = CatalogRouter()
+        let presenter = CatalogPresenter(interactor: interactor, router: router)
+        interactor.presenter = presenter
+
+        let controller = CatalogViewController(presenter: presenter)
+
+        presenter.viewInput = controller
+        router.controller = controller
+
+        return controller
+    }
+
+    /// Builds "basket" screen + presenter + interactor + router .
+    /// - Returns: Basket controller.
+    static func basketBuild() -> (UIViewController & BasketViewControllerInput) {
+        let network = Network()
+        let decoder = DecoderResponse()
+
+        let interactor = BasketInteractor(network: network, decoder: decoder)
+        let router = BasketRouter()
+        let presenter = BasketPresenter(interactor: interactor, router: router)
+        interactor.presenter = presenter
+
+        let controller = BasketViewController(presenter: presenter)
+
+        presenter.viewInput = controller
+        router.controller = controller
+
+        return controller
+    }
+
+    /// Builds "Product info" screen + presenter + interactor + router .
+    /// - Returns: Product info controller.
+    /// - Parameters:
+    ///   - idProduct: Product id.
+    static func productInfoBuild(_ idProduct: Int) -> (UIViewController & ProductInfoViewControllerInput) {
+        let network = Network()
+        let decoder = DecoderResponse()
+
+        let interactor = ProductInfoInteractor(network: network, decoder: decoder)
+        let router = ProductInfoRouter()
+        let presenter = ProductInfoPresenter(interactor: interactor, router: router, product: idProduct)
+        interactor.presenter = presenter
+
+        let controller = ProductInfoViewController(presenter: presenter)
+
+        presenter.viewInput = controller
+        router.controller = controller
+
+        return controller
+    }
 }

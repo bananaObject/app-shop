@@ -19,6 +19,13 @@ enum AppDataScreen {
         static var eyeClose: String { "eyeClose" }
         static var signUp: String { "signUp" }
         static var checkMark: String { "checkMark" }
+        static var catalogProduct: String { "catalogProduct" }
+        static var minus: String { "minus" }
+        static var plus: String { "plus" }
+        static var trash: String { "trash" }
+        static var cross: String { "cross" }
+        static var basket: String { "basket" }
+        static var payment: String { "payment" }
     }
 }
 
@@ -98,5 +105,54 @@ extension AppDataScreen {
         static var loginPlaceholder: String { "Login" }
         static var passPlaceholder: String { "Password" }
         static var submitButton: String { "Sign in" }
+    }
+}
+
+// MARK: - Catalog
+
+extension AppDataScreen {
+    /// Data for "catalog" screen.
+    enum catalog {
+        static var tittleNav: String { "Catalog" }
+    }
+}
+
+// MARK: - Product info
+
+extension AppDataScreen {
+    /// Data for "product info" screen.
+    enum productInfo {
+        /// Number of items per cell other products.
+        static var qtInCellOtherProducts: Int { 3 }
+
+        static var sectionTableView: [Сomponent] {
+            [ .info([.images]),
+              .info([.productName, .description]),
+              .info([.review]),
+              .otherProducts ]
+        }
+
+        enum Сomponent {
+            case info(_ components: [Info])
+            case otherProducts
+        }
+
+        enum Info {
+            case images
+            case productName
+            case review
+            case description
+        }
+    }
+}
+
+// MARK: - Basket
+
+extension AppDataScreen {
+    /// Data for "catalog" screen.
+    enum basket {
+        static var tittleNav: String { "Basket" }
+        /// Cell on screen.
+        static var cellOnscreen: CGFloat { 7 }
     }
 }

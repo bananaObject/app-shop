@@ -13,7 +13,9 @@ struct ResponseProductModel: Decodable {
     let category: Int
     let name: String
     let price: Int
-    let description: String
+    let description: String?
+    let lastReview: ResponseReviewModel?
+    var qt: Int?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -21,5 +23,7 @@ struct ResponseProductModel: Decodable {
         case name
         case price
         case description
+        case lastReview = "last_review"
+        case qt
     }
 }

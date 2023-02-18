@@ -8,7 +8,7 @@
 import UIKit
 
 /// "Sign up" presenter. Manages user interaction and view.
-class SignUpPresenter {
+class SignUpPresenter: Analyticable {
     // MARK: - Public Properties
 
     /// Input view controller. For manages.
@@ -106,8 +106,10 @@ extension SignUpPresenter: SignUpInteractorOutput {
         }
         switch result {
         case .success(let success):
+            sendAnalytic(.registration(true))
             self.viewInput?.showAllert("Succes", success.message, false)
         case .failure(let failure):
+            sendAnalytic(.registration(false))
             self.viewInput?.showAllert("Error", failure.reason ?? "unknown error", true)
         }
     }

@@ -8,7 +8,7 @@
 import UIKit
 
 /// "Sign in" presenter. Manages user interaction and view.
-class LoginPresenter {
+class LoginPresenter: Analyticable {
     // MARK: - Public Properties
 
     /// Input view controller. For manages.
@@ -67,8 +67,10 @@ extension LoginPresenter: LoginInteractorOutput {
         }
         switch result {
         case .success:
-            self.router.openUserInfo()
+            sendAnalytic(.authorization(true))
+            self.router.openCatalog()
         case .failure(let failure):
+            sendAnalytic(.authorization(false))
             self.viewInput?.showError(failure.reason ?? "error")
         }
     }

@@ -54,9 +54,9 @@ class AppButton: UIButton {
         setTitleColor(.lightGray, for: .disabled)
         setTitleColor(.white, for: .normal)
 
-        layer.borderWidth = 0.7
+        layer.borderWidth = AppStyles.layer.borderWidth.incomplete
         layer.borderColor = AppStyles.color.incomplete.cgColor
-        layer.cornerRadius = 10
+        layer.cornerRadius = AppStyles.layer.cornerRadius
     }
 
     /// Adds loading indicator.

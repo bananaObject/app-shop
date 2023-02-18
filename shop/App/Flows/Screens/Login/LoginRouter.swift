@@ -12,7 +12,7 @@ protocol LoginRouterInput {
     /// Open the screen with registration through the navigation controller.
     func openSignUp()
     /// Open the screen with user info.
-    func openUserInfo()
+    func openCatalog()
 }
 
 /// Router for presenter "sign in". Navigating between screens.
@@ -30,7 +30,11 @@ class LoginRouter: LoginRouterInput {
         controller?.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func openUserInfo() {
-
+    func openCatalog() {
+        DispatchQueue.main.async {
+            let vc = AppModuleBuilder.catalogBuild()
+            vc.modalPresentationStyle = .fullScreen
+            self.controller?.navigationController?.setViewControllers([vc], animated: true)
+        }
     }
 }

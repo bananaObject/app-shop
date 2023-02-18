@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import Firebase
 import UIKit
 
 @main
@@ -16,18 +17,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-
-        let controller = AppModuleBuilder.loginBuild()
-        controller.modalPresentationStyle = .fullScreen
-
+        let launchArguments = CommandLine.arguments
+        let controller = selectController(launchArguments)
         window?.rootViewController = UINavigationController(rootViewController: controller)
         window?.makeKeyAndVisible()
-        
+        FirebaseApp.configure()
         return true
     }
 
     // MARK: - Core Data stack
-
+    
     lazy var persistentContainer: NSPersistentContainer = {
         /*
          The persistent container for the application. This implementation
@@ -71,4 +70,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    /// Selecting a controller based on launch arguments.
+    /// - Parameter arguments: Launch Arguments.
+    /// - Returns: Controller.
+    private func selectController(_ arguments: [String] ) -> UIViewController {
+        let controller: UIViewController
+
+        if arguments.contains(AppUITestsKey.loginView) {
+            controller = AppModuleBuilder.loginBuild()
+        } else {
+            controller = AppModuleBuilder.loginBuild()
+        }
+
+        controller.modalPresentationStyle = .fullScreen
+        return controller
+    }
 }

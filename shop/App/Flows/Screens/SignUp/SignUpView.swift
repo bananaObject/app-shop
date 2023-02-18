@@ -15,9 +15,6 @@ class SignUpView: UIView {
     private lazy var scrollView: UIScrollView = {
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
-        let insets = UIEdgeInsets.zero
-        scroll.contentInset = insets
-        scroll.scrollIndicatorInsets = insets
         scroll.delaysContentTouches = false
         return scroll
     }()
@@ -108,6 +105,8 @@ class SignUpView: UIView {
             $0.delaysTouchesBegan = true
             $0.cancelsTouchesInView = false
         }
+
+        setUITests()
     }
 
     /// Adds component to stackview.
@@ -245,5 +244,12 @@ class SignUpView: UIView {
         guard let index = components?.firstIndex(of: .submitButton),
               let button = stackView.arrangedSubviews[index] as? AppButton else { return }
         button.showLoadingIndicator(isLoading)
+    }
+
+    // MARK: - Private Methods
+
+    /// Set identifier for components.
+    private func setUITests() {
+        self.accessibilityIdentifier = "signUpView"
     }
 }
