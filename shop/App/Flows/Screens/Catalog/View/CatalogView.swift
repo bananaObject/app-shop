@@ -88,14 +88,10 @@ class CatalogView: UIView {
 
         addSubview(collectionView)
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor,
-                                                constant: AppStyles.size.padding),
-            collectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
-                                                   constant: -AppStyles.size.padding),
-            collectionView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,
-                                                    constant: AppStyles.size.padding),
-            collectionView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor,
-                                                     constant: -AppStyles.size.padding)
+            collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
         ])
 
         addSubview(loadingView)
@@ -128,7 +124,6 @@ class CatalogView: UIView {
     private func setUITests() {
         self.accessibilityIdentifier = "catalogView"
     }
-    
 }
 
 // MARK: - UICollectionViewDataSource
@@ -162,13 +157,22 @@ extension CatalogView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         controller?.openProductInfo(indexPath.item)
     }
-    
+
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: collectionView.frame.width * 0.5 - AppStyles.size.padding * 0.5,
-                      height: collectionView.frame.width * 0.5 - AppStyles.size.padding * 0.5)
+        return CGSize(width: (collectionView.frame.width - AppStyles.size.padding * 2) / 2
+                      - AppStyles.size.padding * 0.5,
+                      height: (collectionView.frame.height - AppStyles.size.padding) / 4
+                      - AppStyles.size.padding * 0.5 * 2)
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        .init(top: AppStyles.size.padding, left: AppStyles.size.padding,
+              bottom: AppStyles.size.padding, right: AppStyles.size.padding)
     }
 }
 

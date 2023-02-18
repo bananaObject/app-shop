@@ -79,7 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if arguments.contains(AppUITestsKey.loginView) {
             controller = AppModuleBuilder.loginBuild()
         } else {
-            controller = AppModuleBuilder.catalogBuild()
+            controller = AppModuleBuilder.loginBuild()
         }
 
         controller.modalPresentationStyle = .fullScreen
