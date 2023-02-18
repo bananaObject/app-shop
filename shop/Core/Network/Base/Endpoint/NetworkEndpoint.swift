@@ -40,7 +40,7 @@ extension NetworkEndpoint: Endpoint {
     var baseURL: URLComponents {
         var components = URLComponents()
         components.scheme = "https"
-        components.host = "toxic-frog-company.herokuapp.com"
+        components.host = "shopmock.fly.dev"
         return components
     }
     var path: String {
