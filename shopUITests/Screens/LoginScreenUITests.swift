@@ -99,17 +99,17 @@ final class LoginScreenUITests: XCTestCase {
     }
 
     // Test script  sign in.
-//    func testSignIn() {
-//        app.launch()
-//
-//        let signInButton = viewApp.buttons["signInButton"].firstMatch
-//
-//        enterFields(login: "admin", pass: "admin")
-//        signInButton.tap()
-//
-//        viewApp = app.otherElements["catalogView"].firstMatch
-//        XCTAssertTrue(viewApp.waitForExistence(timeout: 15))
-//    }
+    func testSignIn() {
+        app.launch()
+
+        let signInButton = viewApp.buttons["signInButton"].firstMatch
+
+        enterFields(login: "admin", pass: "admin")
+        signInButton.tap()
+
+        viewApp = app.otherElements["catalogView"].firstMatch
+        XCTAssertTrue(viewApp.waitForExistence(timeout: 15))
+    }
 
     /// Type text in fields.
     /// - Parameters:
