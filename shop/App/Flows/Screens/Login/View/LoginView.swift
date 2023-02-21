@@ -46,6 +46,7 @@ class LoginView: UIView {
                                  incompleteColor: AppStyles.color.incomplete,
                                  completeColor: AppStyles.color.complete,
                                  minChar: 5)
+        field.autocorrectionType = .no
         field.translatesAutoresizingMaskIntoConstraints = false
         return field
     }()
@@ -113,7 +114,6 @@ class LoginView: UIView {
 
         addSubview(loginTextfield)
         NSLayoutConstraint.activate([
-            loginTextfield.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
             loginTextfield.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: padding),
             loginTextfield.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor,
                                                      constant: -padding),
@@ -128,6 +128,7 @@ class LoginView: UIView {
 
         addSubview(passTextfield)
         NSLayoutConstraint.activate([
+            passTextfield.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
             passTextfield.topAnchor.constraint(equalTo: loginTextfield.bottomAnchor, constant: padding),
             passTextfield.leadingAnchor.constraint(equalTo: loginTextfield.leadingAnchor),
             passTextfield.trailingAnchor.constraint(equalTo: loginTextfield.trailingAnchor),

@@ -143,6 +143,7 @@ class SignUpViewController: UIViewController {
                                          left: 0,
                                          bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom,
                                          right: 0)
+        
         registrationView.setSize(contentInsets: contentInsets)
         registrationView.scrollToActiveFrame()
     }
