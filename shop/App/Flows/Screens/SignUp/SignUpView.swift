@@ -93,10 +93,11 @@ class SignUpView: UIView {
 
         scrollView.addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            stackView.topAnchor.constraint(greaterThanOrEqualTo: scrollView.topAnchor),
+            stackView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor),
+            stackView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor),
+            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: scrollView.leadingAnchor),
+            stackView.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
 
@@ -135,7 +136,7 @@ class SignUpView: UIView {
                 }
 
                 NSLayoutConstraint.activate([
-                    field.heightAnchor.constraint(equalToConstant: AppStyles.size.height.textfield * 3)
+                    field.heightAnchor.constraint(greaterThanOrEqualToConstant: AppStyles.size.height.textfield * 1.5)
                 ])
 
                 // Add label for field
@@ -203,14 +204,11 @@ class SignUpView: UIView {
     func setSize(contentInsets: UIEdgeInsets) {
         self.scrollView.contentInset = contentInsets
         self.scrollView.scrollIndicatorInsets = contentInsets
-
-        if contentInsets == .zero {
-            return
-        }
     }
 
     func scrollToActiveFrame() {
-        if let viewFrame = activeFieldFrame {
+        if let viewFrame = activeFieldFrame,
+            stackView.arrangedSubviews[stackView.arrangedSubviews.endIndex - 2].frame != viewFrame {
             scrollView.scrollRectToVisible(viewFrame, animated: true)
         } else if let viewFrame = stackView.arrangedSubviews.last?.frame {
             // If for some reason the required frame is missing, it will scroll to the very bottom
