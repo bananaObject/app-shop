@@ -57,12 +57,13 @@ video | video | video
 
 В качестве примера добавил аналитику Firebase и UI тесты.
 
-В приложении неиспользуется Keychain для хранения токена авторизации, чтобы продемонстрировать все функциональные возможности приложения.
+В приложении не используется Keychain для хранения токена авторизации, чтобы продемонстрировать все функциональные возможности приложения.
 
 # Технологии
 * UIKit (Interface programmatically | Auto Layout Constraint)
 * Viper
 * [Самописный мок сервер (Vapor)](https://github.com/kecha-the-frog/vapor-shopMock)
 * URLSession
+* Namespace
 * Google Firebase Analytics (в качестве примера покрыто 10%)
 * UITests (в качестве примера покрыто 10%)
