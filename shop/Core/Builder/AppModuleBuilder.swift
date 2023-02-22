@@ -54,8 +54,9 @@ enum AppModuleBuilder {
     static func catalogBuild() -> (UIViewController & CatalogViewControllerInput) {
         let network = Network()
         let decoder = DecoderResponse()
+        let imageLoader = ImageLoader(cached: true)
 
-        let interactor = CatalogInteractor(network: network, decoder: decoder)
+        let interactor = CatalogInteractor(network: network, decoder: decoder, imageLoader: imageLoader)
         let router = CatalogRouter()
         let presenter = CatalogPresenter(interactor: interactor, router: router)
         interactor.presenter = presenter

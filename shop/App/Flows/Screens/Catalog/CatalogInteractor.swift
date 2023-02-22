@@ -5,7 +5,7 @@
 //  Created by Ke4a on 10.11.2022.
 //
 
-import Foundation
+import UIKit
 
 /// Interactor protocol for presenter "Catalog". Contains business logic.
 protocol CatalogInteractorInput {
@@ -24,6 +24,12 @@ protocol CatalogInteractorInput {
 
     /// Fetch basket products.
     func fetchBasketAsync()
+
+    /// Downloading image data from internet.
+    /// - Parameters:
+    ///   - url: Image URL
+    ///   - completion: Will send image data or an error.
+    func fetchImageAsync(url: String, completion: @escaping (Result<Data, ImageLoaderError>) -> Void)
 }
 
 /// Interactor protocol for presenter "Catalog". Contains  interactor output logic.
@@ -50,15 +56,19 @@ class CatalogInteractor: CatalogInteractorInput {
     /// Response decoder.
     private let decoder: DecoderResponseProtocol
 
+    private let imageLoader: ImageLoaderProtocol
+
     // MARK: - Initialization
 
     /// Interactor for presenter "Catalog". Contains business logic.
     /// - Parameters:
     ///   - network: Network service.
     ///   - decoder: Decoder srevice.
-    init(network: Network, decoder: DecoderResponse) {
+    ///   - loaderImage:  Image loader.
+    init(network: Network, decoder: DecoderResponse, imageLoader: ImageLoaderProtocol) {
         self.network = network
         self.decoder = decoder
+        self.imageLoader = imageLoader
     }
 
     // MARK: - Public Methods
@@ -98,6 +108,10 @@ class CatalogInteractor: CatalogInteractorInput {
         DispatchQueue.global(qos: .background).async {
             self.network.fetch(.addToBasket(id, qt)) { _ in }
         }
+    }
+
+    func fetchImageAsync(url: String, completion: @escaping (Result<Data, ImageLoaderError>) -> Void) {
+        self.imageLoader.fetchAsync(url: url, completion: completion)
     }
 
     func fetchBasketAsync() {

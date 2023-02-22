@@ -7,26 +7,6 @@
 
 import UIKit
 
-/// View delegate output.
-protocol CatalogViewOutput {
-    /// Request response data when there is no response is an empty array.
-    var data: [ResponseProductModel] { get }
-
-    /// Number of items in the cart.
-    /// - Parameter index: Product index.
-    /// - Returns: Product quantity.
-    func getQtItem(_ index: Int) -> Int
-    
-    /// Adds  product to basket  by index.
-    /// - Parameter index: Index product in collection.
-    /// - Parameter qt: Product quantity added to cart.
-    func addProductToCart(_ index: Int, qt: Int)
-
-    /// Open product info.
-    /// - Parameter index: Index product.
-    func openProductInfo(_ index: Int)
-}
-
 /// View "Catalog".
 class CatalogView: UIView {
     // MARK: - Visual Components
@@ -56,21 +36,15 @@ class CatalogView: UIView {
         return layout
     }()
 
-    // MARK: - Private Properties
-
-    /// The controller that manages the view.
-    private weak var controller: (AnyObject & CatalogViewOutput)?
-
     // MARK: - Initialization
 
     /// Init catalog view.
     /// - Parameter controller: The controller that manages the view.
-    init(_ controller: UIViewController & CatalogViewOutput) {
+    init(_ controller: AnyObject & UICollectionViewDelegateFlowLayout & UICollectionViewDataSource) {
         super.init(frame: .zero)
-        self.controller = controller
 
-        collectionView.dataSource = self
-        collectionView.delegate = self
+        collectionView.dataSource = controller
+        collectionView.delegate = controller
 
         collectionView.register(CatalogCollectionViewCell.self,
                                 forCellWithReuseIdentifier: CatalogCollectionViewCell.identifier)
@@ -111,6 +85,11 @@ class CatalogView: UIView {
     func reloadCollectionView() {
         collectionView.reloadData()
     }
+    /// Reload data item collectionView
+    /// - Parameter indexPaths: Array items index.
+    func reloadItems(indexPaths: [IndexPath]) {
+        collectionView.reloadItems(at: indexPaths)
+    }
 
     /// Enable/disable loading animation.
     /// - Parameter isEnable: Loading is enable.
@@ -123,63 +102,5 @@ class CatalogView: UIView {
     /// Set identifier for components.
     private func setUITests() {
         self.accessibilityIdentifier = "catalogView"
-    }
-}
-
-// MARK: - UICollectionViewDataSource
-
-extension CatalogView: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        controller?.data.count ?? 0
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath
-    ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CatalogCollectionViewCell.identifier,
-                                                            for: indexPath)
-                as? CatalogCollectionViewCell else { preconditionFailure() }
-
-        if let product = controller?.data[indexPath.item] {
-            let qt = controller?.getQtItem(indexPath.item)
-
-            cell.configure(name: product.name, price: product.price, index: indexPath.item, quantity: qt ?? 0)
-            cell.delegate = self
-        }
-
-        return cell
-    }
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout
-
-extension CatalogView: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        controller?.openProductInfo(indexPath.item)
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        return CGSize(width: (collectionView.frame.width - AppStyles.size.padding * 2) / 2
-                      - AppStyles.size.padding * 0.5,
-                      height: (collectionView.frame.height - AppStyles.size.padding) / 4
-                      - AppStyles.size.padding * 0.5 * 2)
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        insetForSectionAt section: Int) -> UIEdgeInsets {
-        .init(top: AppStyles.size.padding, left: AppStyles.size.padding,
-              bottom: AppStyles.size.padding, right: AppStyles.size.padding)
-    }
-}
-
-// MARK: - CatalogCellOutput
-
-extension CatalogView: CatalogCellOutput {
-    func addProductToCart(index: Int, qt: Int) {
-        controller?.addProductToCart(index, qt: qt)
     }
 }
