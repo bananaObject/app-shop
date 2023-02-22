@@ -21,10 +21,9 @@ class CatalogCollectionViewCell: UICollectionViewCell {
 
     /// Product image.
     private lazy var productImage: UIImageView = {
-        let image = UIImage(named: AppDataScreen.image.catalogProduct)
+        let image = UIImage()
         let view = UIImageView()
         view.image = image
-        view.tintColor = AppStyles.color.incomplete
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
         view.contentMode = .scaleAspectFit
@@ -99,6 +98,7 @@ class CatalogCollectionViewCell: UICollectionViewCell {
         
         nameLabel.text = nil
         priceLabel.text = nil
+        productImage.image = nil
     }
 
     // MARK: - Setting UI Methods
@@ -123,34 +123,33 @@ class CatalogCollectionViewCell: UICollectionViewCell {
             
         ])
 
-        contentView.addSubview(priceLabel)
-        NSLayoutConstraint.activate([
-            priceLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
-                                               constant: -AppStyles.size.padding),
-            priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor)
-
-        ])
-
         contentView.addSubview(addButton)
         NSLayoutConstraint.activate([
-            addButton.topAnchor.constraint(equalTo: priceLabel.topAnchor),
             addButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            addButton.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: AppStyles.size.padding),
             addButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            addButton.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.4)
+            addButton.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.4),
+            addButton.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.16)
         ])
 
         contentView.addSubview(productImage)
         NSLayoutConstraint.activate([
             productImage.topAnchor.constraint(equalTo: nameLabel.bottomAnchor,
                                               constant: AppStyles.size.padding),
-            productImage.bottomAnchor.constraint(equalTo: priceLabel.topAnchor,
+            productImage.bottomAnchor.constraint(equalTo: addButton.topAnchor,
                                                  constant: -AppStyles.size.padding / 2),
             productImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
                                                   constant: AppStyles.size.padding),
             productImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
                                                    constant: -AppStyles.size.padding)
+        ])
 
+        contentView.addSubview(priceLabel)
+        NSLayoutConstraint.activate([
+            priceLabel.topAnchor.constraint(equalTo: addButton.topAnchor),
+            priceLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor),
+            priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            priceLabel.trailingAnchor.constraint(equalTo: addButton.leadingAnchor,
+                                                 constant: -AppStyles.size.padding)
         ])
     }
 
@@ -188,7 +187,10 @@ class CatalogCollectionViewCell: UICollectionViewCell {
     /// - Parameters:
     ///   - name: Product name.
     ///   - price: Product price.
-    func configure(name: String, price: Int, index: Int, quantity: Int) {
+    ///   - index: Item index.
+    ///   - quantity: Number of items in the cart.
+    ///   - data: Image data.
+    func configure(name: String, price: Int, index: Int, quantity: Int?, image data: Data?) {
         nameLabel.text = name
         if let formatString = price.formatThousandSeparator() {
             priceLabel.text = "\(formatString) ₽"
@@ -197,9 +199,14 @@ class CatalogCollectionViewCell: UICollectionViewCell {
         }
         // Add index product to tag
         tag = index
-        self.quantity = quantity
-        oldQuantity = quantity
-        setupButton(quantity: quantity)
+        
+        let qt = quantity ?? 0
+        self.quantity = qt
+        oldQuantity = qt
+        setupButton(quantity: qt)
+        
+        guard let data = data else { return }
+        productImage.image = UIImage(data: data)
     }
 
     // MARK: - Actions
