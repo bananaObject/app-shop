@@ -57,6 +57,8 @@
 		F27CC7842923D54200B0A0FC /* ProductNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27CC7832923D54200B0A0FC /* ProductNameCell.swift */; };
 		F27CC7862923DBD500B0A0FC /* ProductReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27CC7852923DBD500B0A0FC /* ProductReviewCell.swift */; };
 		F283847B292B9793003F5062 /* LoginScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F283847A292B9793003F5062 /* LoginScreenUITests.swift */; };
+		F283B0DB29A5E30C009DAB92 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F283B0DA29A5E30C009DAB92 /* ImageLoader.swift */; };
+		F283B0E129A61490009DAB92 /* ImageFileCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F283B0E029A61490009DAB92 /* ImageFileCacheProtocol.swift */; };
 		F284ECC7291D3F5E00392FE6 /* CatalogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284ECC6291D3F5E00392FE6 /* CatalogViewController.swift */; };
 		F284ECC9291D3F9F00392FE6 /* CatalogRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284ECC8291D3F9F00392FE6 /* CatalogRouter.swift */; };
 		F284ECCB291D402E00392FE6 /* CatalogInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284ECCA291D402E00392FE6 /* CatalogInteractor.swift */; };
@@ -150,6 +152,8 @@
 		F27CC7832923D54200B0A0FC /* ProductNameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductNameCell.swift; sourceTree = "<group>"; };
 		F27CC7852923DBD500B0A0FC /* ProductReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductReviewCell.swift; sourceTree = "<group>"; };
 		F283847A292B9793003F5062 /* LoginScreenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreenUITests.swift; sourceTree = "<group>"; };
+		F283B0DA29A5E30C009DAB92 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		F283B0E029A61490009DAB92 /* ImageFileCacheProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFileCacheProtocol.swift; sourceTree = "<group>"; };
 		F284ECC6291D3F5E00392FE6 /* CatalogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewController.swift; sourceTree = "<group>"; };
 		F284ECC8291D3F9F00392FE6 /* CatalogRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogRouter.swift; sourceTree = "<group>"; };
 		F284ECCA291D402E00392FE6 /* CatalogInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogInteractor.swift; sourceTree = "<group>"; };
@@ -209,6 +213,7 @@
 			children = (
 				F204BB5428BF4DC500936A62 /* Base */,
 				F204BB5028BF432400936A62 /* Network.swift */,
+				F283B0DC29A61422009DAB92 /* LoaderImage */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -506,6 +511,15 @@
 				F297B8A82924FA5D00A8A090 /* ProductOtherProductCell.swift */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		F283B0DC29A61422009DAB92 /* LoaderImage */ = {
+			isa = PBXGroup;
+			children = (
+				F283B0E029A61490009DAB92 /* ImageFileCacheProtocol.swift */,
+				F283B0DA29A5E30C009DAB92 /* ImageLoader.swift */,
+			);
+			path = LoaderImage;
 			sourceTree = "<group>";
 		};
 		F284ECC0291D3EF000392FE6 /* Catalog */ = {
@@ -947,12 +961,14 @@
 				F2FD215A290D347C00EFDEC7 /* AppStyles.swift in Sources */,
 				F289160D28BFB78500288308 /* LoginInteractor.swift in Sources */,
 				F2D77A2E290AA0840086C408 /* Textfield.swift in Sources */,
+				F283B0E129A61490009DAB92 /* ImageFileCacheProtocol.swift in Sources */,
 				F27CC7862923DBD500B0A0FC /* ProductReviewCell.swift in Sources */,
 				F204BB5D28BF61CC00936A62 /* RequestError.swift in Sources */,
 				F246FCAA2911321200476A0F /* SignUpInteractor.swift in Sources */,
 				F22612A6292CB2C400B6F23F /* BasketViewController.swift in Sources */,
 				F22612A8292CB2D900B6F23F /* BasketView.swift in Sources */,
 				F259297228C5EC720075E881 /* ChangeUserInfoService.swift in Sources */,
+				F283B0DB29A5E30C009DAB92 /* ImageLoader.swift in Sources */,
 				F27AEB9C2921258400C85746 /* ProductInfoRouter.swift in Sources */,
 				F2A237AE2930E8970013C412 /* Analyticable.swift in Sources */,
 				F297191028C89D6B00F05021 /* ProductService.swift in Sources */,
