@@ -17,7 +17,7 @@ class BasketPresenter: Analyticable {
     // MARK: - Private Properties
 
     /// Basket data.
-    private var dataBasket: [ResponseBasketModel] = []
+    private(set) var data: [BasketViewCellModel] = []
 
     /// Interactor. Contains business logic.
     private let interactor: BasketInteractorInput
@@ -57,21 +57,38 @@ extension BasketPresenter: PaymentMockViewControllerDelegate {
 // MARK: - BasketViewControllerOutput
 
 extension BasketPresenter: BasketViewControllerOutput {
+    func viewFetchImage(indexPath: IndexPath) {
+        guard let url = data[indexPath.row].imageUrl else { return }
+
+        interactor.fetchImageAsync(url: url) { [weak self] result in
+            guard let self else { return }
+
+            switch result {
+            case .success(let imageData):
+                self.data[indexPath.row].imageData = imageData
+                // Reload the table completely, as there is a bug with a single cell reload
+                self.viewInput?.reloadTableView()
+            case .failure:
+                break
+            }
+        }
+    }
+
     func viewRequestPayment() {
         router.openPaymentFormSheet(self)
     }
 
     var totalCost: Int {
-        dataBasket.reduce(0) { $0 + $1.product.price * $1.quantity }
+        data.reduce(0) { $0 + $1.price * $1.quantity }
     }
 
     func viewSendNewQtProduct(id: Int, qt: Int) {
-        guard let index = dataBasket.firstIndex(where: { $0.product.id == id }) else { return }
-        let oldQt = dataBasket[index].quantity
+        guard let index = data.firstIndex(where: { $0.id == id }) else { return }
+        let oldQt = data[index].quantity
 
         guard  qt != oldQt else { return }
         let difference = qt - oldQt
-        dataBasket[index].quantity += difference
+        data[index].quantity += difference
 
         viewInput?.updateTotalCost()
 
@@ -89,14 +106,8 @@ extension BasketPresenter: BasketViewControllerOutput {
     }
 
     func viewRequestedBasket(_ loadingAnimation: Bool) {
-        DispatchQueue.main.async {
-            self.interactor.requestBasket()
-            self.viewInput?.loadingAnimation(loadingAnimation)
-        }
-    }
-
-    var data: [ResponseBasketModel] {
-        self.dataBasket
+        self.interactor.requestBasket()
+        self.viewInput?.loadingAnimation(loadingAnimation)
     }
 }
 
@@ -104,33 +115,37 @@ extension BasketPresenter: BasketViewControllerOutput {
 
 extension BasketPresenter: BasketInteractorOutput {
     func interactorDeleteProductBasketApi(_ id: Int) {
-        guard let index = dataBasket.firstIndex(where: { $0.product.id == id }) else { return }
-        dataBasket.remove(at: index)
+        guard let index = data.firstIndex(where: { $0.id == id }) else { return }
+        data.remove(at: index)
         DispatchQueue.main.async {
             self.viewInput?.deleteRowTableView(IndexPath(row: index, section: 0))
-            self.viewInput?.setTrashButton(self.dataBasket.isEmpty)
+            self.viewInput?.setTrashButton(self.data.isEmpty)
         }
     }
 
     func interactorEmptyBasketApi() {
-        dataBasket.removeAll()
+        data.removeAll()
         DispatchQueue.main.async {
-            self.viewInput?.reloadTableView()
-            self.viewInput?.setTrashButton(self.dataBasket.isEmpty)
+            self.viewInput?.deleteAllRows()
+            self.viewInput?.setTrashButton(self.data.isEmpty)
         }
     }
 
     func interactorSendResponseBasket(_ result: [ResponseBasketModel]) {
-        dataBasket = result
+        data = result.map({ BasketViewCellModel(id: $0.product.id, name: $0.product.name,
+                                                price: $0.product.price, quantity: $0.quantity,
+                                                imageUrl: $0.product.imageSmall)})
         DispatchQueue.main.async {
             self.viewInput?.reloadTableView()
-            self.viewInput?.setTrashButton(self.dataBasket.isEmpty)
+            self.viewInput?.setTrashButton(self.data.isEmpty)
             self.viewInput?.loadingAnimation(false)
         }
     }
 
     func interactorSendResponseError(_ error: NetworkErrorModel) {
-        print(error)
-        self.viewInput?.loadingAnimation(false)
+        DispatchQueue.main.async {
+            print(error)
+            self.viewInput?.loadingAnimation(false)
+        }
     }
 }

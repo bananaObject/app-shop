@@ -16,6 +16,9 @@ protocol BasketViewControllerInput {
     /// - Parameter index: Index cell.
     func deleteRowTableView(_ index: IndexPath)
 
+    /// Delete all rows table view.
+    func deleteAllRows()
+
     /// Show result payment.
     /// - Parameter text: Result text/
     func showPaymentAlert(_ text: String)
@@ -38,7 +41,7 @@ protocol BasketViewControllerInput {
 /// View controller "Basket"  output protocol.
 protocol BasketViewControllerOutput {
     /// Basket data.
-    var data: [ResponseBasketModel] { get }
+    var data: [BasketViewCellModel] { get }
 
     ///  Total amount all product in basket.
     var totalCost: Int { get }
@@ -58,6 +61,10 @@ protocol BasketViewControllerOutput {
 
     /// View requested information about the basket.
     func viewRequestPayment()
+
+    /// View call a request image data.
+    /// - Parameter indexPath: Cell index.
+    func viewFetchImage(indexPath: IndexPath)
 }
 
 /// "Basket" screen with presenter.
@@ -117,6 +124,11 @@ class BasketViewController: UIViewController {
         super.viewDidLoad()
         setupNavController()
         basketView.setupUI()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
         presenter?.viewRequestedBasket(true)
     }
 
@@ -158,12 +170,22 @@ class BasketViewController: UIViewController {
 // MARK: - BasketViewControllerInput
 
 extension BasketViewController: BasketViewControllerInput {
+    func deleteAllRows() {
+        DispatchQueue.main.async {
+            self.basketView.deleteAllCell()
+        }
+    }
+
     func updateTotalCost() {
-        basketView.updateTotalCost()
+        DispatchQueue.main.async {
+            self.basketView.updateTotalCost()
+        }
     }
 
     func loadingAnimation(_ isEnable: Bool) {
-        basketView.loadingAnimation(isEnable)
+        DispatchQueue.main.async {
+            self.basketView.loadingAnimation(isEnable)
+        }
     }
 
     func setTrashButton(_ basketIsEmpty: Bool) {
@@ -172,19 +194,30 @@ extension BasketViewController: BasketViewControllerInput {
     }
 
     func stopLoadingIndicatorButton() {
-        basketView.stopLoadingIndicatorButton()
+        DispatchQueue.main.async {
+            self.basketView.stopLoadingIndicatorButton()
+        }
     }
 
     func showPaymentAlert(_ text: String) {
-        basketView.showPaymentAlert(text)
+        let alert = UIAlertController(title: text, message: nil, preferredStyle: .alert)
+        present(alert, animated: true)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            alert.dismiss(animated: true)
+        }
     }
 
     func deleteRowTableView(_ index: IndexPath) {
-        basketView.deleteRowTableView(index)
+        DispatchQueue.main.async {
+            self.basketView.deleteRowTableView(index)
+        }
     }
 
     func reloadTableView() {
-        basketView.reloadTableView()
+        DispatchQueue.main.async {
+            self.basketView.reloadTableView()
+        }
     }
 }
 
@@ -203,11 +236,47 @@ extension BasketViewController: BasketViewOutput {
         presenter?.viewRequestedBasket(false)
     }
 
+    var data: [BasketViewCellModel] {
+        presenter?.data ?? []
+    }
+}
+
+extension BasketViewController: BasketViewCellDelegate {
     func viewSendNewQtProduct(id: Int, qt: Int) {
-        presenter?.viewSendNewQtProduct(id: id, qt: qt)
+            presenter?.viewSendNewQtProduct(id: id, qt: qt)
+        }
+}
+
+// MARK: - UITableViewDelegate
+
+extension BasketViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        tableView.frame.height / AppDataScreen.basket.cellOnscreen
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension BasketViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        presenter?.data.count ?? 0
     }
 
-    var data: [ResponseBasketModel] {
-        presenter?.data ?? []
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: BasketViewCell.identifier, for: indexPath)
+                as? BasketViewCell else { preconditionFailure() }
+        if let product = presenter?.data[indexPath.row] {
+            if product.imageData == nil {
+                self.presenter?.viewFetchImage(indexPath: indexPath)
+            }
+
+            if cell.delegate == nil {
+                cell.delegate = self
+            }
+
+            cell.configure(product)
+        }
+
+        return cell
     }
 }

@@ -24,6 +24,11 @@ protocol BasketInteractorInput {
     func requestRemoveItemFromBasket(_ id: Int, qt: Int, deleteProduct: Bool)
     /// Request to remove all items from the cart. Async.
     func requestRemoveAllFromBasket()
+    /// Downloading image data from internet.
+    /// - Parameters:
+    ///   - url: Image URL
+    ///   - completion: Will send image data or an error.
+    func fetchImageAsync(url: String, completion: @escaping (Result<Data, ImageLoaderError>) -> Void)
 }
 
 /// Interactor protocol for presenter "Basket". Contains  interactor output logic.
@@ -57,16 +62,18 @@ class BasketInteractor: BasketInteractorInput {
     private let network: NetworkProtocol
     /// Decoder service.
     private let decoder: DecoderResponseProtocol
-
+    private let imageLoader: ImageLoaderProtocol
     // MARK: - Initialization
 
     /// Interactor for presenter "Basket". Contains business logic.
     /// - Parameters:
     ///   - network: Network service.
     ///   - decoder: Decoder srevice.
-    init(network: NetworkProtocol, decoder: DecoderResponseProtocol) {
+    ///   - imageLoader:  Image loader.
+    init(network: Network, decoder: DecoderResponse, imageLoader: ImageLoaderProtocol) {
         self.network = network
         self.decoder = decoder
+        self.imageLoader = imageLoader
     }
 
     // MARK: - Public Methods
@@ -128,6 +135,12 @@ class BasketInteractor: BasketInteractorInput {
                 guard let self = self, let closure = self.presenter?.interactorEmptyBasketApi else { return }
                 self.runFuncOnSuccessMessage(result, closure)
             }
+        }
+    }
+
+    func fetchImageAsync(url: String, completion: @escaping (Result<Data, ImageLoaderError>) -> Void) {
+        DispatchQueue.global().async {
+            self.imageLoader.fetchAsync(url: url, completion: completion)
         }
     }
 
