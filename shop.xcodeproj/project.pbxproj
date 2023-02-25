@@ -211,7 +211,7 @@
 		F204BB4F28BF42F400936A62 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				F204BB5428BF4DC500936A62 /* Base */,
+				F283B0DD29A61447009DAB92 /* Api */,
 				F204BB5028BF432400936A62 /* Network.swift */,
 				F283B0DC29A61422009DAB92 /* LoaderImage */,
 			);
@@ -520,6 +520,14 @@
 				F283B0DA29A5E30C009DAB92 /* ImageLoader.swift */,
 			);
 			path = LoaderImage;
+			sourceTree = "<group>";
+		};
+		F283B0DD29A61447009DAB92 /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				F204BB5428BF4DC500936A62 /* Base */,
+			);
+			path = Api;
 			sourceTree = "<group>";
 		};
 		F284ECC0291D3EF000392FE6 /* Catalog */ = {
