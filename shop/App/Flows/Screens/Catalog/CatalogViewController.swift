@@ -176,8 +176,7 @@ extension CatalogViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath
-    ) -> UICollectionViewCell {
+                        cellForItemAt indexPath: IndexPath ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CatalogCollectionViewCell.identifier,
                                                             for: indexPath)
                 as? CatalogCollectionViewCell else { preconditionFailure() }

@@ -19,7 +19,6 @@ enum AppDataScreen {
         static var eyeClose: String { "eyeClose" }
         static var signUp: String { "signUp" }
         static var checkMark: String { "checkMark" }
-        static var catalogProduct: String { "catalogProduct" }
         static var minus: String { "minus" }
         static var plus: String { "plus" }
         static var trash: String { "trash" }
@@ -62,7 +61,7 @@ extension AppDataScreen {
                 switch self {
                 case .submitButton:
                     return ""
-                default :
+                default:
                     return "Your \(self.rawValue.lowercased()), min \(self.minChar) char."
                 }
             }
@@ -70,7 +69,7 @@ extension AppDataScreen {
             var minChar: Int {
                 switch self {
                 case .login, .password:
-                    return 6
+                    return 5
                 case .email:
                     return 5
                 case .creditCard:
@@ -86,7 +85,7 @@ extension AppDataScreen {
                 switch self {
                 case .creditCard:
                     return 16
-                case .bio :
+                case .bio:
                     return 120
                 default:
                     return 25

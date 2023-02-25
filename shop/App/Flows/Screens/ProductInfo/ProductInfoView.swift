@@ -176,6 +176,7 @@ class ProductInfoView: UIView {
             self.qt = newQt
             updateQt(false)
         case .cell(let index):
+            guard let visableRows = tableView.indexPathsForVisibleRows, visableRows.contains(index) else { return }
             tableView.reloadRows(at: [index], with: .automatic)
         case .image:
             guard let index = controller?.getSections.firstIndex(where: { component in
