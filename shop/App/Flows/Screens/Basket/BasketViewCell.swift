@@ -7,6 +7,14 @@
 
 import UIKit
 
+protocol BasketViewCellDelegate: AnyObject {
+    /// View sent a new quantity of product.
+    /// - Parameters:
+    ///   - id: Product id.
+    ///   - qt: Product quantity.
+    func viewSendNewQtProduct(id: Int, qt: Int)
+}
+
 /// Basket cell.
 class BasketViewCell: UITableViewCell {
     // MARK: - Visual Components
@@ -55,7 +63,7 @@ class BasketViewCell: UITableViewCell {
     }()
 
     /// Cell delegate.
-    weak var delegate: (AnyObject & BasketViewOutput)?
+    weak var delegate: (AnyObject & BasketViewCellDelegate)?
 
     /// Product id.
     private var id: Int?
@@ -138,19 +146,30 @@ class BasketViewCell: UITableViewCell {
         qtView.addTarget(self, actionAdd: #selector(actionAddItem), actionRemove: #selector(actionRemoveItem))
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        productImageView.image = nil
+        nameLabel.text = nil
+        priceLabel.text = nil
+    }
+
     // MARK: - Public Methods
 
     /// Confirure cell.
-    func configure(_ item: ResponseBasketModel) {
-        nameLabel.text = item.product.name
-        if let formatString = item.product.price.formatThousandSeparator() {
+    func configure(_ item: BasketViewCellModel) {
+        nameLabel.text = item.name
+        if let formatString = item.price.formatThousandSeparator() {
             priceLabel.text = "\(formatString) ₽"
         } else {
-            priceLabel.text = "\(item.product.price) ₽"
+            priceLabel.text = "\(item.price) ₽"
         }
-        productImageView.image = UIImage(named: AppDataScreen.image.catalogProduct)
+        if let data = item.imageData {
+            productImageView.image = UIImage(data: data)
+        }
+
         productImageView.tintColor = AppStyles.color.main
-        self.id = item.product.id
+        self.id = item.id
         setQt(qt: item.quantity, sendRequest: false)
     }
 
@@ -160,7 +179,7 @@ class BasketViewCell: UITableViewCell {
     /// - Parameter qt: Product quantity.
     /// - Parameter sendRequest: Send result to api.
     private func setQt(qt: Int, sendRequest: Bool) {
-        self.qt = qt >= 0 ? qt : 0
+        self.qt = qt >= 1 ? qt : 1
         qtView.setQt(qt)
 
         if sendRequest {
