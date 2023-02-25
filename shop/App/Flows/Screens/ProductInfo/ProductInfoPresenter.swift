@@ -18,9 +18,9 @@ class ProductInfoPresenter: Analyticable {
     /// Screen sections.
     private var dataSections: [AppDataScreen.productInfo.Сomponent] = []
     /// Product info.
-    private var dataInfo: ResponseProductModel?
+    private var dataInfo: ProductInfoViewModel?
     /// Other products.
-    private var dataOtherProducts: [[ResponseProductModel]]?
+    private var dataOtherProducts: [[OtherProductInfoViewModel]]?
 
     /// Product id.
     private let id: Int
@@ -41,22 +41,85 @@ class ProductInfoPresenter: Analyticable {
         self.router = router
         self.id = id
     }
+
+    /// Loading product images.
+    /// - Parameter urls: Images urls.
+    private func loadImagesProduct(images urls: [String]) {
+        let group = DispatchGroup()
+        var dataImages: [Data] = []
+
+        urls.forEach { url in
+            group.enter()
+            self.interactor.fetchImageAsync(url: url) { result in
+                switch result {
+                case .success(let data):
+                    dataImages.append(data)
+                case .failure(let failure):
+                    print(failure)
+                }
+                group.leave()
+            }
+        }
+
+        group.notify(queue: .main) {
+            self.dataInfo?.images = dataImages
+            self.viewInput?.update(component: .image)
+        }
+    }
+
+    /// Loading images for cell  other products cell.
+    /// - Parameter index: Cell index.
+    private func loadImagesOtherProducts(index: IndexPath) {
+        let group = DispatchGroup()
+        self.dataOtherProducts?[index.row].enumerated().forEach({ indexItem, item in
+            if let url = item.image {
+                group.enter()
+                self.interactor.fetchImageAsync(url: url) { [weak self] result in
+                    switch result {
+                    case .success(let data):
+                        self?.dataOtherProducts?[index.row][indexItem].imageData = data
+                    case .failure(let failure):
+                        print(failure)
+                    }
+                    group.leave()
+                }
+            }
+
+        })
+        group.notify(queue: .main) {
+            self.viewInput?.update(component: .cell(index))
+        }
+    }
 }
 
 // MARK: - ProductInfoInteractorOutput
 
 extension ProductInfoPresenter: ProductInfoInteractorOutput {
     func interactorResponseInfo(_ response: ResponseProductModel) {
-        dataInfo = response
-        viewInput?.updateAllInfoOnScreen()
-        // The request for other products is made after the master data is loaded.
-        interactor.fetchOtherProductsAsync(self.id, response.category)
+        if dataInfo == nil {
+            dataInfo = ProductInfoViewModel(id: response.id, name: response.name, price: response.price,
+                                            description: response.description ?? "Error description",
+                                            qt: response.qt ?? 0,
+                                            lastReview: response.lastReview)
+            if let images = response.images {
+                DispatchQueue.global().async {
+                    self.loadImagesProduct(images: images)
+                }
+            }
+            viewInput?.update(component: .all)
+            interactor.fetchOtherProductsAsync(self.id, response.category)
+        } else {
+            if let newQt = response.qt, dataInfo?.qt != newQt {
+                dataInfo?.qt = newQt
+                viewInput?.update(component: .qt(newQt))
+            }
+        }
         viewInput?.loadingAnimation(false)
     }
 
-    func interactorResponseOtherProducts(_ response: [[ResponseProductModel]]) {
-        dataOtherProducts = response
-        viewInput?.updateOtherProductsOnScreen()
+    func interactorResponseOtherProducts(_ response: [ResponseProductModel]) {
+        dataOtherProducts = interactor.convertOtherProductIntoCell(response: response, qtInCell: 3)
+        viewInput?.update(component: .otherProduct)
     }
 
     func interactorResponseError(_ error: NetworkErrorModel) {
@@ -68,6 +131,12 @@ extension ProductInfoPresenter: ProductInfoInteractorOutput {
 // MARK: - ProductInfoInteractorOutput
 
 extension ProductInfoPresenter: ProductInfoViewControllerOutput {
+    func viewRequestsOtherProductImage(index: IndexPath) {
+        DispatchQueue.main.async {
+            self.loadImagesOtherProducts(index: index)
+        }
+    }
+
     func viewSendError(_ error: ErrorForAnalytic) {
         sendAnalytic(.applicationError(error))
     }
@@ -105,11 +174,11 @@ extension ProductInfoPresenter: ProductInfoViewControllerOutput {
         dataInfo != nil ? AppDataScreen.productInfo.sectionTableView : []
     }
 
-    var getOtherProducts: [[ResponseProductModel] ] {
+    var getOtherProducts: [[OtherProductInfoViewModel] ] {
         self.dataOtherProducts ?? []
     }
 
-    var getDataInfo: ResponseProductModel? {
+    var getDataInfo: ProductInfoViewModel? {
         self.dataInfo
     }
 

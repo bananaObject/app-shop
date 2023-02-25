@@ -26,6 +26,17 @@ protocol ProductInfoInteractorInput {
     ///   - id: Product id.
     ///   - qt: Product quantity.
     func fetchRemoveItemToBasketAsync(_ id: Int, qt: Int)
+    /// Downloading image data from internet.
+    /// - Parameters:
+    ///   - url: Image URL
+    ///   - completion: Will send image data or an error.
+    func fetchImageAsync(url: String, completion: @escaping (Result<Data, ImageLoaderError>) -> Void)
+    /// Distribute into cells other products.
+    /// - Parameters:
+    ///   - response: Other products response.
+    ///   - qtInCell: Number of elements in a cell.
+    /// - Returns: Array for sections.
+    func convertOtherProductIntoCell(response: [ResponseProductModel], qtInCell: Int) -> [[OtherProductInfoViewModel]]
 }
 
 /// Interactor protocol for presenter "Product info" Contains  interactor output logic.
@@ -35,7 +46,7 @@ protocol ProductInfoInteractorOutput {
     func interactorResponseInfo(_ response: ResponseProductModel)
     /// Interactor response with the result of a request for a catalog of other products.
     /// - Parameter response: Other products catalog.
-    func interactorResponseOtherProducts(_ response: [[ResponseProductModel]])
+    func interactorResponseOtherProducts(_ response: [ResponseProductModel])
     /// Interactor response if the request was completed with an error.
     /// - Parameter error: Error.
     func interactorResponseError(_ error: NetworkErrorModel)
@@ -43,35 +54,38 @@ protocol ProductInfoInteractorOutput {
 
 class ProductInfoInteractor: ProductInfoInteractorInput {
     // MARK: - Public Properties
-
+    
     /// Controls the display of the view.
     weak var presenter: (AnyObject & ProductInfoInteractorOutput)?
-
+    
     // MARK: - Private Properties
-
+    
     /// Network layer.
     private let network: NetworkProtocol
     /// Response decoder.
     private let decoder: DecoderResponseProtocol
-
+    private let imageLoader: ImageLoaderProtocol
+    
     // MARK: - Initialization
-
+    
     /// Interactor for presenter "Product Info". Contains business logic.
     /// - Parameters:
     ///   - network: Network service.
     ///   - decoder: Decoder srevice.
-    init(network: Network, decoder: DecoderResponse) {
+    ///   - imageLoader:  Image loader.
+    init(network: Network, decoder: DecoderResponse, imageLoader: ImageLoaderProtocol) {
         self.network = network
         self.decoder = decoder
+        self.imageLoader = imageLoader
     }
-
+    
     // MARK: - Public Methods
-
+    
     func fetchInfoAsync(_ id: Int) {
         DispatchQueue.global(qos: .background).async {
             self.network.fetch(.product(id)) {  [weak self] result in
                 guard let self = self else { return }
-
+                
                 do {
                     switch result {
                     case .success(let data):
@@ -93,13 +107,13 @@ class ProductInfoInteractor: ProductInfoInteractorInput {
             }
         }
     }
-
+    
     func fetchOtherProductsAsync(_ id: Int, _ category: Int) {
         DispatchQueue.global(qos: .background).async {
             // By default, the first page, it contains products that need to be sold first.
             self.network.fetch(.catalog(1, category)) {  [weak self] result in
                 guard let self = self else { return }
-
+                
                 do {
                     switch result {
                     case .success(let data):
@@ -107,13 +121,8 @@ class ProductInfoInteractor: ProductInfoInteractorInput {
                         let response = try self.decoder.decode(data: data, model: ResponseCatalogModel.self)
                             .products
                             .filter { $0.id != id }
-
-                        // Here is an answer convenient for building a screen.
-                        let convertResponse = self.convertOtherProductIntoCell(
-                            response: response,
-                            qtInCell: AppDataScreen.productInfo.qtInCellOtherProducts
-                        )
-                        self.presenter?.interactorResponseOtherProducts(convertResponse)
+                        
+                        self.presenter?.interactorResponseOtherProducts(response)
                     case .failure(let error):
                         switch error {
                         case .clientError(_, let data):
@@ -129,38 +138,38 @@ class ProductInfoInteractor: ProductInfoInteractorInput {
             }
         }
     }
-
+    
     func fetchAddItemToBasketAsync(_ id: Int, qt: Int) {
         DispatchQueue.global(qos: .background).async {
             self.network.fetch(.addToBasket(id, qt)) { _ in }
         }
     }
-
+    
     func fetchRemoveItemToBasketAsync(_ id: Int, qt: Int) {
         DispatchQueue.global(qos: .background).async {
             self.network.fetch(.removeItemToBasket(id, qt)) { _ in }
         }
     }
-
-    // MARK: - Private Methods
-    /// Distribute into cells.
-    /// - Parameters:
-    ///   - response: Other products response.
-    ///   - qtInCell: Number of elements in a cell.
-    /// - Returns: Array for cells.
-    private func convertOtherProductIntoCell(response: [ResponseProductModel],
-                                             qtInCell: Int) -> [[ResponseProductModel]] {
+    
+    func fetchImageAsync(url: String, completion: @escaping (Result<Data, ImageLoaderError>) -> Void) {
+        DispatchQueue.global(qos: .background).async {
+            self.imageLoader.fetchAsync(url: url, completion: completion)
+        }
+    }
+    
+    func convertOtherProductIntoCell(response: [ResponseProductModel],
+                                     qtInCell: Int) -> [[OtherProductInfoViewModel]] {
         var response = response
         // Making an array for cells
-        return response.reduce([[ResponseProductModel]]()) { partialResult, _ in
+        return response.reduce([[OtherProductInfoViewModel]]()) { partialResult, _ in
             guard !response.isEmpty else { return partialResult }
-
-            var array: [ResponseProductModel] = []
-
-            for _ in 0..<qtInCell {
-                if !response.isEmpty {
-                    array.append(response.removeFirst())
-                }
+            
+            var array: [OtherProductInfoViewModel] = []
+            
+            for _ in 0..<qtInCell where !response.isEmpty {
+                let item = response.removeFirst()
+                array.append(OtherProductInfoViewModel(id: item.id, name: item.name,
+                                                       price: item.price, image: item.imageSmall))
             }
             
             return partialResult + [array]
