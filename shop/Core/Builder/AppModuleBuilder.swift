@@ -74,8 +74,9 @@ enum AppModuleBuilder {
     static func basketBuild() -> (UIViewController & BasketViewControllerInput) {
         let network = Network()
         let decoder = DecoderResponse()
+        let imageLoader = ImageLoader(cached: true)
 
-        let interactor = BasketInteractor(network: network, decoder: decoder)
+        let interactor = BasketInteractor(network: network, decoder: decoder, imageLoader: imageLoader)
         let router = BasketRouter()
         let presenter = BasketPresenter(interactor: interactor, router: router)
         interactor.presenter = presenter

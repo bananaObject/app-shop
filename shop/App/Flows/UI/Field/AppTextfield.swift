@@ -44,18 +44,15 @@ class AppTextfield: UITextField {
     // MARK: - Private Properties
 
     /// What will be displayed in the right view.
-    private var mode: RightView = .none
-
+    private var mode: RightView
     /// Color incomplete field
-    private var incompleteColor: UIColor = .clear
+    private var incompleteColor: UIColor
     /// Color complete field
-    private var completeColor: UIColor = .clear
-
+    private var completeColor: UIColor
     /// Minimum number of characters for a field.
-    private var minChar: Int = 1
-
+    private var minChar: Int
     /// Minimum number of characters for a field.
-    private var maxChar: Int = 0
+    private var maxChar: Int
 
     // MARK: - Initialization
 
@@ -73,17 +70,15 @@ class AppTextfield: UITextField {
          completeColor: UIColor,
          minChar: Int = 3,
          maxChar: Int = 0,
-         mode: RightView = .none
-    ) {
-        super.init(frame: .zero)
-        
-        self.placeholder = placeholder
+         mode: RightView = .none) {
+
         self.incompleteColor = incompleteColor
         self.completeColor = completeColor
         self.minChar = minChar
         self.maxChar = maxChar
         self.mode = mode
-
+        super.init(frame: .zero)
+        self.placeholder = placeholder
         setupUI()
     }
 

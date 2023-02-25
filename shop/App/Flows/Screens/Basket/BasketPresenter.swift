@@ -132,9 +132,11 @@ extension BasketPresenter: BasketInteractorOutput {
     }
 
     func interactorSendResponseBasket(_ result: [ResponseBasketModel]) {
-        data = result.map({ BasketViewCellModel(id: $0.product.id, name: $0.product.name,
-                                                price: $0.product.price, quantity: $0.quantity,
-                                                imageUrl: $0.product.imageSmall)})
+        data = result
+            .sorted(by: { $0.product.id < $1.product.id })
+            .map({ BasketViewCellModel(id: $0.product.id, name: $0.product.name,
+                                       price: $0.product.price, quantity: $0.quantity,
+                                       imageUrl: $0.product.imageSmall)})
         DispatchQueue.main.async {
             self.viewInput?.reloadTableView()
             self.viewInput?.setTrashButton(self.data.isEmpty)

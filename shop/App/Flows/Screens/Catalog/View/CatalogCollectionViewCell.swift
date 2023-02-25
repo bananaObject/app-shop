@@ -222,7 +222,7 @@ class CatalogCollectionViewCell: UICollectionViewCell {
             withTarget: self as Any,
             selector: #selector(actionDebounce),
             object: nil)
-        perform(#selector(actionDebounce), with: nil, afterDelay: 1)
+        perform(#selector(actionDebounce), with: nil, afterDelay: 0.5)
 
     }
 

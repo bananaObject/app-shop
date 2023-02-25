@@ -147,8 +147,7 @@ class BasketView: UIView {
     func reloadTableView() {
         tableView.reloadData()
         tableView.refreshControl?.endRefreshing()
-        checkPayButton()
-        setTotalCost(controller?.totalCost ?? 0)
+        updatePayFooter()
     }
 
     /// Delete row table view.
@@ -157,8 +156,7 @@ class BasketView: UIView {
         tableView.beginUpdates()
         tableView.deleteRows(at: [index], with: .left)
         tableView.endUpdates()
-        checkPayButton()
-        setTotalCost(controller?.totalCost ?? 0)
+        updatePayFooter()
     }
 
     /// Enable/disable loading animation.
@@ -189,6 +187,7 @@ class BasketView: UIView {
             tableView.beginUpdates()
             tableView.deleteRows(at: indexPaths, with: .left)
             tableView.endUpdates()
+            updatePayFooter()
         }
     }
 
@@ -201,6 +200,12 @@ class BasketView: UIView {
         } else if controller?.data.isEmpty == true && payButton.isEnabled == true {
             payButton.setIsEnable(enable: false)
         }
+    }
+
+    /// Update payment information.
+    private func updatePayFooter() {
+        checkPayButton()
+        setTotalCost(controller?.totalCost ?? 0)
     }
 
     // MARK: - Actions
