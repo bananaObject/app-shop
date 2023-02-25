@@ -10,11 +10,11 @@ import UIKit
 /// View delegate output.
 protocol ProductInfoViewOutput {
     /// Product info.
-    var getDataInfo: ResponseProductModel? { get }
+    var getDataInfo: ProductInfoViewModel? { get }
     /// Section screen. The table is built on this data.
     var getSections: [AppDataScreen.productInfo.Сomponent] { get }
     /// Other product.
-    var getOtherProducts: [[ResponseProductModel]] { get }
+    var getOtherProducts: [[OtherProductInfoViewModel]] { get }
     /// Product quantity.
     var qtProduct: Int { get set }
     
@@ -22,9 +22,21 @@ protocol ProductInfoViewOutput {
     /// - Parameter id: Product id.
     func viewSendId(_ id: Int)
 
+    /// View requests images of other products by index.
+    /// - Parameter index: Index cell.
+    func viewRequestsOtherProductImage(index: IndexPath)
+
     /// View send error;
     /// - Parameter error: Error.
     func viewSendError(_ error: ErrorForAnalytic)
+}
+
+enum Update {
+    case all
+    case image
+    case otherProduct
+    case qt(_ newQt: Int)
+    case cell(_ index: IndexPath)
 }
 
 class ProductInfoView: UIView {
@@ -40,6 +52,7 @@ class ProductInfoView: UIView {
         let view = UITableView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.separatorStyle = .none
+        view.showsHorizontalScrollIndicator = false
         return view
     }()
 
@@ -54,6 +67,7 @@ class ProductInfoView: UIView {
         let view = QtView()
         view.isFillButton = true
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = footer.backgroundColor
         return view
     }()
 
@@ -80,12 +94,15 @@ class ProductInfoView: UIView {
 
     /// Settings for the visual part.
     func setupUI() {
+        if #available(iOS 15.0, *) {
+            tableView.sectionHeaderTopPadding = 0.0
+        }
+
         tableView.dataSource = self
         tableView.delegate = self
         registerCell()
         
         backgroundColor = AppStyles.color.background
-        tableView.showsVerticalScrollIndicator = false
 
         addSubview(footer)
         NSLayoutConstraint.activate([
@@ -138,32 +155,52 @@ class ProductInfoView: UIView {
     }
 
     // MARK: - Public Methods
-
-    /// Update all section on screen.
-    func updateAllInfoOnScreen() {
-        tableView.reloadData()
-        self.qt = controller?.qtProduct
-
-        updateQt(false)
-    }
-
-    /// Update  section other product  on screen.
-    func updateOtherProductsOnScreen() {
-        guard let index = controller?.getSections.firstIndex(where: { component in
-            switch component {
-            case .otherProducts:
-                return true
-            case .info:
-                return false
-            }
-        }) else { return }
-        tableView.reloadSections([index], with: .top)
+    
+    func update(component: Update) {
+        switch component {
+        case .all:
+            tableView.reloadData()
+            self.qt = controller?.qtProduct
+            updateQt(false)
+        case .otherProduct:
+            guard let index = controller?.getSections.firstIndex(where: { component in
+                switch component {
+                case .otherProducts:
+                    return true
+                default:
+                    return false
+                }
+            }) else { return }
+            tableView.reloadSections([index], with: .automatic)
+        case .qt(let newQt):
+            self.qt = newQt
+            updateQt(false)
+        case .cell(let index):
+            tableView.reloadRows(at: [index], with: .automatic)
+        case .image:
+            guard let index = controller?.getSections.firstIndex(where: { component in
+                switch component {
+                case .info(let component) where component.contains(.images):
+                    return true
+                default:
+                    return false
+                }
+            }) else { return }
+            tableView.reloadSections([index], with: .automatic)
+        }
     }
 
     /// Enable/disable loading animation.
     /// - Parameter isEnable: Loading is enable.
     func loadingAnimation(_ isEnable: Bool) {
         loadingView.animation(isEnable)
+    }
+
+    /// Displays the scroll indicators momentarily.
+    func flashScrollIndicator() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.tableView.flashScrollIndicators()
+        }
     }
 
     // MARK: - Private Methods
@@ -186,15 +223,11 @@ class ProductInfoView: UIView {
                 )
             }
 
-            // Stub pictures.
-            let images: [UIImage] = [.init(named: "catalogProduct")!,
-                                     .init(named: "signUp")!,
-                                     .init(named: "catalogProduct")!,
-                                     .init(named: "catalogProduct")!,
-                                     .init(named: "signUp")!,
-                                     .init(named: "signUp")!,
-                                     .init(named: "catalogProduct")!]
-            newCell.configure(images)
+            if !newCell.imagesIsLoad,
+                let images = controller?.getDataInfo?.images?.compactMap({ UIImage(data: $0) }) {
+                newCell.configure(images)
+            }
+
             return newCell
         case .info(let components) where components[indexPath.row] == .productName:
             guard let newCell = tableView.dequeueReusableCell( withIdentifier: ProductNameCell.identifier,
@@ -248,6 +281,9 @@ class ProductInfoView: UIView {
                                  UITableViewCell.self
                 )
             }
+            if otherProducts.first?.imageData == nil {
+                controller?.viewRequestsOtherProductImage(index: indexPath)
+            }
             newCell.delegate = self.controller
             newCell.configure(otherProducts)
             return newCell
@@ -287,7 +323,6 @@ class ProductInfoView: UIView {
                     return T
             #endif
     }
-
 
     /// Send analytics in case of error.
     /// - Parameters:
@@ -358,7 +393,9 @@ extension ProductInfoView: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return AppStyles.layer.cornerRadius * 3
+        guard section != 0 else { return 0 }
+        
+        return AppStyles.size.padding * 3
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

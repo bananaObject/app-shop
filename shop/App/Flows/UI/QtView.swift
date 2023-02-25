@@ -28,7 +28,6 @@ class QtView: UIStackView {
         label.font = .preferredFont(forTextStyle: .largeTitle)
         label.adjustsFontSizeToFitWidth = true
         label.textColor = AppStyles.color.complete
-        label.backgroundColor = AppStyles.color.background
         return label
     }()
 
@@ -71,11 +70,16 @@ class QtView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override var backgroundColor: UIColor? {
+        willSet {
+            qtLabel.backgroundColor = newValue
+        }
+    }
+
     // MARK: - Setting UI Methods
 
     /// Settings visual components.
     private func setupUI() {
-        backgroundColor = AppStyles.color.background
         spacing = 8
         translatesAutoresizingMaskIntoConstraints = false
         distribution = .fillEqually

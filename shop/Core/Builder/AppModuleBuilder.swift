@@ -95,8 +95,9 @@ enum AppModuleBuilder {
     static func productInfoBuild(_ idProduct: Int) -> (UIViewController & ProductInfoViewControllerInput) {
         let network = Network()
         let decoder = DecoderResponse()
+        let imageLoader = ImageLoader()
 
-        let interactor = ProductInfoInteractor(network: network, decoder: decoder)
+        let interactor = ProductInfoInteractor(network: network, decoder: decoder, imageLoader: imageLoader)
         let router = ProductInfoRouter()
         let presenter = ProductInfoPresenter(interactor: interactor, router: router, product: idProduct)
         interactor.presenter = presenter

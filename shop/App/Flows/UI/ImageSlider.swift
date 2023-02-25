@@ -85,13 +85,15 @@ class ImageSlider: UIView {
             imageStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             imageStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             imageStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            imageStackView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
+            imageStackView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
+            imageStackView.widthAnchor.constraint(greaterThanOrEqualTo: scrollView.widthAnchor)
         ])
 
         addSubview(dotStackView)
         NSLayoutConstraint.activate([
             dotStackView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
             dotStackView.topAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: AppStyles.size.padding),
+            dotStackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 1),
             dotStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
             dotStackView.leadingAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.leadingAnchor),
             dotStackView.trailingAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor)

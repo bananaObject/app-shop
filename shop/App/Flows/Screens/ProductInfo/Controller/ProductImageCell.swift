@@ -18,6 +18,11 @@ class ProductImageCell: UITableViewCell {
         return view
     }()
 
+    // MARK: - Public Properties
+
+    /// Flag that images are enabled.
+    var imagesIsLoad = false
+
     // MARK: - Static Properties
 
     /// Сell identifier.
@@ -54,6 +59,7 @@ class ProductImageCell: UITableViewCell {
     /// Configure cell.
     /// - Parameter images: Array image.
     func configure(_ images: [UIImage]) {
+        imagesIsLoad = true
         imageSlider.setImages(images)
     }
 }
