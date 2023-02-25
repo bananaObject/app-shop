@@ -19,7 +19,7 @@ protocol ImageLoaderProtocol {
     /// - Parameters:
     ///   - url: Image URL
     ///   - completion: Will return the result: either the image data, or an error.
-    func fetch(url: String, completion: @escaping (Result<Data, ImageLoaderError>) -> Void)
+    func fetchAsync(url: String, completion: @escaping (Result<Data, ImageLoaderError>) -> Void)
 }
 
 final class ImageLoader: ImageLoaderProtocol {
@@ -27,6 +27,7 @@ final class ImageLoader: ImageLoaderProtocol {
 
     private let urlSession = URLSession.shared
     private var fileCache: ImageFileCacheProtocol?
+    private let imageQueue = DispatchQueue(label: "imageAsync", qos: .background)
 
     // MARK: - Initialization
 
@@ -40,38 +41,40 @@ final class ImageLoader: ImageLoaderProtocol {
 
     // MARK: - Public Methods
 
-    /// Get an image data from the web.
+    /// Get image data from the web.
     /// - Parameters:
     ///   - url: Image address.
     ///   - completion: Will return the result: either the image data, or an error.
     ///
     /// If caching is enabled, it will first check it in the cache. If not, it will store it in the cache for later use.
-    func fetch(url: String, completion: @escaping (Result<Data, ImageLoaderError>) -> Void) {
-        guard let url = URL(string: url) else {
-            completion(.failure(.invalidURL))
-            return
-        }
-
-        if let cache = fileCache, let data = cache.getImageData(for: url) {
-            completion(.success(data))
-            return
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-
-        urlSession.dataTask(with: request) { data, _, error in
-            guard error == nil, let data = data else {
-                completion(.failure(.requestError(error)))
+    func fetchAsync(url: String, completion: @escaping (Result<Data, ImageLoaderError>) -> Void) {
+        imageQueue.async {
+            guard let url = URL(string: url) else {
+                completion(.failure(.invalidURL))
                 return
             }
 
-            if let cache = self.fileCache {
-                cache.saveImage(url: url, data: data)
+            if let cache = self.fileCache, let data = cache.getImageData(for: url) {
+                completion(.success(data))
+                return
             }
 
-            completion(.success(data))
-        }.resume()
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+
+            self.urlSession.dataTask(with: request) { data, _, error in
+                guard error == nil, let data = data else {
+                    completion(.failure(.requestError(error)))
+                    return
+                }
+
+                if let cache = self.fileCache {
+                    cache.saveImage(url: url, data: data)
+                }
+
+                completion(.success(data))
+            }.resume()
+        }
     }
 }
 
@@ -112,13 +115,11 @@ extension ImageLoader {
                 return nil
             }
 
-            DispatchQueue.global().async {
-                if self.imagesData.count > 200 {
-                    self.imagesData.removeAll()
-                }
-
-                self.imagesData[url.absoluteString] = data
+            if self.imagesData.count > 200 {
+                self.imagesData.removeAll()
             }
+
+            self.imagesData[url.absoluteString] = data
 
             return data
         }
