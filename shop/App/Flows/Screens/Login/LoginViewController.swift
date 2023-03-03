@@ -114,7 +114,7 @@ class LoginViewController: UIViewController {
 extension LoginViewController: LoginViewControllerInput {
     func showError(_ error: String) {
         DispatchQueue.main.async {
-            let alertContoller = UIAlertController(title: "Error" ,
+            let alertContoller = UIAlertController(title: "Error",
                                                    message: error,
                                                    preferredStyle: .alert)
             alertContoller.addAction(UIAlertAction(title: "Close", style: .default, handler: nil))

@@ -10,15 +10,9 @@ import UIKit
 /// View protocol output.
 protocol BasketViewOutput {
     /// Basket data.
-    var data: [ResponseBasketModel] { get }
+    var data: [BasketViewCellModel] { get }
     ///  Total amount all product in basket.
     var totalCost: Int { get }
-
-    /// View sent a new quantity of product.
-    /// - Parameters:
-    ///   - id: Product id.
-    ///   - qt: Product quantity.
-    func viewSendNewQtProduct(id: Int, qt: Int)
     /// Updata data
     func viewRefreshData()
     /// View requested information about the basket.
@@ -44,7 +38,7 @@ class BasketView: UIView {
     private lazy var payButton: AppButton = {
         let button = AppButton(tittle: "Pay", activityIndicator: true)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font =  .preferredFont(forTextStyle: .title1)
+        button.titleLabel?.font = .preferredFont(forTextStyle: .title1)
         button.setIsEnable(enable: false)
         return button
     }()
@@ -61,13 +55,13 @@ class BasketView: UIView {
     // MARK: - Private Properties
 
     /// The controller that manages the view.
-    private weak var controller: (UIViewController & BasketViewOutput)?
+    private weak var controller: (AnyObject & BasketViewOutput & UITableViewDelegate & UITableViewDataSource)?
 
     // MARK: - Initialization
 
     /// Init basket view.
     /// - Parameter controller: The controller that manages the view.
-    init(_ controller: UIViewController & BasketViewOutput) {
+    init(_ controller: AnyObject & BasketViewOutput & UITableViewDelegate & UITableViewDataSource) {
         super.init(frame: .zero)
         self.controller = controller
     }
@@ -81,8 +75,8 @@ class BasketView: UIView {
     /// Settings for the visual part.
     func setupUI() {
         setTotalCost(0)
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
+        self.tableView.delegate = controller
+        self.tableView.dataSource = controller
         self.tableView.register(BasketViewCell.self, forCellReuseIdentifier: BasketViewCell.identifier)
 
         backgroundColor = AppStyles.color.background
@@ -153,8 +147,7 @@ class BasketView: UIView {
     func reloadTableView() {
         tableView.reloadData()
         tableView.refreshControl?.endRefreshing()
-        checkPayButton()
-        setTotalCost(controller?.totalCost ?? 0)
+        updatePayFooter()
     }
 
     /// Delete row table view.
@@ -163,8 +156,7 @@ class BasketView: UIView {
         tableView.beginUpdates()
         tableView.deleteRows(at: [index], with: .left)
         tableView.endUpdates()
-        checkPayButton()
-        setTotalCost(controller?.totalCost ?? 0)
+        updatePayFooter()
     }
 
     /// Enable/disable loading animation.
@@ -189,14 +181,13 @@ class BasketView: UIView {
     func updateTotalCost() {
         setTotalCost(controller?.totalCost ?? 0)
     }
-    /// Show result payment.
-    /// - Parameter text: Result text/
-    func showPaymentAlert(_ text: String) {
-        let alert = UIAlertController(title: text, message: nil, preferredStyle: .alert)
-        controller?.present(alert, animated: true)
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            alert.dismiss(animated: true)
+    func deleteAllCell() {
+        if let indexPaths = tableView.indexPathsForVisibleRows {
+            tableView.beginUpdates()
+            tableView.deleteRows(at: indexPaths, with: .left)
+            tableView.endUpdates()
+            updatePayFooter()
         }
     }
 
@@ -209,6 +200,12 @@ class BasketView: UIView {
         } else if controller?.data.isEmpty == true && payButton.isEnabled == true {
             payButton.setIsEnable(enable: false)
         }
+    }
+
+    /// Update payment information.
+    private func updatePayFooter() {
+        checkPayButton()
+        setTotalCost(controller?.totalCost ?? 0)
     }
 
     // MARK: - Actions
@@ -225,32 +222,5 @@ class BasketView: UIView {
         payButton.showLoadingIndicator(true)
 
         controller?.viewRequestPayment()
-    }
-}
-
-// MARK: - UITableViewDelegate
-
-extension BasketView: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        tableView.frame.height / AppDataScreen.basket.cellOnscreen
-    }
-}
-
-// MARK: - UITableViewDataSource
-
-extension BasketView: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        controller?.data.count ?? 0
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: BasketViewCell.identifier, for: indexPath)
-                as? BasketViewCell else { preconditionFailure() }
-        if let product = controller?.data[indexPath.row] {
-            cell.configure(product)
-            cell.delegate = controller
-        }
-
-        return cell
     }
 }

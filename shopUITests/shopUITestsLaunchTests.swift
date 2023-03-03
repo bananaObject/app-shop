@@ -15,6 +15,7 @@ final class shopUITestsLaunchTests: XCTestCase {
     }
 
     override func setUpWithError() throws {
+        try super.setUpWithError()
         continueAfterFailure = false
     }
 

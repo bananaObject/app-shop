@@ -9,11 +9,8 @@ import UIKit
 
 /// Delegate controller input.
 protocol ProductInfoViewControllerInput {
-    /// Update the basic information on the view.
-    func updateAllInfoOnScreen()
-
-    /// Update the other products.
-    func updateOtherProductsOnScreen()
+    /// Update component on view..
+    func update(component: Update)
 
     /// Enable/disable loading animation.
     /// - Parameter isEnable: Loading is enable.
@@ -23,16 +20,20 @@ protocol ProductInfoViewControllerInput {
 /// Delegate controller output.
 protocol ProductInfoViewControllerOutput {
     /// Product info.
-    var getDataInfo: ResponseProductModel? { get }
+    var getDataInfo: ProductInfoViewModel? { get }
     /// Section screen. The table is built on this data.
     var getSections: [AppDataScreen.productInfo.Сomponent] { get }
-    /// Other product.
-    var getOtherProducts: [[ResponseProductModel]] { get }
+    /// Other products.
+    var getOtherProducts: [[OtherProductInfoViewModel]] { get }
     /// Product quantity.
     var qtProduct: Int { get set }
 
     /// View requested basic information about the product.
     func viewRequestsInfo()
+
+    /// View requests images of other products by index.
+    /// - Parameter index: Index cell.
+    func viewRequestsOtherProductImage(index: IndexPath)
 
     /// View requested open product.
     /// - Parameter id: Product id.
@@ -87,33 +88,34 @@ class ProductInfoViewController: UIViewController {
         super.viewDidLoad()
 
         infoView.setupUI()
-        presenter?.viewRequestsInfo()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        presenter?.viewRequestsInfo()
         presenter?.viewSendAnalytic()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        infoView.flashScrollIndicator()
     }
 }
 
 // MARK: - ProductInfoViewControllerInput
 
 extension ProductInfoViewController: ProductInfoViewControllerInput {
+    func update(component: Update) {
+        DispatchQueue.main.async {
+            self.infoView.update(component: component)
+        }
+    }
+
     func loadingAnimation(_ isEnable: Bool) {
         DispatchQueue.main.async {
             self.infoView.loadingAnimation(isEnable)
-        }
-    }
-
-    func updateOtherProductsOnScreen() {
-        DispatchQueue.main.async {
-            self.infoView.updateOtherProductsOnScreen()
-        }
-    }
-
-    func updateAllInfoOnScreen() {
-        DispatchQueue.main.async {
-            self.infoView.updateAllInfoOnScreen()
         }
     }
 }
@@ -121,6 +123,10 @@ extension ProductInfoViewController: ProductInfoViewControllerInput {
 // MARK: - ProductInfoViewOutput
 
 extension ProductInfoViewController: ProductInfoViewOutput {
+    func viewRequestsOtherProductImage(index: IndexPath) {
+        presenter?.viewRequestsOtherProductImage(index: index)
+    }
+
     func viewSendError(_ error: ErrorForAnalytic) {
         presenter?.viewSendError(error)
     }
@@ -138,11 +144,11 @@ extension ProductInfoViewController: ProductInfoViewOutput {
         presenter?.getSections ?? []
     }
 
-    var getOtherProducts: [[ResponseProductModel]] {
+    var getOtherProducts: [[OtherProductInfoViewModel]] {
         presenter?.getOtherProducts ?? []
     }
 
-    var getDataInfo: ResponseProductModel? {
+    var getDataInfo: ProductInfoViewModel? {
         presenter?.getDataInfo
     }
 

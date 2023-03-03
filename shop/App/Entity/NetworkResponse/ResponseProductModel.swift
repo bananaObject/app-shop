@@ -16,6 +16,8 @@ struct ResponseProductModel: Decodable {
     let description: String?
     let lastReview: ResponseReviewModel?
     var qt: Int?
+    var imageSmall: String?
+    var images: [String]?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -25,5 +27,7 @@ struct ResponseProductModel: Decodable {
         case description
         case lastReview = "last_review"
         case qt
+        case imageSmall = "image"
+        case images
     }
 }

@@ -11,16 +11,14 @@ import UIKit
 protocol CatalogViewControllerInput {
     /// Reload data collection view.
     func reloadCollectionView()
-
-    /// Add product to basket.
-    /// - Parameters:
-    ///   - index: Index product.
-    ///   - qt: Product Quantity.
-    func addProductToCart(_ index: Int, qt: Int)
-
+    /// Reload data item collection view.
+    /// - Parameter indexPaths: Array items index.
+    func reloadItems(indexPaths: [IndexPath])
     /// Enable/disable loading animation.
     /// - Parameter isEnable: Loading is enable.
     func loadingAnimation(_ isEnable: Bool)
+    /// Update enable button basker.
+    func updateButtonBasket()
 }
 
 /// Delegate controller output.
@@ -30,7 +28,7 @@ protocol CatalogViewControllerOutput {
     /// Current page.
     var currentPage: Int { get }
     /// Data catalogs.
-    var data: [ResponseProductModel] { get }
+    var data: [CatalogCellModel] { get }
     /// Basket is empty.
     var basketIsEmpty: Bool { get }
     
@@ -58,6 +56,10 @@ protocol CatalogViewControllerOutput {
 
     /// View send analytic;
     func viewSendAnalytic()
+
+    /// View call a request image data.
+    /// - Parameter indexPath: Cell index.
+    func viewFetchImage(indexPath: IndexPath)
 
     /// Get the quantity of the item in the cart.
     /// - Parameter index: Index product.
@@ -155,7 +157,7 @@ class CatalogViewController: UIViewController {
     }
 
     /// Checking if the cart button should be enabled. If the cart is empty, then the button is disabled.
-    private func setEnableNavBarButtonBasket() {
+    private func checkEnableNavBarButtonBasket() {
         guard let button = navigationItem.rightBarButtonItem, let presenter = presenter else { return }
 
         if presenter.basketIsEmpty && button.isEnabled {
@@ -164,17 +166,82 @@ class CatalogViewController: UIViewController {
             button.isEnabled = true
         }
     }
+}
 
-    /// Enable basket bar button.
-    private func enableBarButton() {
-        guard let button = navigationItem.rightBarButtonItem else { return }
-        button.isEnabled = true
+// MARK: - UICollectionViewDataSource
+
+extension CatalogViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        presenter?.data.count ?? 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath ) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CatalogCollectionViewCell.identifier,
+                                                            for: indexPath)
+                as? CatalogCollectionViewCell else { preconditionFailure() }
+
+        if let product = presenter?.data[indexPath.item] {
+            let qt = presenter?.getQtToBasket(indexPath.item)
+            cell.configure(name: product.name,
+                           price: product.price,
+                           index: indexPath.item,
+                           quantity: qt,
+                           image: product.imageData)
+            cell.delegate = self
+
+            if product.imageData == nil {
+                presenter?.viewFetchImage(indexPath: indexPath)
+            }
+        }
+
+        return cell
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension CatalogViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        presenter?.viewOpenProductInfo(indexPath.item)
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return CGSize(width: (collectionView.frame.width - AppStyles.size.padding * 2) / 2
+                      - AppStyles.size.padding * 0.5,
+                      height: (collectionView.frame.height - AppStyles.size.padding) / 4
+                      - AppStyles.size.padding * 0.5 * 2)
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        .init(top: AppStyles.size.padding, left: AppStyles.size.padding,
+              bottom: AppStyles.size.padding, right: AppStyles.size.padding)
+    }
+}
+
+// MARK: - CatalogCellOutput
+
+extension CatalogViewController: CatalogCellOutput {
+    func addProductToCart(index: Int, qt: Int) {
+        presenter?.viewAddProductToCart(index, qt: qt)
+        checkEnableNavBarButtonBasket()
     }
 }
 
 // MARK: - CatalogViewControllerInput
 
 extension CatalogViewController: CatalogViewControllerInput {
+    func reloadItems(indexPaths: [IndexPath]) {
+        DispatchQueue.main.async {
+            self.catalogView.reloadItems(indexPaths: indexPaths)
+        }
+    }
+
     func loadingAnimation(_ isEnable: Bool) {
         DispatchQueue.main.async {
             self.catalogView.loadingAnimation(isEnable)
@@ -184,28 +251,12 @@ extension CatalogViewController: CatalogViewControllerInput {
     func reloadCollectionView() {
         DispatchQueue.main.async {
             self.catalogView.reloadCollectionView()
-            self.setEnableNavBarButtonBasket()
         }
     }
-}
 
-// MARK: - CatalogViewOutput
-
-extension CatalogViewController: CatalogViewOutput {
-    func openProductInfo(_ index: Int) {
-        presenter?.viewOpenProductInfo(index)
-    }
-
-    func getQtItem(_ index: Int) -> Int {
-        presenter?.getQtToBasket(index) ?? 0
-    }
-
-    func addProductToCart(_ index: Int, qt: Int) {
-        enableBarButton()
-        presenter?.viewAddProductToCart(index, qt: qt)
-    }
-
-    var data: [ResponseProductModel] {
-        presenter?.data ?? []
+    func updateButtonBasket() {
+        DispatchQueue.main.async {
+            self.checkEnableNavBarButtonBasket()
+        }
     }
 }

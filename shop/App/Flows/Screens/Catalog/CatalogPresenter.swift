@@ -7,9 +7,19 @@
 
 import UIKit
 
+struct CatalogCellModel {
+    let id: Int
+    let name: String
+    let price: Int
+    let imageUrl: String?
+    var imageData: Data?
+}
+
 class CatalogPresenter: Analyticable {
     // MARK: - Public Properties
-
+    private(set) var currentPage: Int = 1
+    private(set) var maxPage: Int = 1
+    private(set) var data: [CatalogCellModel] = []
     /// Input view controller. For manages.
     weak var viewInput: (UIViewController & CatalogViewControllerInput)?
 
@@ -17,10 +27,8 @@ class CatalogPresenter: Analyticable {
 
     /// If any request ended with an error.
     private var requestisError = false
-    /// Request response data
-    private var response: ResponseCatalogModel?
     /// Shopping basket. Stored according to product ID.
-    private var basket: [Int: Int]? = [:]
+    private var basket: [Int: Int]?
 
     /// Catalog page
     private var page: Int?
@@ -47,15 +55,37 @@ class CatalogPresenter: Analyticable {
 
     /// Checks all requests are completed.
     private func checkCompleteRequests() {
-        if (basket != nil && response != nil) || requestisError {
-            viewInput?.loadingAnimation(false)
+        guard (basket != nil && !data.isEmpty) || requestisError else {
+            return
         }
+
+        if !requestisError {
+            viewInput?.updateButtonBasket()
+            viewInput?.reloadCollectionView()
+        }
+        viewInput?.loadingAnimation(false)
     }
 }
 
 // MARK: - CatalogViewControllerOutput
 
 extension CatalogPresenter: CatalogViewControllerOutput {
+    func viewFetchImage(indexPath: IndexPath) {
+        guard let url = data[indexPath.item].imageUrl else { return }
+
+        interactor.fetchImageAsync(url: url) { [weak self] result in
+            guard let self else { return }
+            
+            switch result {
+            case .success(let imageData):
+                self.data[indexPath.item].imageData = imageData
+                self.viewInput?.reloadItems(indexPaths: [indexPath])
+            case .failure:
+                break
+            }
+        }
+    }
+
     func viewSendAnalytic() {
         sendAnalytic(.watchingCatalogScreen(page, category))
     }
@@ -65,8 +95,8 @@ extension CatalogPresenter: CatalogViewControllerOutput {
     }
 
     func viewOpenProductInfo(_ index: Int) {
-        let product = data[index]
-        router.openProductInfo(product.id)
+        let id = data[index].id
+        router.openProductInfo(id)
     }
 
     func viewFetchBasket() {
@@ -86,21 +116,9 @@ extension CatalogPresenter: CatalogViewControllerOutput {
         interactor.fetchAddItemToBasketAsync(id, qt: qt)
         sendAnalytic(.addedProductToBasket(id, qt: qt))
     }
-    
+
     var basketIsEmpty: Bool {
         basket?.isEmpty ?? true
-    }
-
-    var data: [ResponseProductModel] {
-        response?.products ?? []
-    }
-
-    var currentPage: Int {
-        response?.pageNumber ?? 1
-    }
-
-    var maxPage: Int {
-        response?.maxPage ?? 1
     }
 
     func viewFetchData(page: Int, category: Int? = nil) {
@@ -124,7 +142,6 @@ extension CatalogPresenter: CatalogInteractorOutput {
         switch result {
         case .success(let success):
             basket = success
-            viewInput?.reloadCollectionView()
         case .failure:
             requestisError = true
         }
@@ -135,8 +152,14 @@ extension CatalogPresenter: CatalogInteractorOutput {
     func interactorResponseCatalog(_ result: Result<ResponseCatalogModel, NetworkErrorModel>) {
         switch result {
         case .success(let success):
-            self.response = success
-            viewInput?.reloadCollectionView()
+            page = success.pageNumber
+            maxPage = success.maxPage
+            data = success.products.map { CatalogCellModel(id: $0.id,
+                                                           name: $0.name,
+                                                           price: $0.price,
+                                                           imageUrl: $0.imageSmall,
+                                                           imageData: nil)
+            }
         case .failure:
             requestisError = true
         }
