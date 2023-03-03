@@ -34,7 +34,7 @@ video | video | video
 :-: | :-: | :-: 
 <video src='https://user-images.githubusercontent.com/75171952/222692875-885e053c-7183-41d0-a306-7071d560abe9.mov'/> | <video src='https://user-images.githubusercontent.com/75171952/222699605-a558d553-b7c8-4cc6-9865-d08cb7f45552.mov'/> | <video src='https://user-images.githubusercontent.com/75171952/222692885-4aaa893e-4c68-423e-88a8-bdb64fe35bcb.mov'/> 
 
-<b>*Логика оплаты корзины (изображения берутся из интернета)*</b>
+<b>*Логика оплаты корзины (используется WebView)*</b>
 
 video | video | video
 :-: | :-: | :-:
