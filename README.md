@@ -4,7 +4,7 @@
 <h2>Оглавление</h2>
 
 1. [Скриншоты](#%D1%81%D0%BA%D1%80%D0%B8%D0%BD%D1%88%D0%BE%D1%82%D1%8B)
-2. [Demo video](#demo-video)
+2. [Демо видео](#%D0%B4%D0%B5%D0%BC%D0%BE-%D0%B2%D0%B8%D0%B4%D0%B5%D0%BE)
 3. [Описание](#%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5)
 4. [Технологии](#%D1%82%D0%B5%D1%85%D0%BD%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D0%B8)
 
@@ -18,7 +18,7 @@
 <img height="600" src="https://user-images.githubusercontent.com/75171952/222708586-d7532197-70fa-4506-9154-c310303573b4.png">
 <img height="600" src="https://user-images.githubusercontent.com/75171952/222707995-c34718dd-84ae-4c54-b40c-166c7d810800.png">
 
-<h2>Demo video</h2>
+<h2>Демо видео</h2>
 <details>
   <summary><h2>Video (Кликнуть чтоб увидеть видео)</h2></summary>
 
