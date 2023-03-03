@@ -8,7 +8,7 @@
 import UIKit
 
 /// Delegate view.
-protocol OtherProductViewDelegate {
+protocol OtherProductViewDelegate: AnyObject {
     /// View send product id.
     /// - Parameter id: Product id.
     func viewSendId(_ id: Int)
@@ -122,15 +122,18 @@ class OtherProductView: UIView {
 
     /// Configure view.
     /// - Parameters:
+    ///   - id: Product id.
     ///   - name: Product name.
     ///   - price: Product price.
-    ///   - image: Product image.
-    ///   - id: Product id.
-    func configure(id: Int, name: String, price: Int, image: UIImage) {
+    ///   - imageData: Product image data.
+    func configure(id: Int, name: String, price: Int, imageData: Data?) {
         self.id = id
         nameLabel.text = name
         priceLabel.text = "\(price) ₽"
-        productImage.image = UIImage(named: AppDataScreen.image.catalogProduct)
+
+        if let data = imageData {
+            productImage.image = UIImage(data: data)
+        }
 
         layer.borderColor = AppStyles.color.complete.cgColor
         layer.cornerRadius = AppStyles.layer.cornerRadius

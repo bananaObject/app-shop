@@ -33,15 +33,12 @@ final class LogoutService {
     /// Fetch async data.
     /// The decoded models are written to the date property.
     func fetchAsync() {
-        guard let token = token else { return }
+        // guard let token = token else { return }
 
         DispatchQueue.global(qos: .background).async {
-            self.network.fetch(.logout) {
-                // Отключил пока вызывается в appDelegate, так как там не сохраняется
-                // [weak self]
-                result in
-
-                // guard let self = self else { return }
+            self.network.fetch(.logout) { [weak self] result in
+                guard let self = self else { return }
+                
                 do {
                     switch result {
                     case .success(let data):

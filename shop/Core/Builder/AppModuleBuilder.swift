@@ -54,8 +54,9 @@ enum AppModuleBuilder {
     static func catalogBuild() -> (UIViewController & CatalogViewControllerInput) {
         let network = Network()
         let decoder = DecoderResponse()
+        let imageLoader = ImageLoader(cached: true)
 
-        let interactor = CatalogInteractor(network: network, decoder: decoder)
+        let interactor = CatalogInteractor(network: network, decoder: decoder, imageLoader: imageLoader)
         let router = CatalogRouter()
         let presenter = CatalogPresenter(interactor: interactor, router: router)
         interactor.presenter = presenter
@@ -73,8 +74,9 @@ enum AppModuleBuilder {
     static func basketBuild() -> (UIViewController & BasketViewControllerInput) {
         let network = Network()
         let decoder = DecoderResponse()
+        let imageLoader = ImageLoader(cached: true)
 
-        let interactor = BasketInteractor(network: network, decoder: decoder)
+        let interactor = BasketInteractor(network: network, decoder: decoder, imageLoader: imageLoader)
         let router = BasketRouter()
         let presenter = BasketPresenter(interactor: interactor, router: router)
         interactor.presenter = presenter
@@ -94,8 +96,9 @@ enum AppModuleBuilder {
     static func productInfoBuild(_ idProduct: Int) -> (UIViewController & ProductInfoViewControllerInput) {
         let network = Network()
         let decoder = DecoderResponse()
+        let imageLoader = ImageLoader()
 
-        let interactor = ProductInfoInteractor(network: network, decoder: decoder)
+        let interactor = ProductInfoInteractor(network: network, decoder: decoder, imageLoader: imageLoader)
         let router = ProductInfoRouter()
         let presenter = ProductInfoPresenter(interactor: interactor, router: router, product: idProduct)
         interactor.presenter = presenter

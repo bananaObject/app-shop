@@ -27,8 +27,8 @@ final class ChangeUserInfoService {
 
         userInfo = RequestUserInfo(login: "Somebody",
                                    password: "mypassword",
-                                   firstname: "1" ,
-                                   lastname: "1" ,
+                                   firstname: "1",
+                                   lastname: "1",
                                    email: "some@some.ru",
                                    gender: "m",
                                    creditCard: "9872389-2424-234224-234",

@@ -80,14 +80,15 @@ class ProductOtherProductCell: UITableViewCell {
 
     /// Configure cell.
     /// - Parameter products: Other product.
-    func configure(_ products: [ResponseProductModel]) {
+    func configure(_ products: [OtherProductInfoViewModel]) {
         stack.arrangedSubviews.enumerated().forEach { index, view in
             guard let otherView = view as? OtherProductView else { return }
 
             // If there is a product for this index, then fill it.
             if products.indices.contains(index) {
                 let product = products[index]
-                otherView.configure(id: product.id, name: product.name, price: product.price, image: UIImage())
+                otherView.configure(id: product.id, name: product.name,
+                                    price: product.price, imageData: product.imageData)
             }
         }
     }
