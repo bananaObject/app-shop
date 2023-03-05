@@ -85,9 +85,10 @@ video | video
 <b>Данные для входа в приложение admin : admin</b>
 
 ## Технологии
-* UIKit (Interface programmatically | Auto Layout Constraint)
+* UIKit (UI programmatically | Auto Layout)
 * Viper
 * [Собственный мок сервер (Vapor)](https://github.com/kecha-the-frog/vapor-shopMock)
+* GCD
 * URLSession
 * FileManager
 * Namespace
