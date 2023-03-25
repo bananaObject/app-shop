@@ -10,17 +10,17 @@
 
 <div>  
 <h2>Скриншоты</h2>
-<img height="600" src="https://user-images.githubusercontent.com/75171952/222656218-e43b0624-eefa-41c7-bc60-83c556372840.png">
-<img height="600" src="https://user-images.githubusercontent.com/75171952/222656224-07aa000d-a22f-46f1-b9cf-e10be23e56c7.png">
-<img height="600" src="https://user-images.githubusercontent.com/75171952/222656228-fbeb2c68-0431-4f16-93a2-c8319ce4045a.png">
-<img height="600" src="https://user-images.githubusercontent.com/75171952/222656230-30fad850-761a-4e06-8c67-ed24b41f7c0c.png">
-<img height="600" src="https://user-images.githubusercontent.com/75171952/222656232-f76897a0-32a0-4fb9-a4e9-eadbd41f014d.png">
-<img height="600" src="https://user-images.githubusercontent.com/75171952/222708586-d7532197-70fa-4506-9154-c310303573b4.png">
-<img height="600" src="https://user-images.githubusercontent.com/75171952/222707995-c34718dd-84ae-4c54-b40c-166c7d810800.png">
+<img height="700" src="https://user-images.githubusercontent.com/75171952/222656218-e43b0624-eefa-41c7-bc60-83c556372840.png">
+<img height="700" src="https://user-images.githubusercontent.com/75171952/222656224-07aa000d-a22f-46f1-b9cf-e10be23e56c7.png">
+<img height="700" src="https://user-images.githubusercontent.com/75171952/222656228-fbeb2c68-0431-4f16-93a2-c8319ce4045a.png">
+<img height="700" src="https://user-images.githubusercontent.com/75171952/222656230-30fad850-761a-4e06-8c67-ed24b41f7c0c.png">
+<img height="700" src="https://user-images.githubusercontent.com/75171952/222656232-f76897a0-32a0-4fb9-a4e9-eadbd41f014d.png">
+<img height="700" src="https://user-images.githubusercontent.com/75171952/222708586-d7532197-70fa-4506-9154-c310303573b4.png">
+<img height="700" src="https://user-images.githubusercontent.com/75171952/222707995-c34718dd-84ae-4c54-b40c-166c7d810800.png">
 
 <h2>Демо видео</h2>
 <details>
-  <summary><h2>Видео (Кликнуть чтоб увидеть)</h2></summary>
+  <summary><h2>Видео (Кликнуть, чтоб увидеть)</h2></summary>
 
 <b>*Анимация заполнености поля | Cекретность поля | Ограничение ввода данных*</b>
 
@@ -66,6 +66,7 @@ video | video
 <b>Особенности проекта:</b>
 - **Поддерживает iOS 12 и более новые версии**.
 - **Не используются сторонние библиотеки**.
+- **Реализованы принципы программирования с протоколами (POP) и Dependency Injection (DI)** для более гибкой и расширяемой архитектуры приложения.
 - Добавленные товары **сохраняются на мок-сервере**, что позволяет пользователям продолжить работу с приложением в любое время.
     > В приложении **используется debounce функция для накапливания запросов** добавления/удаления товара.
 - **Экран информации о продукте был реализован в виде таблицы**, что обеспечивает гибкость и легкость изменения структуры страницы. 
@@ -74,10 +75,10 @@ video | video
     > Пользователю нужно просмотреть три фотографии с собаками из интернета, чтобы оплатить покупки.
 - Приложение **включает анимации**, которые делают работу с ним более интерактивной и приятной.
     > Реализована **анимация загрузки данных**. В приложении предусмотрена **проверка на заполненность полей и ограничения**, что позволяет пользователям избежать ошибок при вводе данных.
-- **Написан слой для работы с сетью**, который обладает легким управлением и масштабируемостью. 
+- **Написан [слой для работы с сетью](shop/Core/Network)**, который обладает легким управлением и масштабируемостью. 
     >Для уменьшения повторения кода **используются дженерики**. Дополнительно была **выполнена перегрузка функций с использованием async/await** для возможного повышения версии ОС в будущем.
-- **Написан загрузчик изображений, который позволяет сохранять загруженные изображения в файловый кэш**.
-- **Написан слайдер изображений**.
+- **Написан [загрузчик изображений](shop/Core/Network/LoaderImage/), который позволяет сохранять загруженные изображения в файловый кэш**.
+- **Написан [слайдер изображений](shop/App/Flows/UI/ImageSlider.swift)**.
 
 В качестве примера добавил **UI тесты**.
 
@@ -89,6 +90,7 @@ video | video
 * UIKit (UI programmatically | Auto Layout)
 * WKWebView
 * Viper
+* POP + DI
 * [Собственный мок сервер (Vapor)](https://github.com/kecha-the-frog/vapor-shopMock)
 * GCD | Async/await 
 * URLSession
