@@ -52,7 +52,7 @@ class AppTextfield: UITextField {
     private var completeColor: UIColor = .clear
 
     /// Minimum number of characters for a field.
-    private var minChar: Int = 1
+    private var minChar: Int = 3
 
     /// Minimum number of characters for a field.
     private var maxChar: Int = 0

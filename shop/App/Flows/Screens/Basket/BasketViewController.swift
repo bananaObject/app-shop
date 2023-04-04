@@ -98,15 +98,16 @@ class BasketViewController: UIViewController {
     // MARK: - Private Properties
 
     /// Presenter with screen control.
-    private var presenter: BasketViewControllerOutput?
+    private var presenter: BasketViewControllerOutput
 
     // MARK: - Initialization
     
     /// Presenter with screen control.
     /// - Parameter presenter: Presenter with screen control protocol.
     init(presenter: BasketViewControllerOutput) {
-        super.init(nibName: nil, bundle: nil)
         self.presenter = presenter
+
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -129,7 +130,7 @@ class BasketViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        presenter?.viewRequestedBasket(true)
+        presenter.viewRequestedBasket(true)
     }
 
     // MARK: - Setting UI Methods
@@ -163,7 +164,7 @@ class BasketViewController: UIViewController {
     /// Action trash button.
     @objc private func trashAction() {
         setActivityIndicator()
-        presenter?.viewRequestedToEmptyBasket()
+        presenter.viewRequestedToEmptyBasket()
     }
 }
 
@@ -225,26 +226,26 @@ extension BasketViewController: BasketViewControllerInput {
 
 extension BasketViewController: BasketViewOutput {
     func viewRequestPayment() {
-        presenter?.viewRequestPayment()
+        presenter.viewRequestPayment()
     }
 
     var totalCost: Int {
-        presenter?.totalCost ?? 0
+        presenter.totalCost
     }
 
     func viewRefreshData() {
-        presenter?.viewRequestedBasket(false)
+        presenter.viewRequestedBasket(false)
     }
 
     var data: [BasketViewCellModel] {
-        presenter?.data ?? []
+        presenter.data
     }
 }
 
 extension BasketViewController: BasketViewCellDelegate {
     func viewSendNewQtProduct(id: Int, qt: Int) {
-            presenter?.viewSendNewQtProduct(id: id, qt: qt)
-        }
+        presenter.viewSendNewQtProduct(id: id, qt: qt)
+    }
 }
 
 // MARK: - UITableViewDelegate
@@ -259,23 +260,22 @@ extension BasketViewController: UITableViewDelegate {
 
 extension BasketViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter?.data.count ?? 0
+        presenter.data.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: BasketViewCell.identifier, for: indexPath)
                 as? BasketViewCell else { preconditionFailure() }
-        if let product = presenter?.data[indexPath.row] {
-            if product.imageData == nil {
-                self.presenter?.viewFetchImage(indexPath: indexPath)
-            }
-
-            if cell.delegate == nil {
-                cell.delegate = self
-            }
-
-            cell.configure(product)
+        let product = presenter.data[indexPath.row]
+        if product.imageData == nil {
+            self.presenter.viewFetchImage(indexPath: indexPath)
         }
+
+        if cell.delegate == nil {
+            cell.delegate = self
+        }
+
+        cell.configure(product)
 
         return cell
     }
