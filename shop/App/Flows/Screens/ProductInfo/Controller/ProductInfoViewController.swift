@@ -62,15 +62,16 @@ class ProductInfoViewController: UIViewController {
     }
 
     /// Presenter with screen control.
-    private var presenter: ProductInfoViewControllerOutput?
+    private var presenter: ProductInfoViewControllerOutput
 
     // MARK: - Initialization
 
     /// Presenter with screen control.
     /// - Parameter presenter: Presenter with screen control protocol
     init(presenter: ProductInfoViewControllerOutput) {
-        super.init(nibName: nil, bundle: nil)
         self.presenter = presenter
+
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -93,8 +94,8 @@ class ProductInfoViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        presenter?.viewRequestsInfo()
-        presenter?.viewSendAnalytic()
+        presenter.viewRequestsInfo()
+        presenter.viewSendAnalytic()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -124,35 +125,35 @@ extension ProductInfoViewController: ProductInfoViewControllerInput {
 
 extension ProductInfoViewController: ProductInfoViewOutput {
     func viewRequestsOtherProductImage(index: IndexPath) {
-        presenter?.viewRequestsOtherProductImage(index: index)
+        presenter.viewRequestsOtherProductImage(index: index)
     }
 
     func viewSendError(_ error: ErrorForAnalytic) {
-        presenter?.viewSendError(error)
+        presenter.viewSendError(error)
     }
 
     var qtProduct: Int {
         get {
-            presenter?.qtProduct ?? 0
+            presenter.qtProduct
         }
         set {
-            presenter?.qtProduct = newValue
+            presenter.qtProduct = newValue
         }
     }
 
     var getSections: [AppDataScreen.productInfo.Сomponent] {
-        presenter?.getSections ?? []
+        presenter.getSections
     }
 
     var getOtherProducts: [[OtherProductInfoViewModel]] {
-        presenter?.getOtherProducts ?? []
+        presenter.getOtherProducts
     }
 
     var getDataInfo: ProductInfoViewModel? {
-        presenter?.getDataInfo
+        presenter.getDataInfo
     }
 
     func viewSendId(_ id: Int) {
-        presenter?.viewOpenProduct(id)
+        presenter.viewOpenProduct(id)
     }
 }

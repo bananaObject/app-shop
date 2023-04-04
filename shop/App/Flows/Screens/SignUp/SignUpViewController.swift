@@ -55,15 +55,16 @@ class SignUpViewController: UIViewController {
     // MARK: - Private Properties
     
     /// Presenter with screen control.
-    private var presenter: SignUpViewControllerOutput?
+    private var presenter: SignUpViewControllerOutput
 
     // MARK: - Initialization
 
     /// Presenter with screen control.
     /// - Parameter presenter: Presenter with screen control protocol
     init(presenter: SignUpViewControllerOutput) {
-        super.init(nibName: nil, bundle: nil)
         self.presenter = presenter
+
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -103,7 +104,7 @@ class SignUpViewController: UIViewController {
     private func setupUI() {
         registrationView.delegate = self
         registrationView.setupUI()
-        registrationView.addComponentsStackview(components: presenter?.components)
+        registrationView.addComponentsStackview(components: presenter.components)
         registrationView.addTargetSubmitButton(#selector(submitAction))
     }
 
@@ -161,7 +162,7 @@ class SignUpViewController: UIViewController {
     /// Action button submit.
     /// - Parameter sender: Button sign in.
     @objc private func submitAction() {
-        presenter?.viewSignUp()
+        presenter.viewSignUp()
     }
 }
 
@@ -183,7 +184,7 @@ extension SignUpViewController: SignUpViewControllerInput {
             ) { _ in
                 guard !error else { return }
 
-                self.presenter?.popViewController()
+                self.presenter.popViewController()
             }
 
             alertContoller.addAction(action)
