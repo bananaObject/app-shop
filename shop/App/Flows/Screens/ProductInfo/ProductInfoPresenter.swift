@@ -63,7 +63,19 @@ class ProductInfoPresenter: Analyticable {
 
         group.notify(queue: .main) {
             self.dataInfo?.images = dataImages
-            self.viewInput?.update(component: .image)
+
+            guard let index = self.dataSections.firstIndex(where: { component in
+                switch component {
+                case .info(let component) where component.contains(.images):
+                    return true
+                default:
+                    return false
+                }
+            }) else {
+                self.viewInput?.update(component: .all)
+                return
+            }
+            self.viewInput?.update(component: .section(index))
         }
     }
 
@@ -119,7 +131,18 @@ extension ProductInfoPresenter: ProductInfoInteractorOutput {
 
     func interactorResponseOtherProducts(_ response: [ResponseProductModel]) {
         dataOtherProducts = interactor.convertOtherProductIntoCell(response: response, qtInCell: 3)
-        viewInput?.update(component: .otherProduct)
+        guard let index = dataSections.firstIndex(where: { component in
+            switch component {
+            case .otherProducts:
+                return true
+            default:
+                return false
+            }
+        }) else {
+            viewInput?.update(component: .all)
+            return
+        }
+        viewInput?.update(component: .section(index))
     }
 
     func interactorResponseError(_ error: NetworkErrorModel) {
