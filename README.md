@@ -88,6 +88,7 @@ video | video
 ***Данные для входа в приложение admin : admin***
 
 ## Технологии
+* Swift
 * UIKit (UI programmatically | Auto Layout)
 * Viper
 * POP + DI
