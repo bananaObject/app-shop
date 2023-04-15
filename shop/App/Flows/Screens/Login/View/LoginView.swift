@@ -91,6 +91,7 @@ class LoginView: UIView {
 
     init() {
         super.init(frame: .zero)
+        addSwipeDismissKeyboard()
     }
 
     required init?(coder: NSCoder) {
@@ -149,7 +150,7 @@ class LoginView: UIView {
         setUITests()
     }
 
-    // MARK: - Private Methods
+    // MARK: - Public Methods
 
     /// Shows loading indicator in button  view controller.
     /// - Parameter isLoading: Enable/disable loading indicator.
@@ -165,8 +166,6 @@ class LoginView: UIView {
         filledFieldsAnimation(filled: loginIsField && passIsField)
     }
 
-    // MARK: - Private Properties
-
     /// Adding an Action to a Button
     /// - Parameters:
     ///   - button: Screen button.
@@ -178,7 +177,6 @@ class LoginView: UIView {
         case .signUp:
             signUpButton.addTarget(delegate, action: action, for: .touchUpInside)
         }
-
     }
 
     func nextResponder(current responder: UIView) -> Bool {
@@ -194,6 +192,14 @@ class LoginView: UIView {
         nextResponder.becomeFirstResponder()
 
         return true
+    }
+
+    // MARK: - Private Properties
+
+    private func addSwipeDismissKeyboard() {
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(dismissKeyboardAction))
+        swipeDown.direction = .down
+        addGestureRecognizer(swipeDown)
     }
 
     /// Animation of the logo and button if the fields are filled or unfilled.
@@ -233,5 +239,11 @@ class LoginView: UIView {
         passTextfield.accessibilityIdentifier = "passTextfield"
         signInButton.accessibilityIdentifier = "signInButton"
         signUpButton.accessibilityIdentifier = "signUpButton"
+    }
+
+    // MARK: - Actions
+
+    @objc private func dismissKeyboardAction() {
+        endEditing(false)
     }
 }
