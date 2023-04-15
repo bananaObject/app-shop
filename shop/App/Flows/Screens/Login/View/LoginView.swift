@@ -188,7 +188,6 @@ class LoginView: UIView {
             return false
         }
 
-        responder.resignFirstResponder()
         nextResponder.becomeFirstResponder()
 
         return true

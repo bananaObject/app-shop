@@ -266,7 +266,6 @@ class SignUpView: UIView {
             return false
         }
 
-        responder.resignFirstResponder()
         nextResponder.becomeFirstResponder()
 
         return true
