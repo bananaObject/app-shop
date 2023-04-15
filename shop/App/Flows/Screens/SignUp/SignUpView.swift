@@ -60,7 +60,7 @@ class SignUpView: UIView {
     var components: [AppDataScreen.signUp.Component]?
 
     /// The  delegate controller.
-    weak var delegate: UIViewController?
+    weak var delegate: (UIViewController & UIScrollViewDelegate)?
 
     // MARK: - Initialization
     
@@ -76,7 +76,7 @@ class SignUpView: UIView {
 
     /// Settings for the visual part.
     func setupUI() {
-        
+        scrollView.delegate = delegate
         backgroundColor = AppStyles.color.background
 
         addSubview(scrollView)
@@ -118,74 +118,86 @@ class SignUpView: UIView {
         components.forEach { item in
             switch item {
             case .bio:
-                let field = AppTextView(item.placeholder,
-                                        incompleteColor: AppStyles.color.incomplete,
-                                        completeColor: AppStyles.color.complete,
-                                        minChar: item.minChar,
-                                        maxChar: item.maxChar,
-                                        checkMark: true)
-
-                // Make the textview the same font as all fields
-                if let labelView = stackView.arrangedSubviews.last as? AppLabelView,
-                   let textfield = labelView.field as? UITextField {
-                    field.font = textfield.font
-                }
-
-                if let delegate = delegate as? UITextViewDelegate {
-                    field.delegate = delegate
-                }
-
-                NSLayoutConstraint.activate([
-                    field.heightAnchor.constraint(greaterThanOrEqualToConstant: AppStyles.size.height.textfield * 1.5)
-                ])
-
-                // Add label for field
-                let view = AppLabelView(text: item.rawValue, field: field)
-
-                stackView.addArrangedSubview(view)
+                addTextViewInStack(item)
             case .submitButton:
-                let button = AppButton(tittle: item.rawValue, activityIndicator: true)
-                // The button is not available because initially the fields are not filled
-                button.setIsEnable(enable: false)
-
-                NSLayoutConstraint.activate([
-                    button.heightAnchor.constraint(equalToConstant: AppStyles.size.height.button)
-                ])
-
-                stackView.addArrangedSubview(button)
+                addButtonInStack(item)
             default:
-                let field = AppTextfield(item.placeholder,
-                                         incompleteColor: AppStyles.color.incomplete,
-                                         completeColor: AppStyles.color.complete,
-                                         minChar: item.minChar,
-                                         maxChar: item.maxChar,
-                                         mode: .checkMark)
-
-                if let delegate = delegate as? UITextFieldDelegate {
-                    field.delegate = delegate
-                }
-
-                // Settings field
-                switch item {
-                case .firstName, .lastname, .gender:
-                    field.textContentType = .familyName
-                case .email:
-                    field.textContentType = .emailAddress
-                    field.keyboardType = .emailAddress
-                case .creditCard:
-                    field.textContentType = .creditCardNumber
-                default:
-                    break
-                }
-
-                NSLayoutConstraint.activate([
-                    field.heightAnchor.constraint(equalToConstant: AppStyles.size.height.textfield)
-                ])
-
-                let view = AppLabelView(text: item.rawValue, field: field)
-                stackView.addArrangedSubview(view)
+                addTextfildInStack(item)
             }
         }
+    }
+
+    func addTextViewInStack(_ settings: AppDataScreen.signUp.Component) {
+        let field = AppTextView(settings.placeholder,
+                                incompleteColor: AppStyles.color.incomplete,
+                                completeColor: AppStyles.color.complete,
+                                minChar: settings.minChar,
+                                maxChar: settings.maxChar,
+                                checkMark: true)
+
+        // Make the textview the same font as all fields
+        if let labelView = stackView.arrangedSubviews.last as? AppLabelView,
+           let textfield = labelView.field as? UITextField {
+            field.font = textfield.font
+        }
+
+        if let delegate = delegate as? UITextViewDelegate {
+            field.delegate = delegate
+        }
+
+        NSLayoutConstraint.activate([
+            field.heightAnchor.constraint(greaterThanOrEqualToConstant: AppStyles.size.height.textfield * 1.5)
+        ])
+
+        // Add label for field
+        let view = AppLabelView(text: settings.rawValue, field: field)
+
+        stackView.addArrangedSubview(view)
+    }
+
+    func addTextfildInStack(_ settings: AppDataScreen.signUp.Component) {
+        let field = AppTextfield(settings.placeholder,
+                                 incompleteColor: AppStyles.color.incomplete,
+                                 completeColor: AppStyles.color.complete,
+                                 minChar: settings.minChar,
+                                 maxChar: settings.maxChar,
+                                 mode: .checkMark)
+
+        if let delegate = delegate as? UITextFieldDelegate {
+            field.delegate = delegate
+        }
+        field.returnKeyType = .next
+        // Settings field
+        switch settings {
+        case .firstName, .lastname, .gender:
+            field.textContentType = .familyName
+        case .email:
+            field.textContentType = .emailAddress
+            field.keyboardType = .emailAddress
+        case .creditCard:
+            field.textContentType = .creditCardNumber
+        default:
+            break
+        }
+
+        NSLayoutConstraint.activate([
+            field.heightAnchor.constraint(equalToConstant: AppStyles.size.height.textfield)
+        ])
+
+        let view = AppLabelView(text: settings.rawValue, field: field)
+        stackView.addArrangedSubview(view)
+    }
+
+    func addButtonInStack(_ settings: AppDataScreen.signUp.Component) {
+        let button = AppButton(tittle: settings.rawValue, activityIndicator: true)
+        // The button is not available because initially the fields are not filled
+        button.setIsEnable(enable: false)
+
+        NSLayoutConstraint.activate([
+            button.heightAnchor.constraint(equalToConstant: AppStyles.size.height.button)
+        ])
+
+        stackView.addArrangedSubview(button)
     }
 
     // MARK: - Public Methods
@@ -242,6 +254,26 @@ class SignUpView: UIView {
         guard let index = components?.firstIndex(of: .submitButton),
               let button = stackView.arrangedSubviews[index] as? AppButton else { return }
         button.showLoadingIndicator(isLoading)
+    }
+
+    func nextResponder(current responder: UIView) -> Bool {
+        let subviews = stackView.subviews
+        guard let index = subviews.firstIndex(where: { $0.isFirstResponder }),
+              index < subviews.endIndex - 1,
+              let nextResponder = subviews[index + 1..<subviews.endIndex].first(where: { $0.canBecomeFirstResponder })
+        else {
+            responder.resignFirstResponder()
+            return false
+        }
+
+        responder.resignFirstResponder()
+        nextResponder.becomeFirstResponder()
+
+        return true
+    }
+
+    func dismissKeyboard() {
+        endEditing(false)
     }
 
     // MARK: - Private Methods
