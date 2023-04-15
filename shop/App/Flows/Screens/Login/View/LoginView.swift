@@ -47,6 +47,7 @@ class LoginView: UIView {
                                  completeColor: AppStyles.color.complete,
                                  minChar: 5)
         field.autocorrectionType = .no
+        field.returnKeyType = .next
         field.translatesAutoresizingMaskIntoConstraints = false
         return field
     }()
@@ -58,6 +59,7 @@ class LoginView: UIView {
                                  completeColor: AppStyles.color.complete,
                                  minChar: 5,
                                  mode: .secure)
+        field.returnKeyType = .continue
         field.translatesAutoresizingMaskIntoConstraints = false
         return field
     }()
@@ -177,6 +179,21 @@ class LoginView: UIView {
             signUpButton.addTarget(delegate, action: action, for: .touchUpInside)
         }
 
+    }
+
+    func nextResponder(current responder: UIView) -> Bool {
+        guard let index = subviews.firstIndex(where: { $0.isFirstResponder }),
+              index < subviews.endIndex - 1,
+              let nextResponder = subviews[index + 1..<subviews.endIndex].first(where: { $0.canBecomeFirstResponder })
+        else {
+            responder.resignFirstResponder()
+            return false
+        }
+
+        responder.resignFirstResponder()
+        nextResponder.becomeFirstResponder()
+
+        return true
     }
 
     /// Animation of the logo and button if the fields are filled or unfilled.

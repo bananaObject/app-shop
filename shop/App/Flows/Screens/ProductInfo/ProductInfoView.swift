@@ -33,8 +33,7 @@ protocol ProductInfoViewOutput {
 
 enum Update {
     case all
-    case image
-    case otherProduct
+    case section(_ index: Int)
     case qt(_ newQt: Int)
     case cell(_ index: IndexPath)
 }
@@ -162,31 +161,13 @@ class ProductInfoView: UIView {
             tableView.reloadData()
             self.qt = controller?.qtProduct
             updateQt(false)
-        case .otherProduct:
-            guard let index = controller?.getSections.firstIndex(where: { component in
-                switch component {
-                case .otherProducts:
-                    return true
-                default:
-                    return false
-                }
-            }) else { return }
+        case .section(let index):
             tableView.reloadSections([index], with: .automatic)
         case .qt(let newQt):
             self.qt = newQt
             updateQt(false)
         case .cell(let index):
             tableView.reloadRows(at: [index], with: .automatic)
-        case .image:
-            guard let index = controller?.getSections.firstIndex(where: { component in
-                switch component {
-                case .info(let component) where component.contains(.images):
-                    return true
-                default:
-                    return false
-                }
-            }) else { return }
-            tableView.reloadSections([index], with: .automatic)
         }
     }
 

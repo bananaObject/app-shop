@@ -82,15 +82,16 @@ class CatalogViewController: UIViewController {
     }
 
     /// Presenter with screen control.
-    private var presenter: CatalogViewControllerOutput?
+    private var presenter: CatalogViewControllerOutput
 
     // MARK: - Initialization
 
     /// Presenter with screen control.
     /// - Parameter presenter: Presenter with screen control protocol
     init(presenter: CatalogViewControllerOutput) {
-        super.init(nibName: nil, bundle: nil)
         self.presenter = presenter
+
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -109,7 +110,7 @@ class CatalogViewController: UIViewController {
 
         catalogView.setupUI()
         setupNavController()
-        presenter?.viewFetchData(page: 1, category: nil)
+        presenter.viewFetchData(page: 1, category: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -117,8 +118,8 @@ class CatalogViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = false
 
         // Refresh the basket when they are returned to the screen or on first load.
-        presenter?.viewFetchBasket()
-        presenter?.viewSendAnalytic()
+        presenter.viewFetchBasket()
+        presenter.viewSendAnalytic()
     }
 
     // MARK: - Setting UI Methods
@@ -153,12 +154,12 @@ class CatalogViewController: UIViewController {
 
     /// Action basket bar button.
     @objc func actionBasketButton() {
-        presenter?.viewOpenBasket()
+        presenter.viewOpenBasket()
     }
 
     /// Checking if the cart button should be enabled. If the cart is empty, then the button is disabled.
     private func checkEnableNavBarButtonBasket() {
-        guard let button = navigationItem.rightBarButtonItem, let presenter = presenter else { return }
+        guard let button = navigationItem.rightBarButtonItem else { return }
 
         if presenter.basketIsEmpty && button.isEnabled {
             button.isEnabled = false
@@ -172,7 +173,7 @@ class CatalogViewController: UIViewController {
 
 extension CatalogViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        presenter?.data.count ?? 0
+        presenter.data.count
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -181,18 +182,17 @@ extension CatalogViewController: UICollectionViewDataSource {
                                                             for: indexPath)
                 as? CatalogCollectionViewCell else { preconditionFailure() }
 
-        if let product = presenter?.data[indexPath.item] {
-            let qt = presenter?.getQtToBasket(indexPath.item)
-            cell.configure(name: product.name,
-                           price: product.price,
-                           index: indexPath.item,
-                           quantity: qt,
-                           image: product.imageData)
-            cell.delegate = self
+        let product = presenter.data[indexPath.item]
+        let qt = presenter.getQtToBasket(indexPath.item)
+        cell.configure(name: product.name,
+                       price: product.price,
+                       index: indexPath.item,
+                       quantity: qt,
+                       image: product.imageData)
+        cell.delegate = self
 
-            if product.imageData == nil {
-                presenter?.viewFetchImage(indexPath: indexPath)
-            }
+        if product.imageData == nil {
+            presenter.viewFetchImage(indexPath: indexPath)
         }
 
         return cell
@@ -203,7 +203,7 @@ extension CatalogViewController: UICollectionViewDataSource {
 
 extension CatalogViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        presenter?.viewOpenProductInfo(indexPath.item)
+        presenter.viewOpenProductInfo(indexPath.item)
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -228,7 +228,7 @@ extension CatalogViewController: UICollectionViewDelegateFlowLayout {
 
 extension CatalogViewController: CatalogCellOutput {
     func addProductToCart(index: Int, qt: Int) {
-        presenter?.viewAddProductToCart(index, qt: qt)
+        presenter.viewAddProductToCart(index, qt: qt)
         checkEnableNavBarButtonBasket()
     }
 }

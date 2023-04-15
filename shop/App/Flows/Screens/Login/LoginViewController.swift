@@ -48,15 +48,16 @@ class LoginViewController: UIViewController {
     // MARK: - Private Properties
 
     /// Presenter with screen control.
-    private var presenter: LoginViewControllerOutput?
+    private var presenter: LoginViewControllerOutput
 
     // MARK: - Initialization
 
     /// Presenter with screen control.
     /// - Parameter presenter: Presenter with screen control protocol
     init(_ presenter: LoginViewControllerOutput) {
-        super.init(nibName: nil, bundle: nil)
         self.presenter = presenter
+
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -88,6 +89,10 @@ class LoginViewController: UIViewController {
         loginView.setupUI()
         loginView.addTargetButton(button: .signUp, action: #selector(signUpButtonAction))
         loginView.addTargetButton(button: .signIn, action: #selector(signInButtonAction))
+
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(dismissKeyboardAction))
+        swipeDown.direction = .down
+        view.addGestureRecognizer(swipeDown)
     }
 
     // MARK: - Actions
@@ -99,13 +104,17 @@ class LoginViewController: UIViewController {
 
         // Getting field data
         guard let (login, pass) = loginView.textsFields else { return }
-        self.presenter?.viewSignIn(login, pass)
+        self.presenter.viewSignIn(login, pass)
     }
 
     /// Action button sign up.
     /// - Parameter sender: Button sign up.
     @objc private func signUpButtonAction(_ sender: UIButton) {
-        self.presenter?.viewSignUp()
+        self.presenter.viewSignUp()
+    }
+
+    @objc private func dismissKeyboardAction() {
+        view.endEditing(false)
     }
 }
 
@@ -135,5 +144,9 @@ extension LoginViewController: UITextFieldDelegate {
         
         field.checkMinCharAnimation()
         loginView.checkFilledFieldsAnimation()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        loginView.nextResponder(current: textField)
     }
 }

@@ -12,7 +12,7 @@ class AppLabelView: UIView {
     // MARK: - Visual Components
 
     /// Label field.
-    private lazy var label: UILabel = {
+    private var label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = AppStyles.color.main
@@ -20,7 +20,7 @@ class AppLabelView: UIView {
     }()
 
     /// Field.
-    private(set) var field: UIView?
+    private(set) var field: UIView
 
     // MARK: - Initialization
 
@@ -29,11 +29,10 @@ class AppLabelView: UIView {
     ///   - text: Label text.
     ///   - field: Field inside the label.
     init(text: String, field: UIView ) {
-        super.init(frame: .zero)
         self.field = field
         self.label.text = text
-
-        setupUI()
+        super.init(frame: .zero)
+        self.setupUI()
     }
 
     required init?(coder: NSCoder) {
@@ -52,7 +51,6 @@ class AppLabelView: UIView {
             label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding)
         ])
 
-        guard let field = self.field else { return }
         field.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(field)
@@ -62,5 +60,27 @@ class AppLabelView: UIView {
             field.trailingAnchor.constraint(equalTo: trailingAnchor),
             field.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+    }
+
+    // MARK: - Public Methods
+
+    override var isFirstResponder: Bool {
+        field.isFirstResponder
+    }
+
+    override func resignFirstResponder() -> Bool {
+        field.resignFirstResponder()
+    }
+
+    override func becomeFirstResponder() -> Bool {
+        field.becomeFirstResponder()
+    }
+
+    override var canResignFirstResponder: Bool {
+        field.canResignFirstResponder
+    }
+
+    override var canBecomeFirstResponder: Bool {
+        field.canBecomeFirstResponder
     }
 }
