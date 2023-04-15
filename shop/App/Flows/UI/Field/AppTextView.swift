@@ -37,18 +37,15 @@ class AppTextView: UITextView {
 
     // MARK: - Private Properties
 
-    private var checkMarkIsEnable: Bool = false
-
+    private var checkMarkIsEnable: Bool
     /// Color incomplete field
-    private var incompleteColor: UIColor = .clear
+    private var incompleteColor: UIColor
     /// Color complete field
-    private var completeColor: UIColor = .clear
-
+    private var completeColor: UIColor
     /// Minimum number of characters for a field.
-    private var minChar: Int = 1
-
+    private var minChar: Int
     /// Minimum number of characters for a field.
-    private var maxChar: Int = 0
+    private var maxChar: Int
 
     // MARK: - Initialization
 
@@ -68,14 +65,12 @@ class AppTextView: UITextView {
          maxChar: Int = 0,
          checkMark: Bool = false
     ) {
-        super.init(frame: .zero, textContainer: .none)
-
         self.incompleteColor = incompleteColor
         self.completeColor = completeColor
         self.minChar = minChar
         self.maxChar = maxChar
         self.checkMarkIsEnable = checkMark
-
+        super.init(frame: .zero, textContainer: .none)
         self.placeholder.text = placeholder
         setupUI()
     }
