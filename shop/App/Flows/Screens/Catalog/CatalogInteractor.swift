@@ -73,7 +73,7 @@ class CatalogInteractor: CatalogInteractorInput {
 
     // MARK: - Public Methods
 
-    func fetchCatalogAsync(page: Int = 1, category: Int? = nil) {
+    func fetchCatalogAsync(page: Int, category: Int?) {
         DispatchQueue.global(qos: .background).async {
             self.network.fetch(.catalog(page, category)) {  [weak self] result in
                 guard let self = self else { return }

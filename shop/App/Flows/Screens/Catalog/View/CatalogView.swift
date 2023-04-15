@@ -40,9 +40,13 @@ class CatalogView: UIView {
 
     /// Init catalog view.
     /// - Parameter controller: The controller that manages the view.
-    init(_ controller: AnyObject & UICollectionViewDelegateFlowLayout & UICollectionViewDataSource) {
+    init(_ controller: AnyObject
+         & UICollectionViewDelegateFlowLayout
+         & UICollectionViewDataSource
+         & UICollectionViewDataSourcePrefetching) {
         super.init(frame: .zero)
 
+        collectionView.prefetchDataSource = controller
         collectionView.dataSource = controller
         collectionView.delegate = controller
 
@@ -89,6 +93,12 @@ class CatalogView: UIView {
     /// - Parameter indexPaths: Array items index.
     func reloadItems(indexPaths: [IndexPath]) {
         collectionView.reloadItems(at: indexPaths)
+    }
+
+    func insertItems(indexPaths: [IndexPath]) {
+        collectionView.performBatchUpdates {
+            collectionView.insertItems(at: indexPaths)
+        }
     }
 
     /// Enable/disable loading animation.
