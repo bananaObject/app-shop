@@ -11,6 +11,7 @@ import UIKit
 protocol CatalogViewControllerInput {
     /// Reload data collection view.
     func reloadCollectionView()
+    func insertItems(indexPaths: [IndexPath])
     /// Reload data item collection view.
     /// - Parameter indexPaths: Array items index.
     func reloadItems(indexPaths: [IndexPath])
@@ -23,6 +24,8 @@ protocol CatalogViewControllerInput {
 
 /// Delegate controller output.
 protocol CatalogViewControllerOutput {
+    /// Is the request for information started
+    var isLoading: Bool { get }
     /// Maximum page.
     var maxPage: Int { get }
     /// Current page.
@@ -36,7 +39,7 @@ protocol CatalogViewControllerOutput {
     /// - Parameters:
     ///   - page: Page.
     ///   - category: Category product.
-    func viewFetchData(page: Int, category: Int?)
+    func viewFetchData(page: Int, category: Int?, loading animation: Bool)
 
     /// View calls to add an item to the cart.
     /// - Parameters:
@@ -110,7 +113,7 @@ class CatalogViewController: UIViewController {
 
         catalogView.setupUI()
         setupNavController()
-        presenter.viewFetchData(page: 1, category: nil)
+        presenter.viewFetchData(page: 1, category: nil, loading: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -199,6 +202,17 @@ extension CatalogViewController: UICollectionViewDataSource {
     }
 }
 
+extension CatalogViewController: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        guard !presenter.isLoading,
+              presenter.maxPage > 1 && presenter.currentPage < presenter.maxPage,
+              let maxIndex = indexPaths.last?.item,
+              maxIndex > presenter.data.count - 3 else { return }
+
+        presenter.viewFetchData(page: presenter.currentPage + 1, category: nil, loading: false)
+    }
+}
+
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension CatalogViewController: UICollectionViewDelegateFlowLayout {
@@ -236,6 +250,12 @@ extension CatalogViewController: CatalogCellOutput {
 // MARK: - CatalogViewControllerInput
 
 extension CatalogViewController: CatalogViewControllerInput {
+    func insertItems(indexPaths: [IndexPath]) {
+        DispatchQueue.main.async {
+            self.catalogView.insertItems(indexPaths: indexPaths)
+        }
+    }
+
     func reloadItems(indexPaths: [IndexPath]) {
         DispatchQueue.main.async {
             self.catalogView.reloadItems(indexPaths: indexPaths)

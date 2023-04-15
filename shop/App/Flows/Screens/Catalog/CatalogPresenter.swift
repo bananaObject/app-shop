@@ -17,6 +17,7 @@ struct CatalogCellModel {
 
 class CatalogPresenter: Analyticable {
     // MARK: - Public Properties
+    private(set) var isLoading: Bool = false
     private(set) var currentPage: Int = 1
     private(set) var maxPage: Int = 1
     private(set) var data: [CatalogCellModel] = []
@@ -25,13 +26,12 @@ class CatalogPresenter: Analyticable {
 
     // MARK: - Private Properties
 
+    private var loadingAnimation: Bool = false
     /// If any request ended with an error.
     private var requestisError = false
     /// Shopping basket. Stored according to product ID.
     private var basket: [Int: Int]?
 
-    /// Catalog page
-    private var page: Int?
     /// Catalog category
     private var category: Int?
 
@@ -54,16 +54,22 @@ class CatalogPresenter: Analyticable {
     // MARK: - Private Properties
 
     /// Checks all requests are completed.
-    private func checkCompleteRequests() {
+    private func checkCompleteRequests(indexes: [IndexPath]? = nil) {
         guard (basket != nil && !data.isEmpty) || requestisError else {
             return
         }
 
         if !requestisError {
             viewInput?.updateButtonBasket()
-            viewInput?.reloadCollectionView()
+            if let indexes {
+                viewInput?.insertItems(indexPaths: indexes)
+            } else {
+                viewInput?.reloadCollectionView()
+            }
         }
-        viewInput?.loadingAnimation(false)
+        if loadingAnimation {
+            viewInput?.loadingAnimation(false)
+        }
     }
 }
 
@@ -87,7 +93,7 @@ extension CatalogPresenter: CatalogViewControllerOutput {
     }
 
     func viewSendAnalytic() {
-        sendAnalytic(.watchingCatalogScreen(page, category))
+        sendAnalytic(.watchingCatalogScreen(currentPage, category))
     }
 
     func viewOpenBasket() {
@@ -100,7 +106,6 @@ extension CatalogPresenter: CatalogViewControllerOutput {
     }
 
     func viewFetchBasket() {
-        viewInput?.loadingAnimation(true)
         interactor.fetchBasketAsync()
     }
 
@@ -121,10 +126,12 @@ extension CatalogPresenter: CatalogViewControllerOutput {
         basket?.isEmpty ?? true
     }
 
-    func viewFetchData(page: Int, category: Int? = nil) {
-        self.page = page
-        self.category = category
-        viewInput?.loadingAnimation(true)
+    func viewFetchData(page: Int, category: Int? = nil, loading animation: Bool) {
+        self.loadingAnimation = animation
+        isLoading = true
+        if loadingAnimation {
+            viewInput?.loadingAnimation(true)
+        }
         interactor.fetchCatalogAsync(page: page, category: category)
     }
 
@@ -150,20 +157,26 @@ extension CatalogPresenter: CatalogInteractorOutput {
     }
 
     func interactorResponseCatalog(_ result: Result<ResponseCatalogModel, NetworkErrorModel>) {
+        isLoading = false
+
+        var newIndexes: [IndexPath]?
+
         switch result {
         case .success(let success):
-            page = success.pageNumber
+            let endIndex = data.endIndex
+            newIndexes = success.products.indices.map { .init(item: $0 + endIndex, section: 0) }
+            currentPage = success.pageNumber
             maxPage = success.maxPage
-            data = success.products.map { CatalogCellModel(id: $0.id,
-                                                           name: $0.name,
-                                                           price: $0.price,
-                                                           imageUrl: $0.imageSmall,
-                                                           imageData: nil)
+            data += success.products.map { CatalogCellModel(id: $0.id,
+                                                            name: $0.name,
+                                                            price: $0.price,
+                                                            imageUrl: $0.imageSmall,
+                                                            imageData: nil)
             }
         case .failure:
             requestisError = true
         }
 
-        checkCompleteRequests()
+        checkCompleteRequests(indexes: newIndexes)
     }
 }
