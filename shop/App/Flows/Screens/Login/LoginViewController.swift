@@ -89,6 +89,10 @@ class LoginViewController: UIViewController {
         loginView.setupUI()
         loginView.addTargetButton(button: .signUp, action: #selector(signUpButtonAction))
         loginView.addTargetButton(button: .signIn, action: #selector(signInButtonAction))
+
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(dismissKeyboardAction))
+        swipeDown.direction = .down
+        view.addGestureRecognizer(swipeDown)
     }
 
     // MARK: - Actions
@@ -107,6 +111,10 @@ class LoginViewController: UIViewController {
     /// - Parameter sender: Button sign up.
     @objc private func signUpButtonAction(_ sender: UIButton) {
         self.presenter.viewSignUp()
+    }
+
+    @objc private func dismissKeyboardAction() {
+        view.endEditing(false)
     }
 }
 
@@ -136,5 +144,9 @@ extension LoginViewController: UITextFieldDelegate {
         
         field.checkMinCharAnimation()
         loginView.checkFilledFieldsAnimation()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        loginView.nextResponder(current: textField)
     }
 }

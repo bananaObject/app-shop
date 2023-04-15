@@ -60,7 +60,7 @@ class SignUpView: UIView {
     var components: [AppDataScreen.signUp.Component]?
 
     /// The  delegate controller.
-    weak var delegate: UIViewController?
+    weak var delegate: (UIViewController & UIScrollViewDelegate)?
 
     // MARK: - Initialization
     
@@ -76,7 +76,7 @@ class SignUpView: UIView {
 
     /// Settings for the visual part.
     func setupUI() {
-        
+        scrollView.delegate = delegate
         backgroundColor = AppStyles.color.background
 
         addSubview(scrollView)
@@ -164,7 +164,7 @@ class SignUpView: UIView {
                 if let delegate = delegate as? UITextFieldDelegate {
                     field.delegate = delegate
                 }
-
+                field.returnKeyType = .next
                 // Settings field
                 switch item {
                 case .firstName, .lastname, .gender:
@@ -242,6 +242,26 @@ class SignUpView: UIView {
         guard let index = components?.firstIndex(of: .submitButton),
               let button = stackView.arrangedSubviews[index] as? AppButton else { return }
         button.showLoadingIndicator(isLoading)
+    }
+
+    func nextResponder(current responder: UIView) -> Bool {
+        let subviews = stackView.subviews
+        guard let index = subviews.firstIndex(where: { $0.isFirstResponder }),
+              index < subviews.endIndex - 1,
+              let nextResponder = subviews[index + 1..<subviews.endIndex].first(where: { $0.canBecomeFirstResponder })
+        else {
+            responder.resignFirstResponder()
+            return false
+        }
+
+        responder.resignFirstResponder()
+        nextResponder.becomeFirstResponder()
+
+        return true
+    }
+
+    func dismissKeyboard() {
+        endEditing(false)
     }
 
     // MARK: - Private Methods

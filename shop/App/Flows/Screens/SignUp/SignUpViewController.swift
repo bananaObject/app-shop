@@ -250,4 +250,14 @@ extension SignUpViewController: UITextViewDelegate {
         textview.checkMinCharAnimation()
         registrationView.checkFilledFieldsAnimation()
     }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        registrationView.nextResponder(current: textField)
+    }
+}
+
+extension SignUpViewController: UIScrollViewDelegate {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        scrollView.endEditing(false)
+    }
 }
