@@ -89,12 +89,11 @@ video | video
 
 ## Технологии
 * UIKit (UI programmatically | Auto Layout)
-* WKWebView
 * Viper
 * POP + DI
-* [Собственный мок сервер (Vapor)](https://github.com/kecha-the-frog/vapor-shopMock)
 * GCD | Async/await 
-* URLSession
+* URLSession + [Собственный мок сервер (Vapor)](https://github.com/kecha-the-frog/vapor-shopMock)
+* WebKit
 * FileManager
 * Namespace
 * Google Firebase Analytics
